@@ -375,6 +375,9 @@ let g:indentLine_enabled = 1
 let g:pymode_folding = 0
 let g:pymode_rope_completion_bind = '<C-Space>'
 
+" 保存当前buf
+nmap <leader>w :w<CR>
+
 "系统剪贴板的复制、粘贴
 vmap <leader>y "+y
 vmap <leader>d "+d
