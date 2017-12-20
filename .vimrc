@@ -210,7 +210,7 @@ set smartcase
 " using mouse
 set mouse=a
 " modify the large pasted text
-set paste
+" set paste
 
 "-encode set begin-
 "set fileencodings=utf-8,gb2312,gbk,gb18030
