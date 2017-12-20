@@ -328,7 +328,7 @@ set guioptions-=T " Remove toolbar
 set guioptions-=r " remove v_scroll bar
 
 "set leader key
-let mapleader = ";"
+let mapleader = ","
 
 "以下为一些命令使用笔记
 "--------------------------------------------
