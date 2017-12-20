@@ -1,0 +1,6 @@
+BasedOnStyle: Google
+#缩进宽度
+IndentWidth: 4
+#行长度
+ColumnLimit: 75
+
