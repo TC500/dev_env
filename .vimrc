@@ -16,8 +16,15 @@
 "14.sudo ./install.sh -S
 "15.更改终端字体
 
+"启用美化插件
+let builty_vim = 1
+
+"启用YCM
+let enable_ycm = 1
+
 set nocompatible              " be iMproved, required
 filetype off                  " required
+
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -140,7 +147,9 @@ Plugin 'jlanzarotta/bufexplorer'
 "Plugin 'jiangmiao/auto-pairs'
 
 "自动补全集大成者
+if exists("enable_ycm")  && enable_ycm == 1
 Plugin 'Valloric/YouCompleteMe'
+endif  "builty_vim
 
 "目录树根据文件后缀名显示图标
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -157,16 +166,19 @@ Plugin 'rhysd/conflict-marker.vim'
 "书签
 Plugin 'MattesGroeger/vim-bookmarks'
 
-""""""""""""""""""""""""""""""""""""""""""""""""
-"下面的插件用于美化界面，体积是十分巨大的，而且需要改终端字体为Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
 "底部状态栏和标签栏
 Plugin 'vim-airline/vim-airline'
 "状态栏主题
 Plugin 'vim-airline/vim-airline-themes'
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+"下面的插件用于美化界面，体积是十分巨大的，而且需要改终端字体为Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
+if exists("builty_vim")  && builty_vim == 1
 "字体
 Plugin 'ryanoasis/nerd-fonts'
 "图标支持
 Plugin 'ryanoasis/vim-devicons'
+endif  "builty_vim
 
 "if has ("gui")
 "endiF
@@ -203,14 +215,15 @@ set nocp incsearch
 set cinoptions=:0,p0,t0
 set cinwords=if,else,while,do,for,switch,case,try,catch
 set formatoptions=tcqr
-"set foldmethod=indent
-
+"set foldmethod=indent "按照缩进折叠
+set foldmethod=syntax  "按照语法高亮进行折叠
+set foldlevelstart=99 "打开文件时默认不折叠
 " entering uppercase characters.
 set smartcase
 " using mouse
 set mouse=a
 " modify the large pasted text
-" set paste
+"set paste
 
 "-encode set begin-
 "set fileencodings=utf-8,gb2312,gbk,gb18030
@@ -265,10 +278,14 @@ endif
 "set guifontwide=STXihei:h14
 "set guifont=Serif\ 11
 "set guifontwide=Verdana:h11
-"if not use vim-devicons, use this font
-"set guifont=Bitstream\ Vera\ Sans\ Mono\ 10
+"
 "for vim-devicons
-set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
+if exists("builty_vim")  && builty_vim == 1
+    set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
+else
+    set guifont=Bitstream\ Vera\ Sans\ Mono\ 10
+endif  "builty_vim
+"if not use vim-devicons, use this font
 "-font set end----------------------------
 
 "补全时显示所有候选项
@@ -306,6 +323,9 @@ set showmatch           "设置在输入括号时显示配对的括号
 set ignorecase          "设置TAG查找忽略大小写
 set colorcolumn=80      "在80个字符处设置锚线
 set cursorline          "高亮当前行
+
+" 补全内容不以分割子窗口形式出现，只显示补全列表
+set completeopt=longest,menu,preview
 
 "要显示效好的配色,需要在X windows的控制台下, 并且设置set term=xterm-256color
 set t_Co=256
@@ -375,7 +395,7 @@ let g:indentLine_enabled = 1
 let g:pymode_folding = 0
 let g:pymode_rope_completion_bind = '<C-Space>'
 
-" 保存当前buf
+"保存当前buf
 nmap <leader>w :w<CR>
 
 "系统剪贴板的复制、粘贴
@@ -609,6 +629,7 @@ let CtagsCscope_Auto_Map = 1
 let GtagsCscope_Quiet = 1
 
 " YouCompleteMe 功能
+if exists("enable_ycm")  && enable_ycm == 1
 " 补全功能在注释中同样有效
 let g:ycm_complete_in_comments=1
 " 允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
@@ -619,8 +640,6 @@ let g:ycm_collect_identifiers_from_tags_files=1
 set tags+=/data/misc/software/misc./vim/stdcpp.tags
 " YCM 集成 OmniCppComplete 补全引擎，设置其快捷键
 inoremap <leader>; <C-x><C-o>
-" 补全内容不以分割子窗口形式出现，只显示补全列表
-set completeopt=longest,menu,preview
 " 从第一个键入字符就开始罗列匹配项
 let g:ycm_min_num_of_chars_for_completion=1
 " 禁止缓存匹配项，每次都重新生成匹配项
@@ -634,6 +653,7 @@ let g:ycm_complete_in_strings = 1
 "跳到定义
 nmap <C-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
 nmap <leader>g :YcmCompleter GoToDeclaration <C-R>=expand("<cword>")<CR><CR>
+endif  "builty_vim
 
 "format defined variable,这个自定义格式化函数被clang-format的功能替换
 vmap f <ESC>: call FormatDefine()<CR>
