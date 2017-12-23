@@ -22,6 +22,9 @@ let builty_vim = 1
 "启用YCM
 let enable_ycm = 1
 
+"使用系统剪贴板
+let system_clipboard = 1
+
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -215,8 +218,8 @@ set nocp incsearch
 set cinoptions=:0,p0,t0
 set cinwords=if,else,while,do,for,switch,case,try,catch
 set formatoptions=tcqr
-"set foldmethod=indent "按照缩进折叠
-set foldmethod=syntax  "按照语法高亮进行折叠
+set foldmethod=indent "按照缩进折叠
+"set foldmethod=syntax  "按照语法高亮进行折叠
 set foldlevelstart=99 "打开文件时默认不折叠
 " entering uppercase characters.
 set smartcase
@@ -399,12 +402,21 @@ let g:pymode_rope_completion_bind = '<C-Space>'
 nmap <leader>w :w<CR>
 
 "系统剪贴板的复制、粘贴
-vmap <leader>y "+y
-vmap <leader>d "+d
-nmap <leader>p "+p
-nmap <leader>P "+P
-vmap <leader>p "+p
-vmap <leader>P "+P
+if exists("system_clipboard")  && system_clipboard == 1
+    vmap <leader>y "+y
+    vmap <leader>d "+d
+    nmap <leader>p "+p
+    nmap <leader>P "+P
+    vmap <leader>p "+p
+    vmap <leader>P "+P
+else
+    vmap <leader>y "py
+    vmap <leader>d "pd
+    nmap <leader>p "pp
+    nmap <leader>P "pP
+    vmap <leader>p "pp
+    vmap <leader>P "pP
+endif  "system_clipboard
 
 "更新gtag
 nmap <leader>u :!global -u <CR><CR>
