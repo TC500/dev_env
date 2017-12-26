@@ -614,18 +614,25 @@ set cscopequickfix=s-,c-,d-,i-,t-,e-,g- "使用quickfix窗口
 "map key for cscope
 "查找符号
 nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>gs :cs find s <C-R>=expand("<cword>")<CR><CR>
 "查找定义
 nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>gg :cs find g <C-R>=expand("<cword>")<CR><CR>
 "查找调用者
 nmap <C-_>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>gc :cs find c <C-R>=expand("<cword>")<CR><CR>
 "查找字符串
 nmap <C-_>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>gt :cs find t <C-R>=expand("<cword>")<CR><CR>
+"按照egrep查找
 nmap <C-_>e :cs find e <C-R>=expand("<cword>")<CR><CR>
 "查找文件
 nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <leader>gf :cs find f <C-R>=expand("<cfile>")<CR><CR>
+"查找include这个文件的文件
 nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+
 "load the cscope.out database,使用gtags替换cscope，所以cscope的数据库无需读取
 "if filereadable("cscope.out")
 "    cs add cscope.out
@@ -664,7 +671,7 @@ let g:ycm_key_invoke_completion = '<leader>l'
 let g:ycm_complete_in_strings = 1
 "跳到定义
 nmap <C-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>g :YcmCompleter GoToDeclaration <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>gd :YcmCompleter GoToDeclaration <C-R>=expand("<cword>")<CR><CR>
 endif  "builty_vim
 
 "format defined variable,这个自定义格式化函数被clang-format的功能替换
