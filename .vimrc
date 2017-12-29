@@ -422,7 +422,7 @@ let g:pymode_folding = 0
 let g:pymode_rope_completion_bind = '<C-Space>'
 
 "保存当前buf
-nmap <leader>w :w<CR>
+nmap <leader>w :update<CR>
 
 "系统剪贴板的复制、粘贴
 if exists("system_clipboard")  && system_clipboard == 1
