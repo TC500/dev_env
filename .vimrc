@@ -699,7 +699,7 @@ nmap <leader>gd :YcmCompleter GoToDeclaration <C-R>=expand("<cword>")<CR><CR>
 endif  "builty_vim
 
 "format defined variable,这个自定义格式化函数被clang-format的功能替换
-vmap f <ESC>: call FormatDefine()<CR>
+"vmap f <ESC>: call FormatDefine()<CR>
 function! FormatDefine()
   let [lnum1, col1] = getpos("'<")[1:2]
   let [lnum2, col2] = getpos("'>")[1:2]
