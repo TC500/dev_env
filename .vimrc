@@ -74,7 +74,7 @@ Plugin 'gtags.vim'
 "Plugin 'undx/vim-gocode'
 
 "在头文件和cpp文件之间快速切换，:A
-Plugin 'a.vim'
+Plugin 'TC500/a.vim'
 
 "配色方案
 Plugin 'molokai'
@@ -152,7 +152,7 @@ Plugin 'jlanzarotta/bufexplorer'
 "自动补全集大成者
 if exists("enable_ycm")  && enable_ycm == 1
 Plugin 'Valloric/YouCompleteMe'
-endif  "builty_vim
+endif  "enable_ycm
 
 "目录树根据文件后缀名显示图标
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -173,6 +173,17 @@ Plugin 'MattesGroeger/vim-bookmarks'
 Plugin 'vim-airline/vim-airline'
 "状态栏主题
 Plugin 'vim-airline/vim-airline-themes'
+
+"markdown预览
+Plugin 'iamcco/mathjax-support-for-mkdp' "支持数学公式
+Plugin 'iamcco/markdown-preview.vim' "markdown预览
+
+"markdown高亮等
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+
+"json高亮
+Plugin 'elzr/vim-json'
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 "下面的插件用于美化界面，体积是十分巨大的，而且需要改终端字体为Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
@@ -363,6 +374,18 @@ let mapleader = "\<Space>"
 "
 
 "-------------------------------------------------------------------
+
+"a.vim
+let a_vim_no_default_key_mappings = 1
+
+"markdown
+let g:mkdp_path_to_chrome = "chromium-browser"
+let g:vim_markdown_folding_disabled = 1 
+let g:vim_markdown_math = 1
+let g:vim_markdown_no_default_key_mappings = 1
+let g:mkdp_auto_close = 0
+map gx <Plug>(Markdown_OpenUrlUnderCursor)
+map ge <Plug>Markdown_EditUrlUnderCursor)
 
 "incsearch
 map /  <Plug>(incsearch-forward)
@@ -629,10 +652,11 @@ nmap <C-_>e :cs find e <C-R>=expand("<cword>")<CR><CR>
 "查找文件
 nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
 nmap <leader>gf :cs find f <C-R>=expand("<cfile>")<CR><CR>
-"查找include这个文件的文件
+"查看include当前文件的文件
 nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-nmap <leader>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-
+nmap <leader>gi :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+"查找当前函数调用的函数
+nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 "load the cscope.out database,使用gtags替换cscope，所以cscope的数据库无需读取
 "if filereadable("cscope.out")
 "    cs add cscope.out
@@ -658,7 +682,7 @@ let g:ycm_collect_identifiers_from_tags_files=1
 " 引入 C++ 标准库tags，这个没有也没关系，只要<span style="font-family: Arial, Helvetica, sans-serif;">.ycm_extra_conf.py文件中指定了正确的标准库路径</span>
 set tags+=/data/misc/software/misc./vim/stdcpp.tags
 " YCM 集成 OmniCppComplete 补全引擎，设置其快捷键
-inoremap <leader>; <C-x><C-o>
+"inoremap <leader>; <C-x><C-o>
 " 从第一个键入字符就开始罗列匹配项
 let g:ycm_min_num_of_chars_for_completion=1
 " 禁止缓存匹配项，每次都重新生成匹配项
@@ -666,7 +690,7 @@ let g:ycm_cache_omnifunc=0
 " 语法关键字补全
 let g:ycm_seed_identifiers_with_syntax=1
 " 修改对C函数的补全快捷键，默认是CTRL + space，修改为CTRL+
-let g:ycm_key_invoke_completion = '<leader>l'
+"let g:ycm_key_invoke_completion = '<leader>l'
 " 在字符串输入中也能补全
 let g:ycm_complete_in_strings = 1
 "跳到定义
