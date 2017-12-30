@@ -384,6 +384,8 @@ let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_math = 1
 let g:vim_markdown_no_default_key_mappings = 1
 let g:mkdp_auto_close = 0
+let g:vim_markdown_fenced_languages = ['c++=cpp', 'viml=vim', 'bash=sh', 'ini=dosini', 'javescript=js']
+let g:vim_markdown_conceal = 0
 map gx <Plug>(Markdown_OpenUrlUnderCursor)
 map ge <Plug>Markdown_EditUrlUnderCursor)
 
