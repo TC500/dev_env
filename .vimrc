@@ -63,6 +63,22 @@ Plugin 'vim-syntastic/syntastic'
 
 "Plugin 'fatih/vim-go'
 
+"tpope/*插件编写的命令也能用.重复
+Plugin 'tpope/vim-repeat'
+
+"快速输入更改包围一段文字的符号
+Plugin 'tpope/vim-surround'
+
+"html快速编写
+Plugin 'mattn/emmet-vim'
+
+"html高亮
+Plugin 'othree/html5.vim'
+Plugin 'Valloric/MatchTagAlways' "高亮当前tag
+
+"javascript高亮
+Plugin 'pangloss/vim-javascript'
+
 "目录树
 Plugin 'scrooloose/nerdtree'
 
@@ -388,6 +404,12 @@ let g:vim_markdown_fenced_languages = ['c++=cpp', 'viml=vim', 'bash=sh', 'ini=do
 let g:vim_markdown_conceal = 0
 map gx <Plug>(Markdown_OpenUrlUnderCursor)
 map ge <Plug>Markdown_EditUrlUnderCursor)
+
+"emmet-vim
+let g:user_emmet_mode='nv' "enable key map only normal and visual mode
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+"let g:user_emmet_leader_key='<C-Y>'
 
 "incsearch
 map /  <Plug>(incsearch-forward)
