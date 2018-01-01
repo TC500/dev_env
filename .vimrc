@@ -58,8 +58,8 @@ set nobackup "no swp file
 "调用ClangFormat命令格式化c\c++代码
 Plugin 'https://github.com/rhysd/vim-clang-format.git'
 
-"符号高亮
-Plugin 'https://github.com/scrooloose/syntastic.git'
+"代码检查
+Plugin 'vim-syntastic/syntastic'
 
 "Plugin 'fatih/vim-go'
 
