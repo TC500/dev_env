@@ -162,8 +162,8 @@ Plugin 'tell-k/vim-autopep8'
 "buf 浏览器
 Plugin 'jlanzarotta/bufexplorer'
 
-"自动补全括号,应该是和YCM冲突导致无法使用
-"Plugin 'jiangmiao/auto-pairs'
+"自动补全括号
+Plugin 'jiangmiao/auto-pairs'
 
 "自动补全集大成者
 if exists("enable_ycm")  && enable_ycm == 1
