@@ -383,6 +383,8 @@ let mapleader = "\<Space>"
 
 "gitv
 "let g:Gitv_DoNotMapCtrlKey = 1
+map <leader>gv :Gitv<CR><CR>
+nmap <leader>gr :Git<Space>
 
 "yankring
 nmap <leader>y :YRShow<CR>
