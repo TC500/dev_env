@@ -894,28 +894,32 @@ if !exists(":AddTitle")
 endi
 
 function! s:DoUpdateTitle()
-  execute '/ *@Last Modified time:/s@:.*$@\=strftime(": %Y-%m-%d %H:%M:%S").""@'
-  execute '/ *@Last Modified by:/s@:.*$@\=": ".expand("maxiaowei_main\@qq.com")@'
-  execute "noh"
-  "echohl WarningMsg | echo "Successful in updating file title." | echohl None
+    let s:save_cursor = getpos(".")
+    execute '/ *@Last Modified time:/s@:.*$@\=strftime(": %Y-%m-%d %H:%M:%S").""@'
+    execute '/ *@Last Modified by:/s@:.*$@\=": ".expand("maxiaowei05\@meituan.com")@'
+    execute "noh"
+    call setpos('.', s:save_cursor)
+    "echohl WarningMsg | echo "Successful in updating file title." | echohl None
 endfunction
 
 function! UpdateTitle()
-  let n = 0
-  while n < 7
-    let line = getline(n)
-    if line =~'\s\*\_s@Last\_sModified\_sby:'
-      call s:DoUpdateTitle()
-      return
+    if &modified
+        let n = 0
+        while n < 7
+          let line = getline(n)
+          if line =~'\s\*\_s@Last\_sModified\_sby:'
+            call s:DoUpdateTitle()
+            return
+          endif
+          let n = n + 1
+        endwhile
     endif
-    let n = n + 1
-  endwhile
 endfunction
 if !exists(":UpdateTitle")
     command -nargs=0 UpdateTitle :call UpdateTitle()
 endif
 
-autocmd BufWritePre,FileWritePre * ks|call UpdateTitle()|'s
+autocmd BufWritePre,FileWritePre * call UpdateTitle()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "加载项目相关的设置
