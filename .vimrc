@@ -1,14 +1,13 @@
 "环境设置
 "1. 将本文件放在~/.vimrc
-"3. 安装cscope
-"4. 安装clang-format
-"5. 运行VIM
-"6. 运行:VundleInstall 插件会自动下载并安装
-"7. 安装clang
-"8. 安装gnu global
-"9. 在工程目录下执行gtags生成tag文件
-"10.打开vim,首次启动等待插件自动安装
-"11.更改终端字体为Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
+"2. 安装cscope
+"3. 安装clang-format
+"4. 安装clang
+"5. 安装gnu global
+"6. 在工程目录下执行gtags生成tag文件
+"7. 打开vim,首次启动等待插件自动安装
+"8. 更改终端字体为Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
+
 
 "启用美化插件
 let builty_vim = 1
