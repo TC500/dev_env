@@ -1,20 +1,14 @@
 "环境设置
-"1. 将my.vimrc重命名为.vimrc放到当前用户home目录
-"2. 执行git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+"1. 将本文件放在~/.vimrc
 "3. 安装cscope
 "4. 安装clang-format
 "5. 运行VIM
 "6. 运行:VundleInstall 插件会自动下载并安装
 "7. 安装clang
-"8. 编译YouCompleteMe插件
-"9. cd ~/.vim/bundle/YouCompleteMe
-"10 ./install --clang-completer
-"11 安装gnu global
-"12.在工程目录下执行gtags生成tag文件
-"如果不需要美化的界面，下面的两步可以略去，同时需要关闭插件ryanoasis/*,更改guifont
-"13.cd ~/.vim/bundle/nerd-font
-"14.sudo ./install.sh -S
-"15.更改终端字体
+"8. 安装gnu global
+"9. 在工程目录下执行gtags生成tag文件
+"10.打开vim,首次启动等待插件自动安装
+"11.更改终端字体为Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
 
 "启用美化插件
 let builty_vim = 1
@@ -25,216 +19,210 @@ let enable_ycm = 1
 "使用系统剪贴板
 let system_clipboard = 1
 
-set nocompatible              " be iMproved, required
-filetype off                  " required
+"自动安装插件管理器
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+          \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 
+    "自动安装字体
+    if exists("builty_vim") && builty_vim == 1
+        \ &&  empty(glob('/usr/share/fonts/custom/Droid Sans Mono for Powerline Nerd Font Complete.otf')) 
+            silent !sudo curl -fLo "/usr/share/fonts/custom/Droid Sans Mono for Powerline Nerd Font Complete.otf" 
+                \ --create-dirs
+                \ "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid\%20Sans\%20Mono\%20Nerd\%20Font\%20Complete.otf"
+    endif
+endif
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+call plug#begin('~/.vim/bundle')
+"注册自己，能够调用help vim-plug
+Plug 'junegunn/vim-plug'
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+"可视化剪贴板
+Plug 'vim-scripts/YankRing.vim'
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-"Plugin 'tpope/vim-fugitive'
-"" plugin from http://vim-scripts.org/vim/scripts.html
-"Plugin 'L9'
-"" Git plugin not hosted on GitHub
-"Plugin 'git://git.wincent.com/command-t.git'
-"" git repos on your local machine (i.e. when working on your own plugin)
-"Plugin 'file:///home/gmarik/path/to/plugin'
-"" The sparkup vim script is in a subdirectory of this repo called vim.
-"" Pass the path to set the runtimepath properly.
-"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Avoid a name conflict with L9
-"Plugin 'user/L9', {'name': 'newL9'}
-
-set nobackup "no swp file
 "调用ClangFormat命令格式化c\c++代码
-Plugin 'https://github.com/rhysd/vim-clang-format.git'
+Plug 'rhysd/vim-clang-format'
 
-"代码检查
-Plugin 'vim-syntastic/syntastic'
+"静态检查
+Plug 'vim-syntastic/syntastic'
 
-"Plugin 'fatih/vim-go'
+"Plug 'fatih/vim-go'
+
+"撤销
+Plug 'mbbill/undotree'
+
+"文本替换性能增强
+Plug 'tpope/vim-abolish'
 
 "tpope/*插件编写的命令也能用.重复
-Plugin 'tpope/vim-repeat'
+Plug 'tpope/vim-repeat'
+
 
 "快速输入更改包围一段文字的符号
-Plugin 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 
 "html快速编写
-Plugin 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim'
 
 "html高亮
-Plugin 'othree/html5.vim'
-Plugin 'Valloric/MatchTagAlways' "高亮当前tag
+Plug 'othree/html5.vim'
+Plug 'Valloric/MatchTagAlways' "高亮当前tag
 
 "javascript高亮
-Plugin 'pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript'
 
 "目录树
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 
-Plugin 'cscope.vim'
+Plug 'vim-scripts/cscope.vim'
 
 "GNU global
-Plugin 'gtags.vim'
+Plug 'vim-scripts/gtags.vim'
 
-"Plugin 'undx/vim-gocode'
+"Plug 'undx/vim-gocode'
 
 "在头文件和cpp文件之间快速切换，:A
-Plugin 'TC500/a.vim'
+Plug 'TC500/a.vim'
 
 "配色方案
-Plugin 'molokai'
-Plugin 'https://github.com/sickill/vim-monokai'
-Plugin 'altercation/vim-colors-solarized'
+Plug 'vim-scripts/molokai'
+Plug 'sickill/vim-monokai'
+Plug 'altercation/vim-colors-solarized'
 
 "画基本示意图
-Plugin 'drawit'
+Plug 'vim-scripts/drawit'
 
 "彩虹括号,便于区分不同的括号
-Plugin 'kien/rainbow_parentheses.vim'
+Plug 'kien/rainbow_parentheses.vim'
 
 "模糊搜索buf和file
-Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+Plug 'Yggdroot/LeaderF-marks'
+"Plug 'ctrlpvim/ctrlp.vim' "速度比leadf慢，完全被leaderf替代
+
+"高亮当前所在的括号,性能捉急，卡
+"Plug 'Yggdroot/hiPairs'
 
 "多光标操作，替换Ctrl-v
-Plugin 'terryma/vim-multiple-cursors'
+Plug 'terryma/vim-multiple-cursors'
 
 "按行显示文件的git标记,在修改行之间跳转,如果打开这个插件，需要打开对应的快捷键设置
-Plugin 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
+
+"vim内进行git操作
+Plug 'tpope/vim-fugitive'
+
+"vim内的tig
+Plug 'gregsexton/gitv'
 
 "按行显示文件的修改标记，包含git和svn，在修改行之间跳转，可以替代vim-gitgutter
-"Plugin 'mhinz/vim-signify'
+"Plug 'mhinz/vim-signify'
 
 "cpp文件语法高亮
-Plugin 'vim-cpp-enhanced-highlight'
+Plug 'vim-scripts/vim-cpp-enhanced-highlight'
 
 "区域选中，v vv vvv 逐渐扩大选中区域
-Plugin 'vim-expand-region'
+Plug 'vim-scripts/vim-expand-region'
 
 "目录树显示文件的git状态
-Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 "tagbar,使用ctags显示当前buf的符号
-Plugin 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 
 "关闭初当前编辑buf以外的所有buf
-Plugin 'BufOnly.vim'
+Plug 'vim-scripts/BufOnly.vim'
 
 "注释
-Plugin 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdcommenter'
 
 "在输入搜索内容的过程中同时高亮所有的搜索命中项目
-Plugin 'haya14busa/incsearch.vim'
+Plug 'haya14busa/incsearch.vim'
 
 "模糊搜索
-Plugin 'haya14busa/incsearch-fuzzy.vim'
+Plug 'haya14busa/incsearch-fuzzy.vim'
 
 "快速在多个搜索命中结果中跳转
-"Plugin 'haya14busa/incsearch-easymotion.vim'
+"Plug 'haya14busa/incsearch-easymotion.vim'
 
 "快速跳转
-Plugin 'easymotion/vim-easymotion'
+Plug 'easymotion/vim-easymotion'
+Plug 'justinmk/vim-sneak'
 
 "显示缩进的线条
-Plugin 'Yggdroot/indentLine'
+Plug 'Yggdroot/indentLine'
 
 "替代vimgrep的搜索，:Ag
-Plugin 'rking/ag.vim'
+Plug 'rking/ag.vim'
 
 "python集成插件,包括高亮、格式化
-Plugin 'python-mode/python-mode'
+Plug 'python-mode/python-mode'
 "python符号高亮，完全可以被python-mode替换
-"Plugin 'hdima/python-syntax'
+"Plug 'hdima/python-syntax'
 
 "python文件格式化
-Plugin 'tell-k/vim-autopep8'
+Plug 'tell-k/vim-autopep8'
 
 "buf 浏览器
-Plugin 'jlanzarotta/bufexplorer'
+Plug 'jlanzarotta/bufexplorer'
 
 "自动补全括号
-Plugin 'jiangmiao/auto-pairs'
+Plug 'jiangmiao/auto-pairs'
 
 "自动补全集大成者
 if exists("enable_ycm")  && enable_ycm == 1
-Plugin 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
 endif  "enable_ycm
 
 "目录树根据文件后缀名显示图标
-Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 "处理git冲突
-Plugin 'rhysd/conflict-marker.vim'
+Plug 'rhysd/conflict-marker.vim'
+
+"
 
 "生成函数和文档注释的插件，貌似目前不太需要
-"Plugin 'DoxygenToolkit.vim'
+"Plug 'DoxygenToolkit.vim'
 
 " 这个插件挺好的，但是总是自动的设置一个s标记，不知道是跟哪个冲突的,所以用vim-booksmark替换
-"Plugin 'kshenoy/vim-signature'
+"Plug 'kshenoy/vim-signature'
 
 "书签
-Plugin 'MattesGroeger/vim-bookmarks'
+Plug 'MattesGroeger/vim-bookmarks'
 
 "底部状态栏和标签栏
-Plugin 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline'
 "状态栏主题
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline-themes'
 
 "markdown预览
-Plugin 'iamcco/mathjax-support-for-mkdp' "支持数学公式
-Plugin 'iamcco/markdown-preview.vim' "markdown预览
+Plug 'iamcco/mathjax-support-for-mkdp' "支持数学公式
+Plug 'iamcco/markdown-preview.vim' "markdown预览
 
 "markdown高亮等
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 
 "json高亮
-Plugin 'elzr/vim-json'
+Plug 'elzr/vim-json'
 
 """"""""""""""""""""""""""""""""""""""""""""""""
-"下面的插件用于美化界面，体积是十分巨大的，而且需要改终端字体为Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
+"下面的插件用于美化界面，需要改终端字体为Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
 if exists("builty_vim")  && builty_vim == 1
 "字体
-Plugin 'ryanoasis/nerd-fonts'
+"Plug 'ryanoasis/nerd-fonts', {'do': 'sudo ./install.sh -S'}
 "图标支持
-Plugin 'ryanoasis/vim-devicons'
+Plug 'ryanoasis/vim-devicons'
 endif  "builty_vim
 
-"if has ("gui")
-"endiF
+call plug#end()
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
+set nobackup "no swp file
+
 "打开自动识别文件类型,使用文件类型plugin脚本,使用缩进定义文件
-filetype plugin indent on    " required
 filetype plugin on      "打开文件类型插件
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-
-" vim-scripts repos
-" non github repos
-"Bundle 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (ie. when working on your own plugin)
-"Bundle 'file:///Users/gmarik/path/to/plugin'
-" ...
-
 
 "session中不保存当前目录，这样使用Session.vim文件恢复时，Session.vim文件所在目录自动变成当前目录
 set sessionoptions-=curdir
@@ -390,12 +378,57 @@ let mapleader = "\<Space>"
 "
 
 "-------------------------------------------------------------------
+"hiPairs
+"let g:hiPairs_enable_matchParen = 0
+
+"gitv
+"let g:Gitv_DoNotMapCtrlKey = 1
+
+"yankring
+nmap <leader>y :YRShow<CR>
+let g:yankring_replace_n_pkey = '<Char-172>'
+
+"LeaderF
+let g:Lf_ShortcutF = '<C-p>'
+let g:Lf_ShortcutB = '<leader>lb'
+" let g:Lf_DefaultMode = 'FullPath'
+nmap <leader>lt :LeaderfBufTag<CR>
+nmap <leader>lf :LeaderfFunction<CR> 
+nmap <leader>ll :LeaderfLine<CR> 
+nmap <leader>lm :LeaderfMarks<CR> 
+
+"Crtlp
+"nmap <leader>bs :CtrlPBuffer<CR>
+""不使用缓存
+"let g:ctrlp_use_caching = 0
+""不自动清除缓存
+"let g:ctrlp_clear_cache_on_exit = 0
+""显示隐藏文件
+"let g:ctrlp_show_hidden = 1
+""忽略的文件
+"let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+""不限制最大的文件数量
+"let g:ctrlp_max_files = 0
+
+"undotree
+if has("persistent_undo")
+    set undodir=~/.undodir/
+    set undofile
+endif
+nnoremap <F6> :UndotreeToggle<cr>
+
+"sneak
+let g:sneak#label = 1
+map f <Plug>Sneak_f
+map F <Plug>Sneak_F
+map t <Plug>Sneak_t
+map T <Plug>Sneak_T
 
 "a.vim
 let a_vim_no_default_key_mappings = 1
 
 "markdown
-let g:mkdp_path_to_chrome = "chromium-browser"
+let g:mkdp_path_to_chrome = "google-chrome-stable"
 let g:vim_markdown_folding_disabled = 1 
 let g:vim_markdown_math = 1
 let g:vim_markdown_no_default_key_mappings = 1
@@ -404,12 +437,6 @@ let g:vim_markdown_fenced_languages = ['c++=cpp', 'viml=vim', 'bash=sh', 'ini=do
 let g:vim_markdown_conceal = 0
 map gx <Plug>(Markdown_OpenUrlUnderCursor)
 map ge <Plug>Markdown_EditUrlUnderCursor)
-
-"emmet-vim
-let g:user_emmet_mode='nv' "enable key map only normal and visual mode
-let g:user_emmet_install_global = 0
-autocmd FileType html,css EmmetInstall
-"let g:user_emmet_leader_key='<C-Y>'
 
 "incsearch
 map /  <Plug>(incsearch-forward)
@@ -424,6 +451,12 @@ map zg/ <Plug>(incsearch-fuzzy-stay)
 "map z? <Plug>(incsearch-fuzzyspell-?)
 "map zg/ <Plug>(incsearch-fuzzyspell-stay)
 
+"emmet-vim
+let g:user_emmet_mode='nv' "enable key map only normal and visual mode
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+"let g:user_emmet_leader_key='<C-Y>'
+
 "easymotion/vim-easymotion
 let g:EasyMotion_do_mapping = 1
 "按回车自动跳到第一个匹配
@@ -432,11 +465,29 @@ map <leader><leader> <Plug>(easymotion-prefix)
 
 "rainbow_parentheses
 let g:rbpt_loadcmd_toggle = 1
-"au VimEnter * RainbowParenthesesToggle " Toggle it on/off
-"au Syntax * RainbowParenthesesLoadRound " ()
-"au Syntax * RainbowParenthesesLoadSquare " []
-"au Syntax * RainbowParenthesesLoadBraces "{} 
-"au Syntax * RainbowParenthesesLoadChevrons " <>
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['black',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+let g:rbpt_max = 15
+au VimEnter * RainbowParenthesesToggle " Toggle it on/off
+au Syntax * RainbowParenthesesLoadRound " ()
+au Syntax * RainbowParenthesesLoadSquare " []
+au Syntax * RainbowParenthesesLoadBraces "{} 
+au Syntax * RainbowParenthesesLoadChevrons " <>
 
 "identline
 let g:indentLine_enabled = 1
@@ -468,18 +519,6 @@ endif  "system_clipboard
 "更新gtag
 nmap <leader>u :!global -u <CR><CR>
 
-"Crtlp
-nmap <leader>bs :CtrlPBuffer<CR>
-"不使用缓存
-let g:ctrlp_use_caching = 0
-"不自动清除缓存
-let g:ctrlp_clear_cache_on_exit = 0
-"显示隐藏文件
-let g:ctrlp_show_hidden = 1
-"忽略的文件
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-"不限制最大的文件数量
-let g:ctrlp_max_files = 0
 
 "删除所有除当前打开buf外的buf
 nmap <leader>bd :BufOnly<CR>
@@ -502,12 +541,11 @@ vmap <C-v> <Plug>(expand_region_shrink)
 "gitgutter
 "disable all,for solve conflict with vim-signature
 let g:gitgutter_map_keys = 0
-"let g:gitgutter_realtime = 0
-let g:gitgutter_eager = 0
-let g:gitgutter_max_signs = 2000
-
 nmap [c <Plug>GitGutterPrevHunk
 nmap ]c <Plug>GitGutterNextHunk
+"let g:gitgutter_realtime = 0
+"let g:gitgutter_eager = 0
+let g:gitgutter_max_signs = 500
 
 "signify
 "    ]c   Jump to next hunk.
@@ -539,7 +577,9 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#tabline#show_tabs = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline_powerline_fonts = 1
+if exists("builty_vim") && builty_vim == 1
+    let g:airline_powerline_fonts = 1
+endif
 let g:airline_theme='solarized'
 
 "for NERDTree plugin
@@ -727,7 +767,7 @@ nmap <leader>gd :YcmCompleter GoToDeclaration <C-R>=expand("<cword>")<CR><CR>
 endif  "builty_vim
 
 "format defined variable,这个自定义格式化函数被clang-format的功能替换
-"vmap f <ESC>: call FormatDefine()<CR>
+"vmap f <ESC>: call FormatDefine()<CR>        
 function! FormatDefine()
   let [lnum1, col1] = getpos("'<")[1:2]
   let [lnum2, col2] = getpos("'>")[1:2]
@@ -838,12 +878,9 @@ endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "自动添加和更新headline
-if !exists(":AddTitle")
-    command -nargs=0 AddTitle :call AddTitle()
-endi
 function! AddTitle()
   call append(0, "\/*")
-  call append(1, " * Copyright (c) 2017 Meituan Inc. All rights reserved.")
+  call append(1, " * Copyright (c) 2018 maxiaowei_main@qq.com Inc. All rights reserved.")
   call append(2, " * @Author: maxiaowei_main@qq.com")
   call append(3, " * @Date: ".strftime("%Y-%m-%d %H:%M:%S".""))
   call append(4, " * @Last Modified by: maxiaowei_main@qq.com")
@@ -851,6 +888,9 @@ function! AddTitle()
   call append(6, "*\/")
   "echohl WarningMsg | echo "Successful in adding file title." | echohl None
 endfunction
+if !exists(":AddTitle")
+    command -nargs=0 AddTitle :call AddTitle()
+endi
 
 function! s:DoUpdateTitle()
   execute '/ *@Last Modified time:/s@:.*$@\=strftime(": %Y-%m-%d %H:%M:%S").""@'
@@ -859,10 +899,6 @@ function! s:DoUpdateTitle()
   "echohl WarningMsg | echo "Successful in updating file title." | echohl None
 endfunction
 
-if !exists(":UpdateTitle")
-    command -nargs=0 UpdateTitle :call UpdateTitle()
-endif
-autocmd BufWritePre,FileWritePre * ks|call UpdateTitle()|'s
 function! UpdateTitle()
   let n = 0
   while n < 7
@@ -874,6 +910,11 @@ function! UpdateTitle()
     let n = n + 1
   endwhile
 endfunction
+if !exists(":UpdateTitle")
+    command -nargs=0 UpdateTitle :call UpdateTitle()
+endif
+
+autocmd BufWritePre,FileWritePre * ks|call UpdateTitle()|'s
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "加载项目相关的设置
