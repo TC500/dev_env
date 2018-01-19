@@ -37,6 +37,9 @@ call plug#begin('~/.vim/bundle')
 "注册自己，能够调用help vim-plug
 Plug 'junegunn/vim-plug'
 
+"输入@和“或者在ctrl-R时显示剪贴板
+Plug 'junegunn/vim-peekaboo'
+
 "可视化剪贴板
 Plug 'vim-scripts/YankRing.vim'
 
@@ -88,6 +91,7 @@ Plug 'TC500/a.vim'
 Plug 'vim-scripts/molokai'
 Plug 'sickill/vim-monokai'
 Plug 'altercation/vim-colors-solarized'
+Plug 'junegunn/seoul256.vim'
 
 "画基本示意图
 Plug 'vim-scripts/drawit'
@@ -171,7 +175,7 @@ Plug 'jiangmiao/auto-pairs'
 
 "自动补全集大成者
 if exists("enable_ycm")  && enable_ycm == 1
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang' }
 endif  "enable_ycm
 
 "目录树根据文件后缀名显示图标
