@@ -7,7 +7,7 @@
 "6. 在工程目录下执行gtags生成tag文件
 "7. 打开vim,首次启动等待插件自动安装
 "8. 更改终端字体为Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
-
+"9. 更改终端颜色为solarized
 
 "启用美化插件
 let builty_vim = 1
@@ -16,7 +16,9 @@ let builty_vim = 1
 let enable_ycm = 1
 
 "使用系统剪贴板
-let system_clipboard = 1
+if has('gui')
+    let system_clipboard = 1
+endif
 
 "自动安装插件管理器
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -37,14 +39,38 @@ call plug#begin('~/.vim/bundle')
 "注册自己，能够调用help vim-plug
 Plug 'junegunn/vim-plug'
 
+"sudo权限
+Plug 'vim-scripts/sudo.vim'
+
+"minimap,类似vscode和atom等
+Plug 'severin-lemaignan/vim-minimap'
+
+"智能切换paste状态
+Plug 'roxma/vim-paste-easy'
+
+"可以调整diff算法
+Plug 'chrisbra/vim-diff-enhanced'
+
+"protobuf高亮
+Plug 'uarun/vim-protobuf'
+
+"thrift高亮
+Plug 'solarnz/thrift.vim'
+
+"显示结尾的多余空格
+Plug 'bitc/vim-bad-whitespace'
+
+"自动格式化
+Plug 'chiel92/vim-autoformat'
+
+"保存文件时自动创建不存在的目录
+Plug 'pbrisbin/vim-mkdir'
+
 "输入@和“或者在ctrl-R时显示剪贴板
 Plug 'junegunn/vim-peekaboo'
 
 "可视化剪贴板
 Plug 'vim-scripts/YankRing.vim'
-
-"调用ClangFormat命令格式化c\c++代码
-Plug 'rhysd/vim-clang-format'
 
 "静态检查
 Plug 'vim-syntastic/syntastic'
@@ -59,7 +85,6 @@ Plug 'tpope/vim-abolish'
 
 "tpope/*插件编写的命令也能用.重复
 Plug 'tpope/vim-repeat'
-
 
 "快速输入更改包围一段文字的符号
 Plug 'tpope/vim-surround'
@@ -87,11 +112,13 @@ Plug 'vim-scripts/gtags.vim'
 "在头文件和cpp文件之间快速切换，:A
 Plug 'TC500/a.vim'
 
-"配色方案
+"配色方案 solarized和codedark较好
 Plug 'vim-scripts/molokai'
 Plug 'sickill/vim-monokai'
 Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
 Plug 'junegunn/seoul256.vim'
+Plug 'tomasiser/vim-code-dark'
 
 "画基本示意图
 Plug 'vim-scripts/drawit'
@@ -102,7 +129,6 @@ Plug 'kien/rainbow_parentheses.vim'
 "模糊搜索buf和file
 Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
 Plug 'Yggdroot/LeaderF-marks'
-"Plug 'ctrlpvim/ctrlp.vim' "速度比leadf慢，完全被leaderf替代
 
 "高亮当前所在的括号,性能捉急，卡
 "Plug 'Yggdroot/hiPairs'
@@ -118,9 +144,6 @@ Plug 'tpope/vim-fugitive'
 
 "vim内的tig
 Plug 'gregsexton/gitv'
-
-"按行显示文件的修改标记，包含git和svn，在修改行之间跳转，可以替代vim-gitgutter
-"Plug 'mhinz/vim-signify'
 
 "cpp文件语法高亮
 Plug 'vim-scripts/vim-cpp-enhanced-highlight'
@@ -161,11 +184,6 @@ Plug 'rking/ag.vim'
 
 "python集成插件,包括高亮、格式化
 Plug 'python-mode/python-mode'
-"python符号高亮，完全可以被python-mode替换
-"Plug 'hdima/python-syntax'
-
-"python文件格式化
-Plug 'tell-k/vim-autopep8'
 
 "buf 浏览器
 Plug 'jlanzarotta/bufexplorer'
@@ -183,8 +201,6 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 "处理git冲突
 Plug 'rhysd/conflict-marker.vim'
-
-"
 
 "生成函数和文档注释的插件，貌似目前不太需要
 "Plug 'DoxygenToolkit.vim'
@@ -356,6 +372,8 @@ set t_Co=256
 "如果设定为solarized模式，需要更改终端配色方案也为solarized
 set background=dark
 colorscheme solarized
+"colorscheme solarized8
+"colorscheme codedark
 "if( &t_Co > 1 )  "判断是否支持彩色显示
 	syntax on                      "打开语法加亮
 	set hlsearch                   "高亮最后一次搜索的文本
@@ -384,6 +402,15 @@ let mapleader = "\<Space>"
 "hiPairs
 "let g:hiPairs_enable_matchParen = 0
 
+"a.vim
+nmap <leader>a :A<CR>
+
+"minimap
+let g:minimap_show='<Char-172>'
+let g:minimap_update='<Char-172>'
+let g:minimap_close='<Char-173>'
+let g:minimap_toggle='<F12>'
+
 "gitv
 "let g:Gitv_DoNotMapCtrlKey = 1
 map <leader>gv :Gitv<CR><CR>
@@ -401,19 +428,6 @@ nmap <leader>lt :LeaderfBufTag<CR>
 nmap <leader>lf :LeaderfFunction<CR> 
 nmap <leader>ll :LeaderfLine<CR> 
 nmap <leader>lm :LeaderfMarks<CR> 
-
-"Crtlp
-"nmap <leader>bs :CtrlPBuffer<CR>
-""不使用缓存
-"let g:ctrlp_use_caching = 0
-""不自动清除缓存
-"let g:ctrlp_clear_cache_on_exit = 0
-""显示隐藏文件
-"let g:ctrlp_show_hidden = 1
-""忽略的文件
-"let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-""不限制最大的文件数量
-"let g:ctrlp_max_files = 0
 
 "undotree
 if has("persistent_undo")
@@ -468,8 +482,6 @@ let g:EasyMotion_do_mapping = 1
 let g:EasyMotion_enter_jump_first = 1
 map <leader><leader> <Plug>(easymotion-prefix)
 
-"rainbow_parentheses
-let g:rbpt_loadcmd_toggle = 1
 "rainbow_parentheses
 let g:rbpt_loadcmd_toggle = 1
 let g:rbpt_colorpairs = [
@@ -587,6 +599,7 @@ if exists("builty_vim") && builty_vim == 1
     let g:airline_powerline_fonts = 1
 endif
 let g:airline_theme='solarized'
+"let g:airline_theme='codedark'
 
 "for NERDTree plugin
 nmap <F4> :NERDTreeToggle<CR>
@@ -618,9 +631,9 @@ let g:tagbar_width=30
 "打开文件自动 打开tagbar
 autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx,*.py call tagbar#autoopen()
 
-"clang Format
-autocmd FileType c,cpp nmap <buffer> <leader>i :ClangFormat<CR>
-autocmd FileType c,cpp vmap <buffer> <leader>i :ClangFormat<CR>
+"autoformat
+nmap <leader>i :Autoformat<CR>
+vmap <leader>i :Autoformat<CR>
 
 "clang for c++
 let g:clang_auto_select=1
@@ -644,11 +657,6 @@ let g:clang_complete_patterns=0
 "vim for python
 "python-syntax
 let python_highlight_all = 1
-
-"vim-autopep8
-let g:autopep8_disable_show_diff=1
-autocmd FileType python nmap <buffer> <leader>i :call Autopep8()<CR>
-autocmd FileType python vmap <buffer> <leader>i :call Autopep8()<CR>
 
 let g:DoxygenToolkit_briefTag_pre="@Synopsis  "
 let g:DoxygenToolkit_paramTag_pre="@Param "
@@ -773,7 +781,7 @@ nmap <leader>gd :YcmCompleter GoToDeclaration <C-R>=expand("<cword>")<CR><CR>
 endif  "builty_vim
 
 "format defined variable,这个自定义格式化函数被clang-format的功能替换
-"vmap f <ESC>: call FormatDefine()<CR>        
+"vmap f <ESC>: call FormatDefine()<CR>
 function! FormatDefine()
   let [lnum1, col1] = getpos("'<")[1:2]
   let [lnum2, col2] = getpos("'>")[1:2]
@@ -886,10 +894,10 @@ endfunction
 "自动添加和更新headline
 function! AddTitle()
   call append(0, "\/*")
-  call append(1, " * Copyright (c) 2018 maxiaowei_main@qq.com Inc. All rights reserved.")
+  call append(1, " * Copyright (c) 2018 Inc. All rights reserved.")
   call append(2, " * @Author: maxiaowei_main@qq.com")
   call append(3, " * @Date: ".strftime("%Y-%m-%d %H:%M:%S".""))
-  call append(4, " * @Last Modified by: maxiaowei_main@qq.com")
+  call append(4, " * @Last Modified by: maxiaowei_main@qq")
   call append(5, " * @Last Modified time: ".strftime("%Y-%m-%d %H:%M:%S".""))
   call append(6, "*\/")
   "echohl WarningMsg | echo "Successful in adding file title." | echohl None
@@ -901,10 +909,10 @@ endi
 function! s:DoUpdateTitle()
     let s:save_cursor = getpos(".")
     execute '/ *@Last Modified time:/s@:.*$@\=strftime(": %Y-%m-%d %H:%M:%S").""@'
-    execute '/ *@Last Modified by:/s@:.*$@\=": ".expand("maxiaowei05\@meituan.com")@'
+    execute '/ *@Last Modified by:/s@:.*$@\=": ".expand("maxiaowei_main\@qq.com")@'
     execute "noh"
-    call setpos('.', s:save_cursor)
     "echohl WarningMsg | echo "Successful in updating file title." | echohl None
+    call setpos('.', s:save_cursor)
 endfunction
 
 function! UpdateTitle()
