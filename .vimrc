@@ -149,7 +149,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv'
 
 "cpp文件语法高亮
-Plug 'vim-scripts/vim-cpp-enhanced-highlight'
+Plug 'octol/vim-cpp-enhanced-highlight'
 
 "区域选中，v vv vvv 逐渐扩大选中区域
 Plug 'vim-scripts/vim-expand-region'
