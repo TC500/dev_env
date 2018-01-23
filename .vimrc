@@ -39,6 +39,9 @@ call plug#begin('~/.vim/bundle')
 "注册自己，能够调用help vim-plug
 Plug 'junegunn/vim-plug'
 
+"添加文件说明头
+Plug 'TC500/vim-header'
+
 "sudo权限
 Plug 'vim-scripts/sudo.vim'
 
@@ -418,6 +421,17 @@ let mapleader = "\<Space>"
 "
 
 "-------------------------------------------------------------------
+"vim-header
+let g:header_field_author = 'Ma Xiaowei'
+let g:header_field_author_email = 'maxiaowei_main@qq.com'
+let g:header_auto_add_header = 0
+let g:header_auto_update_header = 1
+let g:header_field_filename = 0
+let g:header_field_timestamp_format = '%Y-%m-%d %H:%M:%S'
+let g:header_license_first_line = 'Copyright (c) %Y Ma Xiaowei <maxiaowei_main@qq.cim>.'
+let g:header_alignment = 1
+let g:header_max_size = 20
+
 "hiPairs
 "let g:hiPairs_enable_matchParen = 0
 
