@@ -442,6 +442,10 @@ let g:minimap_toggle='<F12>'
 "let g:Gitv_DoNotMapCtrlKey = 1
 map <leader>gv :Gitv<CR><CR>
 nmap <leader>gr :Git<Space>
+let g:Gitv_WrapLines = 1
+let g:Gitv_TruncateCommitSubjects = 1
+let g:Gitv_OpenPreviewOnLaunch = 1
+let g:Gitv_OpenHorizontal = 1
 
 "yankring
 nmap <leader>y :YRShow<CR>
