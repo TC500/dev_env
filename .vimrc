@@ -423,6 +423,14 @@ let mapleader = "\<Space>"
 
 "a.vim
 nmap <leader>a :A<CR>
+let a_vim_no_default_key_mappings = 1
+
+"vim-cpp-enhanced-highlight
+let g:cpp_class_scope_highlight = 1
+"let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_experimental_simple_template_highlight = 1
+let g:cpp_concepts_highlight = 1
 
 "minimap
 let g:minimap_show='<Char-172>'
@@ -461,9 +469,6 @@ map f <Plug>Sneak_f
 map F <Plug>Sneak_F
 map t <Plug>Sneak_t
 map T <Plug>Sneak_T
-
-"a.vim
-let a_vim_no_default_key_mappings = 1
 
 "markdown
 let g:mkdp_path_to_chrome = "google-chrome-stable"
@@ -556,7 +561,6 @@ endif  "system_clipboard
 "更新gtag
 nmap <leader>u :!global -u <CR><CR>
 
-
 "删除所有除当前打开buf外的buf
 nmap <leader>bd :BufOnly<CR>
 
@@ -589,7 +593,6 @@ let g:gitgutter_max_signs = 500
 "    [c   Jump to previous hunk.
 "    ]C   Jump to last hunk.
 "    [C   Jump to first hunk.
-
 
 "vim-signature
 let g:SignatureMarkTextHLDynamic=1
