@@ -364,6 +364,8 @@ set ignorecase          "设置TAG查找忽略大小写
 set colorcolumn=80      "在80个字符处设置锚线
 set cursorline          "高亮当前行
 
+set updatetime=500 "触发延时
+
 " 补全内容不以分割子窗口形式出现，只显示补全列表
 set completeopt=longest,menu,preview
 
