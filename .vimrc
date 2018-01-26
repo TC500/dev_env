@@ -11,22 +11,22 @@
 "10.更改终端颜色为solarized
 
 "启用美化插件
-let builty_vim = 1
+let s:builty_vim = 1
 
 "启用YCM
-let enable_ycm = 1
+let s:enable_ycm = 1
 
 "使用系统剪贴板
 if has('gui')
-    let system_clipboard = 1
+    let s:enable_system_clipboard = 1
 endif
 
 "检测系统
-if !exists("g:os")
+if !exists("s:os")
     if has("win64") || has("win32") || has("win16")
-        let g:os = "Windows"
+        let s:os = "Windows"
     else
-        let g:os = substitute(system('uname'), '\n', '', '')
+        let s:os = substitute(system('uname'), '\n', '', '')
     endif
 endif
 
@@ -37,24 +37,31 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 
     "自动安装字体
-    if g:os == "Darwin" "mac
-        let g:font_path = '/Library/Fonts/Droid Sans Mono for Powerline Nerd Font Complete.otf'
-    elseif g:os == "Linux"
-        let g:font_path = '/usr/share/fonts/custom/Droid Sans Mono for Powerline Nerd Font Complete.otf'
-    "elseif g:os == "Windows"
+    let s:usr_font_path = '~/.local/share/fonts/Droid Sans Mono for Powerline Nerd Font Complete.otf'
+    if s:os == "Darwin" "mac
+        let s:system_font_path = '/Library/Fonts/Droid Sans Mono for Powerline Nerd Font Complete.otf'
+    elseif s:os == "Linux"
+        let s:system_font_path = '/usr/share/fonts/custom/Droid Sans Mono for Powerline Nerd Font Complete.otf'
+    "elseif s:os == "Windows"
     endif
 
-    if exists("g:font_path") && exists("builty_vim") && builty_vim == 1
-        \ &&  empty(glob(g:font_path))
-            silent !sudo curl -fLo '"' . g:font_path . '"'
+    if exists("s:builty_vim") && s:builty_vim == 1
+        \ &&  empty(glob(s:usr_font_path))
+            silent !curl -fLo '"' . s:usr_font_path . '"'
                 \ --create-dirs
                 \ "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid\%20Sans\%20Mono\%20Nerd\%20Font\%20Complete.otf"
+            if empty(glob(s:system_font_path))
+                silent !sudo cp '"' . s:usr_font_path .'" ' . '"' . s:system_font_path . '"'
+            endif
     endif
 endif
 
 call plug#begin('~/.vim/bundle')
 "注册自己，能够调用help vim-plug
 Plug 'junegunn/vim-plug'
+
+"shell语法高亮
+Plug 'Shougo/vimshell.vim'
 
 "添加文件说明头
 Plug 'TC500/vim-header'
@@ -212,9 +219,9 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'jiangmiao/auto-pairs'
 
 "自动补全集大成者
-if exists("enable_ycm")  && enable_ycm == 1
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang' }
-endif  "enable_ycm
+if exists("s:enable_ycm")  && s:enable_ycm == 1
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang' }
+endif  "s:enable_ycm
 
 "目录树根据文件后缀名显示图标
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -249,12 +256,12 @@ Plug 'elzr/vim-json'
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 "下面的插件用于美化界面，需要改终端字体为Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
-if exists("builty_vim")  && builty_vim == 1
-"字体
-"Plug 'ryanoasis/nerd-fonts', {'do': 'sudo ./install.sh -S'}
-"图标支持
-Plug 'ryanoasis/vim-devicons'
-endif  "builty_vim
+if exists("s:builty_vim")  && s:builty_vim == 1
+    "字体
+    "Plug 'ryanoasis/nerd-fonts', {'do': 'sudo ./install.sh -S'}
+    "图标支持
+    Plug 'ryanoasis/vim-devicons'
+endif  "s:builty_vim
 
 call plug#end()
 
@@ -294,39 +301,39 @@ set termencoding=utf-8
 set fileencoding=utf-8
 "multi-encoding setting
 if has("multi_byte")
-"set bomb
-set fileencodings=ucs-bom,utf-8,cp936,big5,euc-jp,euc-kr,latin1
-"CJK environment detection and corresponding setting
-if v:lang =~ "^zh_CN"
-"Use cp936 to support GBK, euc-cn == gb2312
-set encoding=cp936
-set termencoding=cp936
-set fileencoding=cp936
-elseif v:lang =~ "^zh_TW"
-"cp950, big5 or euc-tw
-"Are they equal to each other?
-set encoding=big5
-set termencoding=big5
-set fileencoding=big5
-elseif v:lang =~ "^ko"
-"Copied from someone's dotfile, untested
-set encoding=euc-kr
-set termencoding=euc-kr
-set fileencoding=euc-kr
-elseif v:lang =~ "^ja_JP"
-"Copied from someone's dotfile, untested
-set encoding=euc-jp
-set termencoding=euc-jp
-set fileencoding=euc-jp
-endif
-"Detect UTF-8 locale, and replace CJK setting if needed
-if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
-set encoding=utf-8
-set termencoding=utf-8
-set fileencoding=utf-8
-endif
+    "set bomb
+    set fileencodings=ucs-bom,utf-8,cp936,big5,euc-jp,euc-kr,latin1
+    "CJK environment detection and corresponding setting
+    if v:lang =~ "^zh_CN"
+        "Use cp936 to support GBK, euc-cn == gb2312
+        set encoding=cp936
+        set termencoding=cp936
+        set fileencoding=cp936
+    elseif v:lang =~ "^zh_TW"
+        "cp950, big5 or euc-tw
+        "Are they equal to each other?
+        set encoding=big5
+        set termencoding=big5
+        set fileencoding=big5
+    elseif v:lang =~ "^ko"
+        "Copied from someone's dotfile, untested
+        set encoding=euc-kr
+        set termencoding=euc-kr
+        set fileencoding=euc-kr
+    elseif v:lang =~ "^ja_JP"
+        "Copied from someone's dotfile, untested
+        set encoding=euc-jp
+        set termencoding=euc-jp
+        set fileencoding=euc-jp
+    endif
+    "Detect UTF-8 locale, and replace CJK setting if needed
+    if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
+        set encoding=utf-8
+        set termencoding=utf-8
+        set fileencoding=utf-8
+    endif
 else
-echoerr "Sorry, this version of (g)vim was not compiled with multi_byte"
+    echoerr "Sorry, this version of (g)vim was not compiled with multi_byte"
 endif
 "-encode set end --------------------------------
 
@@ -337,11 +344,13 @@ endif
 "set guifontwide=Verdana:h11
 "
 "for vim-devicons
-if exists("builty_vim")  && builty_vim == 1
+if exists("s:builty_vim") && s:builty_vim == 1
     set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
+    "set guifontwide=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
 else
     set guifont=Bitstream\ Vera\ Sans\ Mono\ 10
-endif  "builty_vim
+    "set guifontwide=Bitstream\ Vera\ Sans\ Mono\ 10
+endif  "s:builty_vim
 "if not use vim-devicons, use this font
 "-font set end----------------------------
 
@@ -589,7 +598,7 @@ let g:pymode_rope_completion_bind = '<C-Space>'
 nmap <leader>w :update<CR>
 
 "系统剪贴板的复制、粘贴
-if exists("system_clipboard")  && system_clipboard == 1
+if exists("s:enable_system_clipboard")  && s:enable_system_clipboard == 1
     vmap <leader>y "+y
     vmap <leader>d "+d
     nmap <leader>p "+p
@@ -603,7 +612,7 @@ else
     nmap <leader>P "pP
     vmap <leader>p "pp
     vmap <leader>P "pP
-endif  "system_clipboard
+endif  "s:enable_system_clipboard
 
 "更新gtag
 nmap <leader>u :!global -u <CR><CR>
@@ -658,7 +667,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#tabline#show_tabs = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
-if exists("builty_vim") && builty_vim == 1
+if exists("s:builty_vim") && s:builty_vim == 1
     let g:airline_powerline_fonts = 1
 endif
 let g:airline_theme='solarized'
@@ -817,33 +826,33 @@ let CtagsCscope_Auto_Map = 1
 let GtagsCscope_Quiet = 1
 
 " YouCompleteMe 功能
-if exists("enable_ycm")  && enable_ycm == 1
-" 补全功能在注释中同样有效
-let g:ycm_complete_in_comments=1
-" 允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
-let g:ycm_confirm_extra_conf=0
-" 开启 YCM 基于标签引擎
-let g:ycm_collect_identifiers_from_tags_files=1
-" 引入 C++ 标准库tags，这个没有也没关系，只要<span style="font-family: Arial, Helvetica, sans-serif;">.ycm_extra_conf.py文件中指定了正确的标准库路径</span>
-set tags+=/data/misc/software/misc./vim/stdcpp.tags
-" YCM 集成 OmniCppComplete 补全引擎，设置其快捷键
-"inoremap <leader>; <C-x><C-o>
-" 从第一个键入字符就开始罗列匹配项
-let g:ycm_min_num_of_chars_for_completion=1
-" 禁止缓存匹配项，每次都重新生成匹配项
-let g:ycm_cache_omnifunc=0
-" 语法关键字补全
-let g:ycm_seed_identifiers_with_syntax=1
-" 修改对C函数的补全快捷键，默认是CTRL + space，修改为CTRL+
-"let g:ycm_key_invoke_completion = '<leader>l'
-" 在字符串输入中也能补全
-let g:ycm_complete_in_strings = 1
-" 在注释中也开启补全
-let g:ycm_complete_in_comments = 1
-"跳到定义
-nmap <C-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>gd :YcmCompleter GoToDeclaration <C-R>=expand("<cword>")<CR><CR>
-endif  "builty_vim
+if exists("s:enable_ycm")  && s:enable_ycm == 1
+    " 补全功能在注释中同样有效
+    let g:ycm_complete_in_comments=1
+    " 允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
+    let g:ycm_confirm_extra_conf=0
+    " 开启 YCM 基于标签引擎
+    let g:ycm_collect_identifiers_from_tags_files=1
+    " 引入 C++ 标准库tags，这个没有也没关系，只要<span style="font-family: Arial, Helvetica, sans-serif;">.ycm_extra_conf.py文件中指定了正确的标准库路径</span>
+    set tags+=/data/misc/software/misc./vim/stdcpp.tags
+    " YCM 集成 OmniCppComplete 补全引擎，设置其快捷键
+    "inoremap <leader>; <C-x><C-o>
+    " 从第一个键入字符就开始罗列匹配项
+    let g:ycm_min_num_of_chars_for_completion=1
+    " 禁止缓存匹配项，每次都重新生成匹配项
+    let g:ycm_cache_omnifunc=0
+    " 语法关键字补全
+    let g:ycm_seed_identifiers_with_syntax=1
+    " 修改对C函数的补全快捷键，默认是CTRL + space，修改为CTRL+
+    "let g:ycm_key_invoke_completion = '<leader>l'
+    " 在字符串输入中也能补全
+    let g:ycm_complete_in_strings = 1
+    " 在注释中也开启补全
+    let g:ycm_complete_in_comments = 1
+    "跳到定义
+    nmap <C-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
+    nmap <leader>gd :YcmCompleter GoToDeclaration <C-R>=expand("<cword>")<CR><CR>
+endif  "s:enable_ycm
 
 "format defined variable,这个自定义格式化函数被clang-format的功能替换
 "vmap f <ESC>: call FormatDefine()<CR>
@@ -959,7 +968,7 @@ endfunction
 "自动添加和更新headline
 function! AddTitle()
   call append(0, "\/*")
-  call append(1, " * Copyright (c) 2018 Inc. All rights reserved. Ma Xiaowei <maxiaowei_main@qq.com>")
+  call append(1, " * Copyright (c) 2018 Inc. All rights reserved. Ma Xiaowei <maxiaowei_main@qq.com")
   call append(2, " * @Author: maxiaowei_main@qq.com")
   call append(3, " * @Date: ".strftime("%Y-%m-%d %H:%M:%S".""))
   call append(4, " * @Last Modified by: maxiaowei_main@qq.com")
