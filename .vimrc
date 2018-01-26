@@ -3,11 +3,12 @@
 "2. 安装cscope
 "3. 安装clang-format
 "4. 安装clang
-"5. 安装gnu global
-"6. 在工程目录下执行gtags生成tag文件
-"7. 打开vim,首次启动等待插件自动安装
-"8. 更改终端字体为Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
-"9. 更改终端颜色为solarized
+"5. 安装cmake
+"6. 安装gnu global
+"7. 在工程目录下执行gtags生成tag文件
+"8. 打开vim,首次启动等待插件自动安装
+"9. 更改终端字体为Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
+"10.更改终端颜色为solarized
 
 "启用美化插件
 let builty_vim = 1
@@ -20,6 +21,15 @@ if has('gui')
     let system_clipboard = 1
 endif
 
+"检测系统
+if !exists("g:os")
+    if has("win64") || has("win32") || has("win16")
+        let g:os = "Windows"
+    else
+        let g:os = substitute(system('uname'), '\n', '', '')
+    endif
+endif
+
 "自动安装插件管理器
 if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -27,9 +37,16 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 
     "自动安装字体
-    if exists("builty_vim") && builty_vim == 1
-        \ &&  empty(glob('/usr/share/fonts/custom/Droid Sans Mono for Powerline Nerd Font Complete.otf')) 
-            silent !sudo curl -fLo "/usr/share/fonts/custom/Droid Sans Mono for Powerline Nerd Font Complete.otf" 
+    if g:os == "Darwin" "mac
+        let g:font_path = '/Library/Fonts/Droid Sans Mono for Powerline Nerd Font Complete.otf'
+    elseif g:os == "Linux"
+        let g:font_path = '/usr/share/fonts/custom/Droid Sans Mono for Powerline Nerd Font Complete.otf'
+    "elseif g:os == "Windows"
+    endif
+
+    if exists("g:font_path") && exists("builty_vim") && builty_vim == 1
+        \ &&  empty(glob(g:font_path))
+            silent !sudo curl -fLo '"' . g:font_path . '"'
                 \ --create-dirs
                 \ "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid\%20Sans\%20Mono\%20Nerd\%20Font\%20Complete.otf"
     endif
@@ -423,6 +440,15 @@ let mapleader = "\<Space>"
 "
 
 "-------------------------------------------------------------------
+"synstastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
 "vim-header
 let g:header_field_author = 'Ma Xiaowei'
 let g:header_field_author_email = 'maxiaowei_main@qq.com'
@@ -430,7 +456,7 @@ let g:header_auto_add_header = 0
 let g:header_auto_update_header = 1
 let g:header_field_filename = 0
 let g:header_field_timestamp_format = '%Y-%m-%d %H:%M:%S'
-let g:header_license_first_line = 'Copyright (c) %Y Ma Xiaowei <maxiaowei_main@qq.cim>.'
+let g:header_license_first_line = 'Copyright (c) %Y Inc. All rights reserved. Ma Xiaowei <maxiaowei_main@qq.com>'
 let g:header_alignment = 1
 let g:header_max_size = 20
 
@@ -446,12 +472,13 @@ let g:cpp_class_scope_highlight = 1
 "let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl_highlight = 1
 let g:cpp_experimental_simple_template_highlight = 1
+"let g:cpp_experimental_template_highlight = 1
 let g:cpp_concepts_highlight = 1
 
 "minimap
 let g:minimap_show='<Char-172>'
 let g:minimap_update='<Char-172>'
-let g:minimap_close='<Char-173>'
+let g:minimap_close='<Char-172>'
 let g:minimap_toggle='<F12>'
 
 "gitv
@@ -472,9 +499,9 @@ let g:Lf_ShortcutF = '<C-p>'
 let g:Lf_ShortcutB = '<leader>lb'
 " let g:Lf_DefaultMode = 'FullPath'
 nmap <leader>lt :LeaderfBufTag<CR>
-nmap <leader>lf :LeaderfFunction<CR> 
-nmap <leader>ll :LeaderfLine<CR> 
-nmap <leader>lm :LeaderfMarks<CR> 
+nmap <leader>lf :LeaderfFunction<CR>
+nmap <leader>ll :LeaderfLine<CR>
+nmap <leader>lm :LeaderfMarks<CR>
 
 "undotree
 if has("persistent_undo")
@@ -492,7 +519,7 @@ map T <Plug>Sneak_T
 
 "markdown
 let g:mkdp_path_to_chrome = "google-chrome-stable"
-let g:vim_markdown_folding_disabled = 1 
+let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_math = 1
 let g:vim_markdown_no_default_key_mappings = 1
 let g:mkdp_auto_close = 0
@@ -543,12 +570,12 @@ let g:rbpt_colorpairs = [
     \ ['darkcyan',    'SeaGreen3'],
     \ ['darkred',     'DarkOrchid3'],
     \ ['red',         'firebrick3'],
-    \ ] 
+    \ ]
 let g:rbpt_max = 15
 au VimEnter * RainbowParenthesesToggle " Toggle it on/off
 au Syntax * RainbowParenthesesLoadRound " ()
 au Syntax * RainbowParenthesesLoadSquare " []
-au Syntax * RainbowParenthesesLoadBraces "{} 
+au Syntax * RainbowParenthesesLoadBraces "{}
 au Syntax * RainbowParenthesesLoadChevrons " <>
 
 "identline
@@ -581,6 +608,7 @@ endif  "system_clipboard
 "更新gtag
 nmap <leader>u :!global -u <CR><CR>
 
+
 "删除所有除当前打开buf外的buf
 nmap <leader>bd :BufOnly<CR>
 
@@ -593,26 +621,19 @@ nmap <leader>bn :e %:p:h/
 "bufexplorer
 nnoremap <silent> <leader>be :ToggleBufExplorer<CR>
 "禁用bufexplorer的默认快捷键,只需上面设置的一个ToggleBufExplorer就足够
-let g:bufExplorerDisableDefaultKeyMapping=1 
+let g:bufExplorerDisableDefaultKeyMapping=1
 
 "expand-region, v 选择下个单词/段落 c-v回退选择
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
 
 "gitgutter
-"disable all,for solve conflict with vim-signature
 let g:gitgutter_map_keys = 0
 nmap [c <Plug>GitGutterPrevHunk
 nmap ]c <Plug>GitGutterNextHunk
 "let g:gitgutter_realtime = 0
 "let g:gitgutter_eager = 0
 let g:gitgutter_max_signs = 500
-
-"signify
-"    ]c   Jump to next hunk.
-"    [c   Jump to previous hunk.
-"    ]C   Jump to last hunk.
-"    [C   Jump to first hunk.
 
 "vim-signature
 let g:SignatureMarkTextHLDynamic=1
@@ -817,6 +838,8 @@ let g:ycm_seed_identifiers_with_syntax=1
 "let g:ycm_key_invoke_completion = '<leader>l'
 " 在字符串输入中也能补全
 let g:ycm_complete_in_strings = 1
+" 在注释中也开启补全
+let g:ycm_complete_in_comments = 1
 "跳到定义
 nmap <C-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
 nmap <leader>gd :YcmCompleter GoToDeclaration <C-R>=expand("<cword>")<CR><CR>
@@ -936,10 +959,10 @@ endfunction
 "自动添加和更新headline
 function! AddTitle()
   call append(0, "\/*")
-  call append(1, " * Copyright (c) 2018 Inc. All rights reserved.")
+  call append(1, " * Copyright (c) 2018 Inc. All rights reserved. Ma Xiaowei <maxiaowei_main@qq.com>")
   call append(2, " * @Author: maxiaowei_main@qq.com")
   call append(3, " * @Date: ".strftime("%Y-%m-%d %H:%M:%S".""))
-  call append(4, " * @Last Modified by: maxiaowei_main@qq")
+  call append(4, " * @Last Modified by: maxiaowei_main@qq.com")
   call append(5, " * @Last Modified time: ".strftime("%Y-%m-%d %H:%M:%S".""))
   call append(6, "*\/")
   "echohl WarningMsg | echo "Successful in adding file title." | echohl None
