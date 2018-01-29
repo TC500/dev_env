@@ -449,6 +449,9 @@ let mapleader = "\<Space>"
 "
 
 "-------------------------------------------------------------------
+"nerdcomment
+let NERDSpaceDelims=1
+
 "synstastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -643,6 +646,7 @@ nmap ]c <Plug>GitGutterNextHunk
 "let g:gitgutter_realtime = 0
 "let g:gitgutter_eager = 0
 let g:gitgutter_max_signs = 500
+let g:gitgutter_signs = 1
 
 "vim-signature
 let g:SignatureMarkTextHLDynamic=1
