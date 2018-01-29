@@ -588,7 +588,7 @@ au VimEnter * RainbowParenthesesToggle " Toggle it on/off
 au Syntax * RainbowParenthesesLoadRound " ()
 au Syntax * RainbowParenthesesLoadSquare " []
 au Syntax * RainbowParenthesesLoadBraces "{}
-au Syntax * RainbowParenthesesLoadChevrons " <>
+"au Syntax * RainbowParenthesesLoadChevrons " <>
 
 "identline
 let g:indentLine_enabled = 1
