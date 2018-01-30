@@ -16,9 +16,11 @@ let s:builty_vim = 1
 "启用YCM
 let s:enable_ycm = 1
 
-"使用系统剪贴板
-if has('gui')
+"自动检测系统剪贴板
+if has('clipboard') && !empty($DISPLAY)
     let s:enable_system_clipboard = 1
+else
+    let s:enable_system_clipboard = 0
 endif
 
 "检测系统
