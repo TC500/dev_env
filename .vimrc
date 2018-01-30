@@ -570,6 +570,10 @@ let g:EasyMotion_do_mapping = 1
 "按回车自动跳到第一个匹配
 let g:EasyMotion_enter_jump_first = 1
 map <leader><leader> <Plug>(easymotion-prefix)
+map s <leader><leader>f
+map S <leader><leader>F
+map <C-j> <leader><leader>j
+map <C-k> <leader><leader>k
 
 "rainbow_parentheses
 let g:rbpt_loadcmd_toggle = 1
