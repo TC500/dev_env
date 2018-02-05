@@ -7,7 +7,7 @@
 "6. 安装gnu global
 "7. 在工程目录下执行gtags生成tag文件
 "8. 打开vim,首次启动等待插件自动安装
-"9. 更改终端字体为Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
+"9. 更改终端字体为DroidSansMono Nerd Font
 "10.更改终端颜色为solarized
 
 "启用美化插件
@@ -339,22 +339,12 @@ else
 endif
 "-encode set end --------------------------------
 
-"-font set begin -
-"set guifont=Courier_New:h14
-"set guifontwide=STXihei:h14
-"set guifont=Serif\ 11
-"set guifontwide=Verdana:h11
-"
 "for vim-devicons
 if exists("s:builty_vim") && s:builty_vim == 1
-    set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
-    "set guifontwide=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
+    set guifont=DroidSansMono\ Nerd\ Font\ 11
 else
-    set guifont=Bitstream\ Vera\ Sans\ Mono\ 10
-    "set guifontwide=Bitstream\ Vera\ Sans\ Mono\ 10
+    set guifont=Bitstream\ Vera\ Sans\ Mono\ 11
 endif  "s:builty_vim
-"if not use vim-devicons, use this font
-"-font set end----------------------------
 
 "补全时显示所有候选项
 set wildmode=list:longest
@@ -393,6 +383,7 @@ set colorcolumn=80      "在80个字符处设置锚线
 set cursorline          "高亮当前行
 
 set updatetime=500 "触发延时
+set lazyredraw "降低重绘制的频率
 
 " 补全内容不以分割子窗口形式出现，只显示补全列表
 set completeopt=longest,menu,preview
@@ -412,7 +403,7 @@ if (empty($TMUX))
     endif
 else
     let s:tmux_version=system('tmux -V|sed "s/tmux 2.//"|sed "s/tmux 1.//"|tr -d "\n"')
-    if s:tmux_version > 1 && stridx($TERM, '256color') > 0
+    if s:tmux_version > 1 && stridx($TERM, '256color') > 0 && has("termguicolors")
         set termguicolors
     else
         set t_Co=256
