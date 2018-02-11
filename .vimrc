@@ -5,10 +5,12 @@
 "4. 安装clang
 "5. 安装cmake
 "6. 安装gnu global
-"7. 在工程目录下执行gtags生成tag文件
-"8. 打开vim,首次启动等待插件自动安装
-"9. 更改终端字体为DroidSansMono Nerd Font
-"10.更改终端颜色为solarized
+"7. 安装flakes用于python代码检查 sudo -H pip install pyflakes
+"7. 安装yapf用于python代码格式化 sudo -H pip install yapf
+"8. 在工程目录下执行gtags生成tag文件
+"9. 打开vim,首次启动等待插件自动安装
+"10.更改终端字体为DroidSansMono Nerd Font
+"11.更改终端颜色为solarized
 
 "启用美化插件
 let s:builty_vim = 1
@@ -231,8 +233,8 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 "处理git冲突
 Plug 'rhysd/conflict-marker.vim'
 
-"生成函数和文档注释的插件，貌似目前不太需要
-"Plug 'DoxygenToolkit.vim'
+"生成函数和文档注释的插件
+Plug 'vim-scripts/DoxygenToolkit.vim'
 
 " 这个插件挺好的，但是总是自动的设置一个s标记，不知道是跟哪个冲突的,所以用vim-booksmark替换
 "Plug 'kshenoy/vim-signature'
@@ -453,6 +455,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers = ["flake8", "pep8", "pyflakes", "pylint"]
 
 "vim-header
 let g:header_field_author = 'Ma Xiaowei'
@@ -599,7 +602,10 @@ let g:indentLine_enabled = 1
 
 "pymode
 let g:pymode_folding = 0
-let g:pymode_rope_completion_bind = '<C-Space>'
+let g:pymode_rope_completion = 0
+let g:pymode_lint_signs = 0
+let g:pymode_lint = 0
+let g:pymode_rope = 0
 
 "保存当前buf
 nmap <leader>w :update<CR>
@@ -714,6 +720,7 @@ autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx,*.py call tagbar#autoopen()
 "autoformat
 nmap <leader>i :Autoformat<CR>
 vmap <leader>i :Autoformat<CR>
+let g:formatters_python = ["yapf","autopep8"]
 
 "clang for c++
 let g:clang_auto_select=1
@@ -738,9 +745,9 @@ let g:clang_complete_patterns=0
 "python-syntax
 let python_highlight_all = 1
 
-let g:DoxygenToolkit_briefTag_pre="@Synopsis  "
-let g:DoxygenToolkit_paramTag_pre="@Param "
-let g:DoxygenToolkit_returnTag="@Returns   "
+"let g:DoxygenToolkit_briefTag_pre="@Synopsis  "
+"let g:DoxygenToolkit_paramTag_pre="@Param "
+"let g:DoxygenToolkit_returnTag="@Returns   "
 let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------------------"
 let g:DoxygenToolkit_blockFooter="----------------------------------------------------------------------------"
 let g:DoxygenToolkit_authorName="maxiaowei_main@qq.com"
