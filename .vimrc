@@ -658,7 +658,11 @@ nmap [c <Plug>GitGutterPrevHunk
 nmap ]c <Plug>GitGutterNextHunk
 "let g:gitgutter_realtime = 0
 "let g:gitgutter_eager = 0
-let g:gitgutter_max_signs = 500
+if has("gui_running")
+    let g:gitgutter_max_signs = 1000
+else
+    let g:gitgutter_max_signs = 50
+endif
 let g:gitgutter_signs = 1
 
 "vim-signature
