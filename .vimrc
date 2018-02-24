@@ -426,13 +426,18 @@ colorscheme solarized8
 
 set path+=**          "使路径包含当前目录下的所有子目录
 
-
-set guioptions-=m " Remove menubar
-set guioptions-=T " Remove toolbar
-set guioptions-=r " remove v_scroll bar
-
-" only for gvim
+" only for gvim begin
 set linespace=-2
+"隐藏所有的菜单栏/滚动条
+set guioptions-=m " Remove menubar
+set guioptions-=b
+set guioptions-=l
+set guioptions-=L
+set guioptions-=r " remove v_scroll bar
+set guioptions-=R " remove v_scroll bar when split window
+set guioptions-=t
+set guioptions-=T " Remove toolbar
+" only for gvim end
 
 "set leader key
 let mapleader = "\<Space>"
