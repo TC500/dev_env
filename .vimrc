@@ -431,6 +431,9 @@ set guioptions-=m " Remove menubar
 set guioptions-=T " Remove toolbar
 set guioptions-=r " remove v_scroll bar
 
+" only for gvim
+set linespace=-2
+
 "set leader key
 let mapleader = "\<Space>"
 
