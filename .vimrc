@@ -425,10 +425,6 @@ colorscheme solarized8
 "endif
 
 set path+=**          "使路径包含当前目录下的所有子目录
-if has('persistent_undo')
-    set undofile "turn on the feature
-    set undodir=$HOME/.vim/undo "directory where the undo files will be stored
-endif
 
 " only for gvim begin
 set linespace=-2
@@ -525,8 +521,10 @@ nmap <leader>lm :LeaderfMarks<CR>
 
 "undotree
 if has("persistent_undo")
-    set undodir=~/.undodir/
-    set undofile
+    set undodir=$HOME/.vim/undo "directory where the undo files will be stored
+    set undofile "turn on the feature
+    set undolevels=1000
+    set undoreload=10000
 endif
 nnoremap <F6> :UndotreeToggle<cr>
 
