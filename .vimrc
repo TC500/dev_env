@@ -736,7 +736,7 @@ nmap <F8> :TagbarToggle<CR>
 "设置tagbar的窗口宽度
 let g:tagbar_width=30
 "打开文件自动 打开tagbar
-autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx,*.py call tagbar#autoopen()
+autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx,*.py,*.java call tagbar#autoopen()
 
 "autoformat
 nmap <leader>i :Autoformat<CR>
