@@ -7,10 +7,11 @@
 "6. 安装gnu global
 "7. 安装flakes用于python代码检查 sudo -H pip install pyflakes
 "7. 安装yapf用于python代码格式化 sudo -H pip install yapf
-"8. 在工程目录下执行gtags生成tag文件
-"9. 打开vim,首次启动等待插件自动安装
-"10.更改终端字体为DroidSansMono Nerd Font
-"11.更改终端颜色为solarized
+"8. 安装JDK8以上
+"9. 在工程目录下执行gtags生成tag文件
+"10.打开vim,首次启动等待插件自动安装
+"11.更改终端字体为DroidSansMono Nerd Font
+"12.更改终端颜色为solarized
 
 "启用美化插件
 let s:builty_vim = 1
@@ -63,6 +64,12 @@ endif
 call plug#begin('~/.vim/bundle')
 "注册自己，能够调用help vim-plug
 Plug 'junegunn/vim-plug'
+
+"类似Leadf，作为vimfiler的依赖被安装
+Plug 'Shougo/unite.vim'
+
+"文件浏览器，:Ex命令调用
+Plug 'Shougo/vimfiler.vim'
 
 "shell语法高亮
 Plug 'Shougo/vimshell.vim'
@@ -224,7 +231,7 @@ Plug 'jiangmiao/auto-pairs'
 
 "自动补全集大成者
 if exists("s:enable_ycm")  && s:enable_ycm == 1
-    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang' }
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang --java-completer' }
 endif  "s:enable_ycm
 
 "目录树根据文件后缀名显示图标
@@ -452,6 +459,9 @@ let mapleader = "\<Space>"
 "
 
 "-------------------------------------------------------------------
+"vimfiler
+let g:vimfiler_as_default_explorer = 1
+
 "nerdcomment
 let NERDSpaceDelims=1
 
@@ -464,6 +474,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers = ["flake8", "pep8", "pyflakes", "pylint"]
+let g:syntastic_java_checkers = []
 
 "vim-header
 let g:header_field_author = 'Ma Xiaowei'
