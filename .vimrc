@@ -65,6 +65,9 @@ call plug#begin('~/.vim/bundle')
 "注册自己，能够调用help vim-plug
 Plug 'junegunn/vim-plug'
 
+"java import管理，javadoc
+Plug 'TC500/JavaImp.vim'
+
 "类似Leadf，作为vimfiler的依赖被安装
 Plug 'Shougo/unite.vim'
 
@@ -459,6 +462,16 @@ let mapleader = "\<Space>"
 "
 
 "-------------------------------------------------------------------
+"JavaImp
+let g:JavaImpPathSep = ';'
+ let g:JavaImpPaths =
+    \ "/usr/lib/jvm/default-java/src/;" .
+    \ $HOME . "/project/src/java;"
+let g:JavaImpDocPaths = "/usr/lib/jvm/default-java/docs/api;" .
+   \ "/project/docs/api"
+let g:JavaImpDocViewer = "google-chrome"
+let g:JavaImpSortPkgSep = 1
+
 "vimfiler
 let g:vimfiler_as_default_explorer = 1
 
