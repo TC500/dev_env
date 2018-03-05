@@ -12,6 +12,7 @@
 "10.打开vim,首次启动等待插件自动安装
 "11.更改终端字体为DroidSansMono Nerd Font
 "12.更改终端颜色为solarized
+"13.执行EclimInstall安装eclim
 
 "启用美化插件
 let s:builty_vim = 1
@@ -898,6 +899,8 @@ if exists("s:enable_ycm")  && s:enable_ycm == 1
     let g:ycm_complete_in_strings = 1
     " 在注释中也开启补全
     let g:ycm_complete_in_comments = 1
+    " 禁用eclim诊断，避免冲突
+    let g:EclimFileTypeValidate = 0
     "跳到定义
     nmap <C-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
     nmap <leader>gd :YcmCompleter GoToDeclaration <C-R>=expand("<cword>")<CR><CR>
@@ -1054,8 +1057,19 @@ endfunction
 if !exists(":UpdateTitle")
     command -nargs=0 UpdateTitle :call UpdateTitle()
 endif
-
 autocmd BufWritePre,FileWritePre * call UpdateTitle()
+
+function! EclimInstall()
+    if empty(glob('/tmp/eclim_2.7.2.bin'))
+        silent !curl -fLo /tmp/eclim_2.7.2.bin --create-dirs
+                    \ https://github.com/ervandew/eclim/releases/download/2.7.2/eclim_2.7.2.bin
+    endif
+    silent !chmod +x /tmp/eclim_2.7.2.bin && /tmp/eclim_2.7.2.bin
+endfunction
+if !exists(":EclimInstall")
+    command -nargs=0 EclimInstall :call EclimInstall()
+endif
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "加载项目相关的设置
