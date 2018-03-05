@@ -161,6 +161,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'lifepillar/vim-solarized8'
 Plug 'junegunn/seoul256.vim'
 Plug 'tomasiser/vim-code-dark'
+Plug 'liuchengxu/space-vim-dark'
 
 "画基本示意图
 Plug 'vim-scripts/drawit'
@@ -283,7 +284,7 @@ call plug#end()
 set nobackup "no swp file
 
 "打开自动识别文件类型,使用文件类型plugin脚本,使用缩进定义文件
-filetype plugin on      "打开文件类型插件
+filetype plugin ident on      "打开文件类型插件
 
 "session中不保存当前目录，这样使用Session.vim文件恢复时，Session.vim文件所在目录自动变成当前目录
 set sessionoptions-=curdir
@@ -430,6 +431,7 @@ set background=dark
 "colorscheme solarized
 colorscheme solarized8
 "colorscheme codedark
+"colorscheme space-vim-dark
 "if( &t_Co > 1 )  "判断是否支持彩色显示
 	syntax on                      "打开语法加亮
 	set hlsearch                   "高亮最后一次搜索的文本
@@ -721,6 +723,7 @@ if exists("s:builty_vim") && s:builty_vim == 1
 endif
 let g:airline_theme='solarized'
 "let g:airline_theme='codedark'
+"let g:airline_theme='violet' "match space-vim-dark
 
 "for NERDTree plugin
 nmap <F4> :NERDTreeToggle<CR>
