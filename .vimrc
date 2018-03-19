@@ -66,6 +66,9 @@ call plug#begin('~/.vim/bundle')
 "注册自己，能够调用help vim-plug
 Plug 'junegunn/vim-plug'
 
+"在quicklist中直接修改对应的行的内容
+Plug 'thinca/vim-qfreplace'
+
 "java import管理，javadoc
 Plug 'TC500/JavaImp.vim'
 
@@ -545,6 +548,7 @@ nmap <leader>lt :LeaderfBufTag<CR>
 nmap <leader>lf :LeaderfFunction<CR>
 nmap <leader>ll :LeaderfLine<CR>
 nmap <leader>lm :LeaderfMarks<CR>
+nmap <leader>lh :LeaderfHistoryCmd<CR>
 
 "undotree
 if has("persistent_undo")
