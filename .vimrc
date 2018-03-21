@@ -36,30 +36,36 @@ if !exists("s:os")
     endif
 endif
 
+function! InstallAirLineFont()
+    "自动安装字体
+    let s:usr_font_path = $HOME . '/.local/share/fonts/custom/Droid Sans Mono for Powerline Nerd Font Complete.otf'
+    if s:os == "Darwin" "mac
+        let s:system_font_path = '/Library/Fonts/Droid Sans Mono for Powerline Nerd Font Complete.otf'
+    elseif s:os == "Linux"
+        let s:system_font_path = '/usr/share/fonts/custom/Droid Sans Mono for Powerline Nerd Font Complete.otf'
+        "elseif s:os == "Windows"
+    endif
+
+    if exists("s:builty_vim") && s:builty_vim == 1
+                \ && !filereadable(s:usr_font_path)
+        execute '!curl -fLo ' . shellescape(s:usr_font_path) . ' --create-dirs ' . 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid\%20Sans\%20Mono\%20Nerd\%20Font\%20Complete.otf'
+        if !filereadable(s:system_font_path) && filereadable(s:usr_font_path)
+            execute '!sudo cp ' . shellescape(s:usr_font_path) . ' ' . shellescape(s:system_font_path)
+        endif
+    endif
+endfunction
+if !exists(":InstallAirLineFont")
+    command -nargs=0 InstallAirLineFont :call InstallAirLineFont()
+endif
+
+
 "自动安装插件管理器
 if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
           \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-
     "自动安装字体
-    let s:usr_font_path = '~/.local/share/fonts/Droid Sans Mono for Powerline Nerd Font Complete.otf'
-    if s:os == "Darwin" "mac
-        let s:system_font_path = '/Library/Fonts/Droid Sans Mono for Powerline Nerd Font Complete.otf'
-    elseif s:os == "Linux"
-        let s:system_font_path = '/usr/share/fonts/custom/Droid Sans Mono for Powerline Nerd Font Complete.otf'
-    "elseif s:os == "Windows"
-    endif
-
-    if exists("s:builty_vim") && s:builty_vim == 1
-        \ &&  empty(glob(s:usr_font_path))
-            silent !curl -fLo '"' . s:usr_font_path . '"'
-                \ --create-dirs
-                \ "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid\%20Sans\%20Mono\%20Nerd\%20Font\%20Complete.otf"
-            if empty(glob(s:system_font_path))
-                silent !sudo cp '"' . s:usr_font_path .'" ' . '"' . s:system_font_path . '"'
-            endif
-    endif
+    call InstallAirLineFont()
 endif
 
 call plug#begin('~/.vim/bundle')
