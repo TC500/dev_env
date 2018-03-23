@@ -50,7 +50,7 @@ function! InstallAirLineFont()
                 \ && !filereadable(s:usr_font_path)
         execute '!curl -fLo ' . shellescape(s:usr_font_path) . ' --create-dirs ' . 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid\%20Sans\%20Mono\%20Nerd\%20Font\%20Complete.otf'
         if !filereadable(s:system_font_path) && filereadable(s:usr_font_path)
-            execute '!sudo cp ' . shellescape(s:usr_font_path) . ' ' . shellescape(s:system_font_path)
+            execute '!sudo mkdir `dirname ' . shellescape(s:system_font_path) . '` && sudo cp ' . shellescape(s:usr_font_path) . ' ' . shellescape(s:system_font_path)
         endif
     endif
 endfunction
