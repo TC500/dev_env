@@ -5,14 +5,17 @@
 "4. 安装clang
 "5. 安装cmake
 "6. 安装gnu global
-"7. 安装flakes用于python代码检查 sudo -H pip install pyflakes
-"7. 安装yapf用于python代码格式化 sudo -H pip install yapf
-"8. 安装JDK8以上
-"9. 在工程目录下执行gtags生成tag文件
-"10.打开vim,首次启动等待插件自动安装
-"11.更改终端字体为DroidSansMono Nerd Font
-"12.更改终端颜色为solarized
-"13.执行EclimInstall安装eclim
+"7. 安装flake8用于python代码检查 sudo -H pip install flake8
+"8. 安装pylint用于python代码检查 sudo -H pip install pylint
+"9. 安装yapf用于python代码格式化 sudo -H pip install yapf
+"10.安装autopep8用于python代码格式化 sudo -H pip install autopep8
+"11.安装JDK8
+"12.在工程目录下执行gtags生成tag文件
+"13.打开vim,首次启动等待插件自动安装
+"14.更改终端字体为DroidSansMono Nerd Font
+"15.更改终端颜色为solarized
+"16.执行EclimInstall安装eclim
+
 
 "启用美化插件
 let s:builty_vim = 1
@@ -121,7 +124,8 @@ Plug 'pbrisbin/vim-mkdir'
 Plug 'junegunn/vim-peekaboo'
 
 "可视化剪贴板
-Plug 'vim-scripts/YankRing.vim'
+"Plug 'vim-scripts/YankRing.vim'
+Plug 'w0rp/ale'
 
 "静态检查
 Plug 'vim-syntastic/syntastic'
@@ -491,15 +495,25 @@ let g:vimfiler_as_default_explorer = 1
 let NERDSpaceDelims=1
 
 "synstastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_checkers = ["flake8", "pep8", "pyflakes", "pylint"]
-let g:syntastic_java_checkers = []
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_python_checkers = ["flake8", "pep8", "pyflakes", "pylint"]
+" let g:syntastic_java_checkers = []
+
+"ale
+let g:airline#extensions#ale#enabled = 1
+let g:ale_open_list = 1
+let g:ale_linters = {'c': [], 'cpp': [], 'java': []}
+autocmd FileType c,cpp,java  setl fdm=syntax | setl fen
+" 对YouCompleteMe插件支持较好的语言不使用
+let blacklist = ['c', 'cpp', 'java']
+autocmd FileType * if index(blacklist, &ft) < 0 | nmap <silent> [l <Plug>(ale_previous_wrap)
+autocmd FileType * if index(blacklist, &ft) < 0 | nmap <silent> ]l <Plug>(ale_next_wrap)
 
 "vim-header
 let g:header_field_author = 'Ma Xiaowei'
@@ -914,9 +928,14 @@ if exists("s:enable_ycm")  && s:enable_ycm == 1
     let g:ycm_complete_in_comments = 1
     " 禁用eclim诊断，避免冲突
     let g:EclimFileTypeValidate = 0
+    " 总是打开错误提示窗口
+    let g:ycm_always_populate_location_list = 1
     "跳到定义
     nmap <C-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
     nmap <leader>gd :YcmCompleter GoToDeclaration <C-R>=expand("<cword>")<CR><CR>
+    " 跳到下一个错误
+    autocmd FileType c,cpp,java nmap [l :lnext<CR>
+    autocmd FileType c,cpp,java nmap ]l :lprevious<CR>
 endif  "s:enable_ycm
 
 "format defined variable,这个自定义格式化函数被clang-format的功能替换
