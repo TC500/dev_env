@@ -714,7 +714,8 @@ vmap <C-v> <Plug>(expand_region_shrink)
 let g:gitgutter_map_keys = 0
 nmap [c <Plug>GitGutterPrevHunk
 nmap ]c <Plug>GitGutterNextHunk
-"let g:gitgutter_realtime = 0
+autocmd! gitgutter CursorHold,CursorHoldI "禁止实时更新
+autocmd BufWritePost * GitGutter "只在保存文件时更新
 "let g:gitgutter_eager = 0
 let g:gitgutter_max_signs = 50
 let g:gitgutter_signs = 1
