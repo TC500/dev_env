@@ -261,11 +261,11 @@ Plug 'rhysd/conflict-marker.vim'
 "生成函数和文档注释的插件
 Plug 'vim-scripts/DoxygenToolkit.vim'
 
-" 这个插件挺好的，但是总是自动的设置一个s标记，不知道是跟哪个冲突的,所以用vim-booksmark替换
-"Plug 'kshenoy/vim-signature'
+"书签
+Plug 'kshenoy/vim-signature'
 
 "书签
-Plug 'MattesGroeger/vim-bookmarks'
+"Plug 'MattesGroeger/vim-bookmarks'
 
 "底部状态栏和标签栏
 Plug 'vim-airline/vim-airline'
@@ -557,7 +557,7 @@ let g:Gitv_OpenPreviewOnLaunch = 1
 let g:Gitv_OpenHorizontal = 1
 
 "yankring
-nmap <leader>y :YRShow<CR>
+"nmap <leader>y :YRShow<CR>
 let g:yankring_replace_n_pkey = '<Char-172>'
 
 "LeaderF
@@ -721,20 +721,21 @@ let g:gitgutter_signs = 1
 "vim-signature
 let g:SignatureMarkTextHLDynamic=1
 let g:SignatureMarkerTextHLDynamic=1
+let g:SignaturePurgeConfirmation=1
 
 "vim-bookmarks
 let g:bookmark_no_default_key_mappings = 1
 "匿名标签
-nmap mm <Plug>BookmarkToggle
+"nmap mm <Plug>BookmarkToggle
 "命名标签
-nmap mi <Plug>BookmarkAnnotate
-nmap m/ <Plug>BookmarkShowAll
-nmap ]' <Plug>BookmarkNext
-nmap [' <Plug>BookmarkPrev
+"nmap mi <Plug>BookmarkAnnotate
+"nmap m/ <Plug>BookmarkShowAll
+"nmap ]' <Plug>BookmarkNext
+"nmap [' <Plug>BookmarkPrev
 "clear cur buf only
-nmap mc <Plug>BookmarkClear
+"nmap mc <Plug>BookmarkClear
 " clear all
-nmap m<Space> <Plug>BookmarkClearAll
+"nmap m<Space> <Plug>BookmarkClearAll
 
 "airline
 let g:airline#extensions#tabline#enabled = 1
@@ -762,6 +763,7 @@ let g:NERDTreeExactMatchHighlightFullName = 1
 let g:NERDTreePatternMatchHighlightFullName = 1
 let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
 let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
+let g:NERDTreeHighlightCursorline = 0
 "autocmd vimenter * NERDTree
 autocmd StdinReadPre * let s:std_in=1
 "open a NERDTree automatically when vim starts up if no files were specified
