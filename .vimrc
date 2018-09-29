@@ -234,6 +234,7 @@ Plug 'justinmk/vim-sneak'
 
 "显示缩进的线条
 Plug 'Yggdroot/indentLine'
+Plug 'thaerkh/vim-indentguides'
 
 "替代vimgrep的搜索，:Ag
 Plug 'rking/ag.vim'
@@ -390,6 +391,7 @@ set backspace=indent,eol,start   "设置可以删除行首空格,断行, 进入I
 set autoindent          "新行使用设置自动缩进,使用上一行的缩进方式
 set cindent             "设置c程序自动缩进
 set smartindent         "设置智能缩进
+set listchars=eol:\     "配合indentguides
 
 set history=50          "设置命令历史列表的长度
 set showcmd             "在右下角显示一个完整的命令已经完成的部分
@@ -659,7 +661,7 @@ au Syntax * RainbowParenthesesLoadBraces "{}
 "au Syntax * RainbowParenthesesLoadChevrons " <>
 
 "identline
-let g:indentLine_enabled = 1
+let g:indentLine_enabled = 0
 
 "pymode
 let g:pymode_folding = 0
