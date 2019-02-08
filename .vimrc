@@ -470,11 +470,12 @@ else
 endif
 if s:colors_type == "termguicolors"
     set termguicolors
-    set t_ut=
 elseif s:colors_type == "256"
     set t_Co=256
     let g:solarized_termcolors=256
 endif
+" 禁止终端重新刷新背景，避免显示问题
+set t_ut=
 
 " set leader key
 let mapleader = "\<Space>"
