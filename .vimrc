@@ -613,8 +613,10 @@ map zg/ <Plug>(incsearch-fuzzy-stay)
 " emmet-vim
 let g:user_emmet_mode='nv' "enable key map only normal and visual mode
 let g:user_emmet_install_global = 0
-autocmd FileType html,css EmmetInstall
 " let g:user_emmet_leader_key='<C-Y>'
+if count(g:bundle_groups, 'html')
+    autocmd FileType html,css EmmetInstall
+endif
 
 " easymotion/vim-easymotion
 let g:EasyMotion_leader_key = '\'
