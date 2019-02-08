@@ -980,17 +980,25 @@ autocmd BufWritePre,FileWritePre * call UpdateTitle()
 
 " F2 行号开关，用于鼠标复制代码用
 " 为方便复制，用<F2>开启/关闭行号显示:
-function! HideNumber()
-    if(&relativenumber == &number)
-        set relativenumber! number!
-    elseif(&number)
-        set number!
+let s:rnu = &relativenumber
+let s:nu = &number
+function! ToggleNumber()
+    if(&relativenumber || &number)
+        let s:rnu = &relativenumber
+        let s:nu = &number
+        set norelativenumber
+        set nonumber
     else
-        set relativenumber!
+        if(s:rnu)
+            set relativenumber
+        endif
+        if(s:nu)
+            set number
+        endif
     endif
     set number?
 endfunc
-nnoremap <F2> :call HideNumber()<CR>
+nnoremap <F2> :call ToggleNumber()<CR>
 
 " F3 显示可打印字符开关
 nnoremap <F3> :set list! list?<CR>
