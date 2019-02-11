@@ -826,7 +826,7 @@ let g:tagbar_type_go = {
 "let g:Powerline_symbols = 'fancy' "may be Garbled in macvim
 
 " auto-pairs
-let g:AutoPairsMultilineClose = 0
+let g:AutoPairsMultilineClose = 1
 
 " YouCompleteMe 功能
 if exists("s:enable_ycm")  && s:enable_ycm == 1
