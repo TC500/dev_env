@@ -132,8 +132,8 @@ if count(g:bundle_groups, 'base')
     Plug 'gregsexton/gitv'
     " 目录树显示文件的git状态
     Plug 'Xuyuanp/nerdtree-git-plugin'
-    " 区域选中，v vv vvv 逐渐扩大选中区域
-    Plug 'vim-scripts/vim-expand-region'
+    " 区域选中，按v逐渐扩大选中区域,ctrl+v逐渐缩小选中区域
+    Plug 'terryma/vim-expand-region'
     " 关闭初当前编辑buf以外的所有buf
     Plug 'vim-scripts/BufOnly.vim'
     " 注释
