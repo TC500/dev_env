@@ -522,7 +522,7 @@ let g:header_max_size = 20
 
 " vim-fswitch
 nmap <silent> <Leader>a :FSHere<cr>
-
+au! BufEnter *.cc let b:fswitchdst  = 'h,hh' | let b:fswitchlocs = 'reg:/src/include/,reg:|src|include/**|,../include'
 
 " vim-cpp-enhanced-highlight
 let g:cpp_class_scope_highlight = 1
