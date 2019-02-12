@@ -242,7 +242,18 @@ endif
 
 " 自动补全集大成者
 if exists("s:enable_ycm")  && s:enable_ycm == 1
-    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang --java-completer' }
+    let s:is_system_clang = 0
+    if s:os == "Linux"
+        let s:is_libclang7_install=str2nr(system('ldconfig -p | grep libclang-[789].so | wc -l'))
+        if s:is_libclang7_install > 0
+            let s:is_system_clang = 1
+        endif
+    endif
+    if s:is_system_clang
+        Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang --java-completer' }
+    else
+        Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --java-completer' }
+    endif
 endif
 
 if count(g:bundle_groups, 'markdown')
