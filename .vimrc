@@ -598,9 +598,12 @@ let g:tex_conceal = ""
 let g:vim_markdown_frontmatter = 1
 if count(g:bundle_groups, 'json')
     let g:vim_markdown_json_frontmatter = 1
+endif
+if count(g:bundle_groups, 'markdown')
     map gx <Plug>(Markdown_OpenUrlUnderCursor)
     map ge <Plug>Markdown_EditUrlUnderCursor)
 endif
+
 
 " indentline
 let g:indentLine_enabled = 1
