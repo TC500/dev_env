@@ -526,7 +526,7 @@ let g:header_auto_add_header = 0
 let g:header_auto_update_header = 1
 let g:header_field_filename = 0
 let g:header_field_timestamp_format = '%Y-%m-%d %H:%M:%S'
-let g:header_field_copyright = 'Copyright (c) %Y Meituan Inc. All rights reserved.'
+let g:header_field_copyright = 'Copyright (c) %Y Maxiaowei Inc. All rights reserved.'
 let g:header_alignment = 1
 let g:header_max_size = 20
 
