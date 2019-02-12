@@ -510,12 +510,14 @@ let NERDSpaceDelims=1
 " ale
 let g:airline#extensions#ale#enabled = 1
 let g:ale_open_list = 1
-let g:ale_linters = {'c': [], 'cpp': [], 'java': []}
-autocmd FileType c,cpp,java  setl fdm=syntax | setl fen
-" 对YouCompleteMe插件支持较好的语言不使用
-let blacklist = ['c', 'cpp', 'java']
-autocmd FileType * if index(blacklist, &ft) < 0 | nmap <silent> [l <Plug>(ale_previous_wrap)
-autocmd FileType * if index(blacklist, &ft) < 0 | nmap <silent> ]l <Plug>(ale_next_wrap)
+if exists("s:enable_ycm")  && s:enable_ycm == 1
+    " 对YouCompleteMe插件支持较好的语言不使用
+    let g:ale_linters = {'c': [], 'cpp': [], 'java': []}
+    autocmd FileType c,cpp,java  setl fdm=syntax | setl fen
+    let airline_blacklist = ['c', 'cpp', 'java']
+endif
+autocmd FileType * if index(airline_blacklist, &ft) < 0 | nmap <silent> [l <Plug>(ale_previous_wrap)
+autocmd FileType * if index(airline_blacklist, &ft) < 0 | nmap <silent> ]l <Plug>(ale_next_wrap)
 
 " vim-header
 let g:header_field_author = 'Ma Xiaowei'
