@@ -594,15 +594,20 @@ let g:vim_markdown_no_default_key_mappings = 1
 let g:mkdp_auto_close = 0
 let g:vim_markdown_fenced_languages = ['c++=cpp', 'viml=vim', 'bash=sh', 'ini=dosini', 'javescript=js']
 let g:vim_markdown_conceal = 0
+let g:tex_conceal = ""
 let g:vim_markdown_frontmatter = 1
 if count(g:bundle_groups, 'json')
     let g:vim_markdown_json_frontmatter = 1
     map gx <Plug>(Markdown_OpenUrlUnderCursor)
     map ge <Plug>Markdown_EditUrlUnderCursor)
 endif
-if count(g:bundle_groups, 'markdown')
-    set conceallevel=0
-endif
+
+" indentline
+let g:indentLine_enabled = 1
+let g:vim_json_syntax_conceal = 0
+let g:indentLine_fileTypeExclude = ['json', 'markdown']
+autocmd BufEnter *.md setlocal conceallevel=0
+autocmd BufEnter *.markdown setlocal conceallevel=0
 
 " incsearch
 map /  <Plug>(incsearch-forward)
@@ -659,9 +664,6 @@ au Syntax * RainbowParenthesesLoadRound " ()
 au Syntax * RainbowParenthesesLoadSquare " []
 au Syntax * RainbowParenthesesLoadBraces "{}
 " au Syntax * RainbowParenthesesLoadChevrons " <>
-
-" indentline
-let g:indentLine_enabled = 1
 
 " pymode
 let g:pymode_folding = 0
