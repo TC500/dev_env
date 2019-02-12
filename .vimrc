@@ -594,8 +594,15 @@ let g:vim_markdown_no_default_key_mappings = 1
 let g:mkdp_auto_close = 0
 let g:vim_markdown_fenced_languages = ['c++=cpp', 'viml=vim', 'bash=sh', 'ini=dosini', 'javescript=js']
 let g:vim_markdown_conceal = 0
-map gx <Plug>(Markdown_OpenUrlUnderCursor)
-map ge <Plug>Markdown_EditUrlUnderCursor)
+let g:vim_markdown_frontmatter = 1
+if count(g:bundle_groups, 'json')
+    let g:vim_markdown_json_frontmatter = 1
+    map gx <Plug>(Markdown_OpenUrlUnderCursor)
+    map ge <Plug>Markdown_EditUrlUnderCursor)
+endif
+if count(g:bundle_groups, 'markdown')
+    set conceallevel=0
+endif
 
 " incsearch
 map /  <Plug>(incsearch-forward)
