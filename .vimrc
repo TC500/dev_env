@@ -572,7 +572,8 @@ nmap <leader>lt :LeaderfBufTag<CR>
 nmap <leader>lf :LeaderfFunction<CR>
 nmap <leader>ll :LeaderfLine<CR>
 nmap <leader>lm :LeaderfMarks<CR>
-nmap <leader>lh :LeaderfHistoryCmd<CR>
+nmap <leader>lc :LeaderfHistoryCmd<CR>
+nmap <leader>ls :LeaderfHistorySearch<CR>
 
 " undotree
 if has("persistent_undo")
