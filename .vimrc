@@ -77,7 +77,7 @@ if count(g:bundle_groups, 'base')
     " 添加文件说明头
     Plug 'alpertuna/vim-header'
     " sudo权限
-    Plug 'vim-scripts/sudo.vim'
+    Plug 'vim-scripts/SudoEdit.vim'
     " minimap,类似vscode和atom等
     Plug 'severin-lemaignan/vim-minimap'
     " 智能切换paste状态,支持大量文本的粘贴
