@@ -566,6 +566,8 @@ let g:Gitv_OpenHorizontal = 1
 " vim-yoink
 " 复制之后光标直接移动到光标末尾
 let g:yoinkMoveCursorToEndOfPaste = 1
+" 同步yank内容到vim数字剪贴板
+let g:yoinkSyncNumberedRegisters = 1
 nmap <leader>j <plug>(YoinkPostPasteSwapBack)
 nmap <leader>k <plug>(YoinkPostPasteSwapForward)
 nmap [y <plug>(YoinkRotateBack)
