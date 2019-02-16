@@ -94,6 +94,8 @@ if count(g:bundle_groups, 'base')
     Plug 'junegunn/vim-peekaboo'
     " 剪贴板增强
     Plug 'svermeulen/vim-yoink'
+    " 增强替换功能
+    Plug 'svermeulen/vim-subversive'
     " 静态检查
     Plug 'w0rp/ale'
     " 撤销
@@ -244,7 +246,7 @@ endif
 if exists("s:enable_ycm")  && s:enable_ycm == 1
     let s:is_system_clang = 0
     if s:os == "Linux"
-        let s:is_libclang7_install=str2nr(system('ldconfig -p | grep libclang-[789].so | wc -l'))
+        let s:is_libclang7_install=str2nr(system('ldconfig -p | grep "libclang-[789].so" | wc -l'))
         if s:is_libclang7_install > 0
             let s:is_system_clang = 1
         endif
@@ -571,7 +573,16 @@ nmap ]y <plug>(YoinkRotateForward)
 nmap y <plug>(YoinkYankPreserveCursorPosition)
 xmap y <plug>(YoinkYankPreserveCursorPosition)
 nmap p <plug>(YoinkPaste_p)
-nmap P <plug>(yoinkpaste_p)
+nmap P <plug>(Yoinkpaste_P)
+
+" vim-subversive
+xmap <leader>ss <plug>(SubversiveSubstituteRange)
+xmap <leader>sS <plug>(SubversiveSubstituteRangeConfirm)
+" ignore case
+xmap <leader>si <plug>(SubversiveSubvertRange)
+xmap <leader>sI <plug>(SubversiveSubvertRangeConfirm)
+xmap p <plug>(SubversiveSubstitute)
+xmap P <plug>(SubversiveSubstitute)
 
 " LeaderF
 let g:Lf_ShortcutF = '<C-p>'
