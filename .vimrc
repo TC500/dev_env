@@ -972,6 +972,17 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
+" vim-multiple-cursors
+function! Multiple_cursors_before()
+    let s:old_ycm_whitelist = g:ycm_filetype_whitelist
+    let g:ycm_filetype_whitelist = {}
+    set foldmethod=manual
+endfunction
+function! Multiple_cursors_after()
+    let g:ycm_filetype_whitelist = s:old_ycm_whitelist
+    set foldmethod=indent
+endfunction
+
 " 自动添加和更新headline
 function! AddTitle()
     call append(0, "\/*")
