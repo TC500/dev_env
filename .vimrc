@@ -92,8 +92,8 @@ if count(g:bundle_groups, 'base')
     Plug 'pbrisbin/vim-mkdir'
     " 输入@和“或者在ctrl-R时显示剪贴板
     Plug 'junegunn/vim-peekaboo'
-    " 可视化剪贴板
-    Plug 'vim-scripts/YankRing.vim'
+    " 剪贴板增强
+    Plug 'svermeulen/vim-yoink'
     " 静态检查
     Plug 'w0rp/ale'
     " 撤销
@@ -561,9 +561,17 @@ let g:Gitv_TruncateCommitSubjects = 1
 let g:Gitv_OpenPreviewOnLaunch = 1
 let g:Gitv_OpenHorizontal = 1
 
-" yankring
-" nmap <leader>y :YRShow<CR>
-let g:yankring_replace_n_pkey = '<Char-172>'
+" vim-yoink
+" 复制之后光标直接移动到光标末尾
+let g:yoinkMoveCursorToEndOfPaste = 1
+nmap <leader>j <plug>(YoinkPostPasteSwapBack)
+nmap <leader>k <plug>(YoinkPostPasteSwapForward)
+nmap [y <plug>(YoinkRotateBack)
+nmap ]y <plug>(YoinkRotateForward)
+nmap y <plug>(YoinkYankPreserveCursorPosition)
+xmap y <plug>(YoinkYankPreserveCursorPosition)
+nmap p <plug>(YoinkPaste_p)
+nmap P <plug>(yoinkpaste_p)
 
 " LeaderF
 let g:Lf_ShortcutF = '<C-p>'
