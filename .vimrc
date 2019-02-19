@@ -16,7 +16,7 @@ let s:builty_vim = 1
 " 5. is enable YouCompleteMe, this need libclang7 above or libc3.14 above
 let s:enable_ycm = 1
 " 6. run vim, wait for plugins auto install
-" 8. well done!
+" 7. well done!
 
 " check is enable system clipboard
 if has('clipboard') && !empty($DISPLAY)
