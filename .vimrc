@@ -1,4 +1,4 @@
-" Readme
+" Readme. see https://tc500.github.io/ for more details
 " 1. put this file in location ~/.vimrc
 " 2. install cmake and gcc
 " 3. custom plugin bundle groups
