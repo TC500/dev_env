@@ -13,7 +13,7 @@ endif
 " 4. is enable builty plugin, this require set terminal font to DroidSansMono Nerd\ Font\ 11
 " the font will auto install when vim first running
 let s:builty_vim = 1
-" 5. is enable YouCompleteMe, this need libclang7 above or libc3.14 above
+" 5. is enable YouCompleteMe, this need libclang7 above or GLIBC_2.17 above
 let s:enable_ycm = 1
 " 6. run vim, wait for plugins auto install
 " 7. well done!
