@@ -1,31 +1,31 @@
-" 安装向导
-" 1. 将本文件放在~/.vimrc
-" 2. 安装cmake gcc
-" 3. 自定义需要的插件集合
-"   c/cpp 需要安装cscope、clang-format
-"   java/c/cpp 需要安装gnu global
-"   java 需要安装JDK8
-"   python需要安装flake8、pylint、yapf、autopep8 sudo -H pip install flake8 pylint yapf autopep8
+" Readme
+" 1. put this file in location ~/.vimrc
+" 2. install cmake and gcc
+" 3. custom plugin bundle groups
+"   c/cpp require install cscope and clang-format
+"   java/c/cpp require install 'gnu global'
+"   java require install JDK8
+"   python require install flake8, pylintl, yapfl and autopep8(sudo -H pip install flake8 pylint yapf autopep8)
 if !exists('g:bundle_groups')
     " let g:bundle_groups=['base', 'python', 'c', 'cpp', 'golang', 'html', 'javascript', 'markdown', 'java', 'json', 'shell', 'protobuf', 'thrift']
     let g:bundle_groups=['base', 'python', 'c', 'cpp', 'markdown', 'json', 'shell', 'protobuf', 'thrift']
 endif
-" 4. 启用/禁用美化插件，启用后需要在首次vim自动安装插件后更改终端字体为DroidSansMono Nerd\ Font\ 11
+" 4. is enable builty plugin, this require set terminal font to DroidSansMono Nerd\ Font\ 11
+" the font will auto install when vim first running
 let s:builty_vim = 1
-" 5. 启用/禁用YCM,启用YCM需要安装libclang7或以上
+" 5. is enable YouCompleteMe, this need libclang7 above or libc3.14 above
 let s:enable_ycm = 1
-" 6. 设置vim配色方案, 修改colorscheme的设置
-" 7. 打开vim，等待插件自动安装完成
-" 8. 开始使用！
+" 6. run vim, wait for plugins auto install
+" 8. well done!
 
-"自动检测系统剪贴板
+" check is enable system clipboard
 if has('clipboard') && !empty($DISPLAY)
     let s:enable_system_clipboard = 1
 else
     let s:enable_system_clipboard = 0
 endif
 
-"检测系统
+" check os
 if !exists("s:os")
     if has("win64") || has("win32") || has("win16")
         let s:os = "Windows"
@@ -34,7 +34,7 @@ if !exists("s:os")
     endif
 endif
 
-"安装美化字体
+" install font for builty_vim
 function! InstallAirLineFont()
     let s:usr_font_path = $HOME . '/.local/share/fonts/custom/Droid Sans Mono for Powerline Nerd Font Complete.otf'
     if s:os == "Darwin" "mac
@@ -56,7 +56,7 @@ if !exists(":InstallAirLineFont")
     command -nargs=0 InstallAirLineFont :call InstallAirLineFont()
 endif
 
-"自动安装插件管理器
+" auto install plugin manager
 if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
                 \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -66,49 +66,49 @@ endif
 
 call plug#begin('~/.vim/bundle')
 if count(g:bundle_groups, 'base')
-    " 注册自己，能够调用help vim-plug
+    " registe self, for cmd :help vim-plug
     Plug 'junegunn/vim-plug'
-    " 类似Leadf，作为vimfiler的依赖被安装
+    " vimfiler require this
     Plug 'Shougo/unite.vim'
-    " 文件浏览器，:Ex命令调用
+    " file explore, run by :Ex cmd
     Plug 'Shougo/vimfiler.vim'
-    " 在quicklist中直接修改对应的行的内容
+    " edit content directly in quicklist
     Plug 'thinca/vim-qfreplace'
-    " 添加文件说明头
+    " file header, like author license etc.
     Plug 'alpertuna/vim-header'
-    " sudo权限
+    " sudo permission
     Plug 'vim-scripts/SudoEdit.vim'
-    " minimap,类似vscode和atom等
+    " minimap
     Plug 'severin-lemaignan/vim-minimap'
-    " 智能切换paste状态,支持大量文本的粘贴
+    " auto disable format when paste
     Plug 'roxma/vim-paste-easy'
-    " 可以调整diff算法
+    " smart diff algorithm
     Plug 'chrisbra/vim-diff-enhanced'
-    " 显示结尾的多余空格
+    " show space at end of line
     Plug 'bitc/vim-bad-whitespace'
-    " 自动格式化
+    " auto format code
     Plug 'chiel92/vim-autoformat'
-    " 保存文件时自动创建不存在的目录
+    " auto mkdir when parent path empty
     Plug 'pbrisbin/vim-mkdir'
-    " 输入@和“或者在ctrl-R时显示剪贴板
+    " show clipboard content when type '@' '"' or ctrl-c
     Plug 'junegunn/vim-peekaboo'
-    " 剪贴板增强
+    " enhanced clipboard
     Plug 'svermeulen/vim-yoink'
-    " 增强替换功能
+    " enhanced replace and paste in visual mode
     Plug 'svermeulen/vim-subversive'
-    " 静态检查
+    " asynchronous lint engine
     Plug 'w0rp/ale'
-    " 撤销
+    " undo tree
     Plug 'mbbill/undotree'
-    " 文本替换性能增强
+    " enhanced replace
     Plug 'tpope/vim-abolish'
-    " tpope/*插件编写的命令也能用.重复
+    " make '.' repeat cmd of tope/* plugin
     Plug 'tpope/vim-repeat'
-    " 快速输入更改包围一段文字的符号
+    " provides mappings to easily delete, change and add surrounding in pairs
     Plug 'tpope/vim-surround'
-    " 目录树
+    " toc tree
     Plug 'scrooloose/nerdtree'
-    " colorscheme solarized8和codedark较好
+    " colorscheme, solarized8 and codedark is better
     Plug 'vim-scripts/molokai'
     Plug 'sickill/vim-monokai'
     Plug 'altercation/vim-colors-solarized'
@@ -116,133 +116,138 @@ if count(g:bundle_groups, 'base')
     Plug 'junegunn/seoul256.vim'
     Plug 'tomasiser/vim-code-dark'
     Plug 'liuchengxu/space-vim-dark'
-    " 画基本示意图
+    " draw lines, ellipses, arrows, fills, and more
     Plug 'vim-scripts/drawit'
-    " 彩虹括号,便于区分不同的括号
+    " rainbow parenteses
     Plug 'kien/rainbow_parentheses.vim'
-    " 模糊搜索buf和file
+    " an asynchronous fuzzy finder which is used to quickly locate files,
+    " buffers, mrus, tags, etc. in large project
     Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
-    " 模糊搜索mark
+    " fuzzy finder for mark
     Plug 'Yggdroot/LeaderF-marks'
-    " 高亮当前所在的括号,性能捉急，卡
+    " highlight current pairs, have perfermance problem
     " Plug 'Yggdroot/hiPairs'
-    " 按行显示文件的git标记,在修改行之间跳转
+    " show a git diff in the gutter (sign column) and stages/undoes hunks
     Plug 'airblade/vim-gitgutter'
-    " vim内进行git操作
+    " git cmd wrapper
     Plug 'tpope/vim-fugitive'
-    " vim内的tig
+    " gitk in vim
     Plug 'gregsexton/gitv'
-    " 目录树显示文件的git状态
+    " tig in vim
+    Plug 'junegunn/gv.vim'
+    " show git status in toc tree
     Plug 'Xuyuanp/nerdtree-git-plugin'
-    " 区域选中，按v逐渐扩大选中区域,ctrl+v逐渐缩小选中区域
+    " v expand visual region, ctrl-v shrink region
     Plug 'terryma/vim-expand-region'
-    " 关闭初当前编辑buf以外的所有buf
+    " close all buffer except current
     Plug 'vim-scripts/BufOnly.vim'
-    " 注释
+    " smart comment
     Plug 'scrooloose/nerdcommenter'
-    " 在输入搜索内容的过程中同时高亮所有的搜索命中项目
+    " highlight match patten when regex search
     Plug 'haya14busa/incsearch.vim'
-    " 模糊搜索
+    " fuzzy search
     Plug 'haya14busa/incsearch-fuzzy.vim'
-    " 快速在多个搜索命中结果中跳转
+    " jump within fuzzy search results
     " Plug 'haya14busa/incsearch-easymotion.vim'
-    " 快速跳转
+    " speed motions
     Plug 'easymotion/vim-easymotion'
-    " 行内跳转加强版
+    " speed motions
     Plug 'justinmk/vim-sneak'
-    " 显示缩进的线条
+    " show indent line
     Plug 'Yggdroot/indentLine'
-    " 替代vimgrep的搜索，:Ag
+    " replace vimgrep，:Ag
     Plug 'rking/ag.vim'
-    " buf 浏览器
+    " buffer explore
     Plug 'jlanzarotta/bufexplorer'
-    " 自动补全括号
+    " insert or delete brackets, parens, quotes in pair
     Plug 'jiangmiao/auto-pairs'
-    " 多光标操作，替换Ctrl-v
+    " multiple selection
     Plug 'terryma/vim-multiple-cursors'
-    " 处理git冲突
+    " Weapon to fight against conflicts
     Plug 'rhysd/conflict-marker.vim'
-    " 生成函数和文档注释的插件
+    " Simplify Doxygen documentation in C, C++, Python
     Plug 'vim-scripts/DoxygenToolkit.vim'
-    " 书签
+    " Plugin to toggle, display and navigate marks
     Plug 'kshenoy/vim-signature'
-    " 底部状态栏和标签栏
+    " draw a nice statusline at the bottom of each window
     Plug 'vim-airline/vim-airline'
-    " 状态栏主题
+    " themes of vim-airline
     Plug 'vim-airline/vim-airline-themes'
-    " 显示当前buf的符号
+    " displays tags in a window, ordered by scope
     Plug 'majutsushi/tagbar'
-    " 在底部显示函数签名
+    " displays function signatures from completions in the command line
     Plug 'Shougo/echodoc.vim'
-    " 代码片段
+    " snippets
     Plug 'ervandew/supertab'
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
-    " 查看man手册
+    " View and grep man pages
     Plug 'vim-utils/vim-man'
 endif
 
 if count(g:bundle_groups, 'java')
-    " java import管理，javadoc
+    " insert and sort Java import statements, view JavaDoc from class name, and more
     Plug 'TC500/JavaImp.vim'
 endif
 
 if count(g:bundle_groups, 'shell')
-    " shell语法高亮
+    " shell highlight
     Plug 'Shougo/vimshell.vim'
 endif
 
 if count(g:bundle_groups, 'protobuf')
-    " protobuf高亮
+    " protobuf highlight
     Plug 'uarun/vim-protobuf'
 endif
 
 if count(g:bundle_groups, 'thrift')
-    " thrift高亮
+    " thrift highlight
     Plug 'solarnz/thrift.vim'
 endif
 
 if count(g:bundle_groups, 'golang')
+    " go development plugin
     Plug 'fatih/vim-go'
-    Plug 'undx/vim-gocode'
+    " an autocompletion daemon for the Go programming language
+    Plug 'mdempsky/gocode'
 endif
 
 if count(g:bundle_groups, 'html')
-    " html快速编写
+    " emmet
     Plug 'mattn/emmet-vim'
-    " html语法高亮
+    " html hilight
     Plug 'othree/html5.vim'
-    " 高亮当前html tag
+    " always highlights the enclosing html/xml tags
     Plug 'Valloric/MatchTagAlways'
 endif
 
 if count(g:bundle_groups, 'javascript')
-    " javascript高亮
+    " javascript hilight
     Plug 'pangloss/vim-javascript'
 endif
 
 if count(g:bundle_groups, 'cpp')
-    " cpp文件语法高亮
+    " cpp highlight
     Plug 'octol/vim-cpp-enhanced-highlight'
 endif
 
 if count(g:bundle_groups, 'c') || count(g:bundle_groups, 'cpp') || count(g:bundle_groups, 'java')
-    " 提供 ctags/gtags 后台数据库自动更新功能
+    " async generate and update ctags/gtags
     Plug 'ludovicchabant/vim-gutentags'
     Plug 'skywind3000/gutentags_plus'
 endif
 
 if count(g:bundle_groups, 'c') || count(g:bundle_groups, 'cpp')
-    " 在头文件和cpp文件之间快速切换，:A
+    " switching between companion source files (e.g. ".h" and ".cpp")
     Plug 'derekwyatt/vim-fswitch'
 endif
 
 if count(g:bundle_groups, 'python')
-    " python集成插件,包括高亮、格式化
+    " PyLint, Rope, Pydoc, breakpoints from box
     Plug 'python-mode/python-mode'
 endif
 
-" 自动补全集大成者
+" powerful code-completion engine
 if exists("s:enable_ycm")  && s:enable_ycm == 1
     let s:is_system_clang = 0
     if s:os == "Linux"
@@ -260,137 +265,138 @@ if exists("s:enable_ycm")  && s:enable_ycm == 1
 endif
 
 if count(g:bundle_groups, 'markdown')
-    " markdown高亮等
+    " markdown highlight
     Plug 'godlygeek/tabular'
     Plug 'plasticboy/vim-markdown'
-    " markdown预览
+    " markdown preview
     Plug 'iamcco/markdown-preview.vim'
-    " 支持数学公式预览
+    " markdown mathjax preview
     Plug 'iamcco/mathjax-support-for-mkdp'
 endif
 
 if count(g:bundle_groups, 'json')
-    " json高亮
+    " json highlight
     Plug 'elzr/vim-json'
 endif
 
-" 美化界面，需要改终端字体为DroidSansMono Nerd\ Font\ 11
+" builty vim, require terminal font DroidSansMono Nerd\ Font\ 11
 if exists("s:builty_vim")  && s:builty_vim == 1
-    " 图标支持
+    " Adds file type glyphs/icons to popular Vim plugins
     Plug 'ryanoasis/vim-devicons'
-    " 目录树根据文件后缀名显示图标
+    " toc tree show file type icons
     Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 endif  "s:builty_vim
 
 call plug#end()
 
-" 设置vim配色方案，可选darkblue,codedark,space-vim-dark,elflord,evening,koehler,slate,desert,solarized,monokai
-"   如果设定为solarized模式，需要更改终端配色方案也为solarized
+" vim color scheme, available: darkblue,codedark,space-vim-dark,elflord,evening,koehler,slate,desert,solarized8,monokai
+"   solarized8 require terminal color scheme solarized
 colorscheme solarized8
-" 设置配色风格，dark/white
+" available: dark/white
 set background=dark
 
 " no swp file
 set nobackup
-" 自动识别文件类型,使用文件类型plugin脚本,使用缩进定义文件
+" enable indent plugin by filetype
 filetype plugin indent on
-" session中不保存当前目录，这样使用Session.vim文件恢复时，Session.vim文件所在目录自动变成当前目录
+" save session without curdir, when reload session.vim, curdir will set to the dir where session.vim in
 set sessionoptions-=curdir
 set sessionoptions+=sesdir
-" 用啥鼠标
+" disable mouse
 set mouse-=a
-" 文件修改之后自动载入
+" auto load file if changed outside of vim
 set autoread
-" 修改终端标题
+" set terminal title
 set title
 " for regular expressions turn magic on
 set magic
-" 显示当前vim模式
+" show vim mode
 set showmode
-" 在上下移动光标时，光标的上方或下方至少会保留显示的行数
+" ninimal number of screen lines to keep above and below the cursor
 set scrolloff=5
-" 自动格式化选项
-set formatoptions=tcqr
-" 按照缩进折叠
+" autoformat option, see more :help fo-tables
+set formatoptions=tcqrm
+" fold by indent
 set foldmethod=indent
-" 按照语法高亮进行折叠
+" fold by syntax
 " set foldmethod=syntax
-" 打开文件时默认不折叠
+" not fold if level less than 99
 set foldlevelstart=99
-" 不生成swp文件
+" no swp file
 set noswapfile
-" 设置不兼容vi, 只使用增强模式
+" vim only ,not vi
 set nocompatible
-" 设置可以删除行首空格,断行, 进入Insert模式之前的位置
+" allow backspacing over autoindent, line breaks and the start of insert
 set backspace=indent,eol,start
-" 新行使用设置自动缩进,使用上一行的缩进方式
+" copy indent from current line when starting a new line
 set autoindent
-" 设置智能缩进
+" do smart autoindenting when starting a new line
 set smartindent
-" 默认关闭可打印字符的显示
+" disable listchars
 set nolist
-" 可打印字符显示方式
+" show tabs as CTRL-I is displayed, display $ after end of line
 set listchars=eol:$,tab:^I,space:.
-" 高亮匹配字符
+" matched search string is highlighted
 set incsearch
-" 补全时显示所有候选项
-set wildmode=list:longest
-" 禁止光标闪烁
+" When more than one match, list all matches and complete till longest common string
+set wildmode=list:longest,full
+" disalbe cursor blink
 " set gcr = a:block-blinkon0
-" 设置命令历史列表的长度
+" how many entries may be stored in each of cmd and search patterns history
 set history=50
-" 在右下角显示一个完整的命令已经完成的部分
+" show (partial) command in the last line of the screen
 set showcmd
-" 总是在窗口的右下角显示行列信息
+" show the line and column number of the cursor position
 set ruler
-" 不要自动折行
+" lines longer than the width of the window not wrap and displaying continues on the next line
 set nowrap
-" 设置光标能在行首和行尾之间自由移动
+" allow specified keys that move the cursor left/right to move to the
+" previous/next line when the cursor is on the first/last character in the line
 set whichwrap=b,s,<,>,[,]
-" 将TAB替换为空格
+" In Insert mode: Use the appropriate number of spaces to insert a <Tab>
 set expandtab
-" 设置TAB宽度
+" number of spaces that a <Tab> in the file counts for
 set tabstop=4
-" 设置缩进增量
+" number of spaces to use for each step of (auto)indent
 set shiftwidth=4
-" 设置TAB显示宽度
+" Adds file type glyphs/icons to popular Vim plugins
 set softtabstop=4
-" insert tabs on the start of a line according to shiftwidth, not tabstop 按退格键时可以一次删掉 4 个空格
+" insert tabs on the start of a line according to shiftwidth, not tabstop
 set smarttab
-" 性能优化
+" indicates a fast terminal connection
 set ttyfast
-" 增强模式中的命令行自动完成操作
+" command-line completion operates in an enhanced mode
 set wildmenu
-" 显示行号
+" print the line number in front of each line
 set number
-" 状态栏同时显示了所在的行列，总的行列，所在的百分比等等
+" the last window will always have a status line
 set laststatus=2
-" 输入括号时显示配对的括号
+" When a bracket is inserted, briefly jump to the matching one
 set showmatch
-" 和ignorecase配合实现智能大小写
+" override the 'ignorecase' option if the search pattern contains upper case characters
 set smartcase
 set ignorecase
-" 在80个字符处设置锚线
+" a comma separated list of screen columns that are highlighted
 set colorcolumn=80
-" 高亮当前行,在终端情况下有性能问题，禁用
+" highlight cursor line, have perfermance problem
 " set cursorline
-" 触发延时
+" If this many milliseconds nothing is typed the swap file will be written to disk
 set updatetime=1000
-" 降低重绘制的频率
+" screen will not be redrawn while executing macros, registers and other
+" commands that have not been typed
 set lazyredraw
-" 补全内容不以分割子窗口形式出现，只显示补全列表
+" see :help completeopt
 set completeopt=longest,menu,preview
-" 打开语法加亮
+" enable syntax hightlight
 syntax on
-" 高亮最后一次搜索的文本
+" when there is a previous search pattern, highlight all its matches
 set hlsearch
-" 使路径包含当前目录下的所有子目录
+" all directories will be searched
 set path+=**
 
-" gvim专用设置 begin
-" 行高
+" gvim line hight
 set linespace=-2
-" 隐藏所有的菜单栏/滚动条
+" disable all menu and scrollbar
 set guioptions-=m
 set guioptions-=b
 set guioptions-=l
@@ -399,21 +405,21 @@ set guioptions-=r
 set guioptions-=R
 set guioptions-=t
 set guioptions-=T
-" gvim专用设置 end
 
 if count(g:bundle_groups, 'c') || count(g:bundle_groups, 'cpp')
-    " 设置c程序自动缩进
+    " enables automatic C program indenting
     set cindent
-    " 自动缩进模式
+    " see :help cinoptions-values
     set cinoptions=:0,p0,t0
-    " 缩进关键字
+    " These keywords start an extra indent in the next line when 'smartindent' or 'cindent' is set
     set cinwords+=if,else,while,do,for,switch,case,try,catch
 endif
 
+" end-of-line (<EOL>) formats that will be tried
+set fileformats=unix,dos,mac
+
 " -encode set begin-
 set encoding=utf-8
-" 设置让VIM识别不同的换行符
-set fileformats=unix,dos,mac
 set termencoding=utf-8
 set fileencoding=utf-8
 "multi-encoding setting
@@ -452,9 +458,8 @@ if has("multi_byte")
 else
     echoerr "Sorry, this version of (g)vim was not compiled with multi_byte"
 endif
-" -encode set end --------------------------------
+" -encode set end -
 
-" for vim-devicons
 if exists("s:builty_vim") && s:builty_vim == 1
     set guifont=DroidSansMono\ Nerd\ Font\ 11
 else
@@ -488,7 +493,7 @@ elseif s:colors_type == "256"
     set t_Co=256
     let g:solarized_termcolors=256
 endif
-" 禁止终端重新刷新背景，避免显示问题
+" disable vim refresh terminal backgroud color
 set t_ut=
 
 " set leader key
@@ -515,7 +520,7 @@ let g:airline#extensions#ale#enabled = 1
 let g:ale_open_list = 1
 let ale_blacklist = []
 if exists("s:enable_ycm")  && s:enable_ycm == 1
-    " 对YouCompleteMe插件支持较好的语言不使用
+    " disable ale if YouCompleteMe is better
     let g:ale_linters = {'c': [], 'cpp': [], 'java': []}
     autocmd FileType c,cpp,java  setl fdm=syntax | setl fen
     let ale_blacklist = ['c', 'cpp', 'java']
@@ -530,7 +535,7 @@ let g:header_auto_add_header = 0
 let g:header_auto_update_header = 1
 let g:header_field_filename = 0
 let g:header_field_timestamp_format = '%Y-%m-%d %H:%M:%S'
-let g:header_field_copyright = 'Copyright (c) %Y Maxiaowei Inc. All rights reserved.'
+let g:header_field_copyright = 'Copyright (c) %Y Meituan Inc. All rights reserved.'
 let g:header_alignment = 1
 let g:header_max_size = 20
 
@@ -539,7 +544,14 @@ let g:header_max_size = 20
 
 " vim-fswitch
 nmap <silent> <Leader>a :FSHere<cr>
-au! BufEnter *.cc let b:fswitchdst  = 'h,hh' | let b:fswitchlocs = 'reg:/src/include/,reg:|src|include/**|,../include'
+augroup fswitch_cpp
+    " support *.cc
+    au!
+    au BufEnter *.cc let b:fswitchdst  = 'h'
+    au BufEnter *.cc let b:fswitchlocs = 'reg:/src/include/,reg:|src|include/**|,../include'
+    au BufEnter *.h let b:fswitchdst  = 'cpp,cc,C'
+    au BufEnter *.h let b:fswitchlocs = 'reg:/include/src/,reg:/include.*/src/'
+augroup END
 
 " vim-cpp-enhanced-highlight
 let g:cpp_class_scope_highlight = 1
@@ -565,9 +577,9 @@ let g:Gitv_OpenPreviewOnLaunch = 1
 let g:Gitv_OpenHorizontal = 1
 
 " vim-yoink
-" 复制之后光标直接移动到光标末尾
+" the cursor will always be placed at the end of the paste
 let g:yoinkMoveCursorToEndOfPaste = 1
-" 同步yank内容到vim数字剪贴板
+" every time the yank history changes the numbered registers 1 - 9 will be updated to sync with the first 9 entries in the yank history
 let g:yoinkSyncNumberedRegisters = 1
 nmap <leader>j <plug>(YoinkPostPasteSwapBack)
 nmap <leader>k <plug>(YoinkPostPasteSwapForward)
@@ -641,7 +653,6 @@ if count(g:bundle_groups, 'markdown')
     map ge <Plug>Markdown_EditUrlUnderCursor)
 endif
 
-
 " indentline
 let g:indentLine_enabled = 1
 let g:vim_json_syntax_conceal = 0
@@ -653,11 +664,11 @@ autocmd BufEnter *.markdown setlocal conceallevel=0
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
-"模糊搜索快捷键
+" incsearch-fuzzy
 map z/ <Plug>(incsearch-fuzzy-/)
 map z? <Plug>(incsearch-fuzzy-?)
 map zg/ <Plug>(incsearch-fuzzy-stay)
-" 允许错误几个字母的模糊搜索
+" incsearch-fuzzyspell
 " map z/ <Plug>(incsearch-fuzzyspell-/)
 " map z? <Plug>(incsearch-fuzzyspell-?)
 " map zg/ <Plug>(incsearch-fuzzyspell-stay)
@@ -674,7 +685,7 @@ endif
 let g:EasyMotion_leader_key = '\'
 let g:EasyMotion_do_mapping = 1
 let g:EasyMotion_smartcase = 1
-" 按回车自动跳到第一个匹配
+" Type Enter or Space key and jump to first match
 let g:EasyMotion_enter_jump_first = 1
 map <leader><leader> <Plug>(easymotion-prefix)
 map s <leader><leader>f
@@ -712,10 +723,10 @@ let g:pymode_lint_signs = 0
 let g:pymode_lint = 0
 let g:pymode_rope = 0
 
-" 保存当前buf
+" update current buffer
 nmap <leader>w :update<CR>
 
-" 系统剪贴板的复制、粘贴
+" system clipboard
 if exists("s:enable_system_clipboard")  && s:enable_system_clipboard == 1
     vmap <leader>y "+y
     vmap <leader>d "+d
@@ -732,18 +743,14 @@ else
     vmap <leader>P "pP
 endif  "s:enable_system_clipboard
 
-" 删除所有除当前打开buf外的buf
+" close all buffer except current
 nmap <leader>bd :BufOnly<CR>
-
-" 在当前buf所在目录新建文件
-nmap <leader>bn :e %:p:h/
 
 " bufexplorer
 nnoremap <silent> <leader>be :ToggleBufExplorer<CR>
-" 禁用bufexplorer的默认快捷键,只需上面设置的一个ToggleBufExplorer就足够
 let g:bufExplorerDisableDefaultKeyMapping=1
 
-" expand-region, v 选择下个单词/段落 c-v回退选择
+" expand-region, v expand visual region, ctrl-v shrink region
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
 
@@ -777,7 +784,6 @@ let g:airline_theme='solarized'
 " for NERDTree plugin
 nmap <F4> :NERDTreeToggle<CR>
 nmap <F5> :NERDTreeFind<CR>
-" 显示隐藏文件
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeWinSize=35
 let g:NERDTreeWinPos = "left"
@@ -800,33 +806,14 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " for tagbar
 nmap <F8> :TagbarToggle<CR>
-" 设置tagbar的窗口宽度
 let g:tagbar_width=30
-" 打开文件自动 打开tagbar
+" open tagbar if ext match
 autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx,*.py,*.java call tagbar#autoopen()
 
 " autoformat
 nmap <leader>i :Autoformat<CR>
 vmap <leader>i :Autoformat<CR>
 let g:formatters_python = ["yapf","autopep8"]
-
-" clang for c++
-let g:clang_auto_select=1
-let g:clang_complete_auto=0
-let g:clang_complete_copen=1
-let g:clang_hl_errors=1
-let g:clang_periodic_quickfix=0
-let g:clang_snippets=1
-let g:clang_snippets_engine="clang_complete"
-let g:clang_conceal_snippets=1
-let g:clang_exec="clang"
-let g:clang_user_options=""
-let g:clang_auto_user_options="path, .clang_complete"
-let g:clang_use_library=1
-let g:clang_library_path="/usr/lib/"
-let g:clang_sort_algo="priority"
-let g:clang_complete_macros=1
-let g:clang_complete_patterns=0
 
 " vim for python
 " python-syntax
@@ -877,7 +864,7 @@ let g:tagbar_type_go = {
 " auto-pairs
 let g:AutoPairsMultilineClose = 1
 
-" YouCompleteMe 功能
+" YouCompleteMe
 if exists("s:enable_ycm")  && s:enable_ycm == 1
     if !empty(glob("~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py"))
         let g:ycm_global_ycm_extra_conf = "~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py"
@@ -894,34 +881,26 @@ if exists("s:enable_ycm")  && s:enable_ycm == 1
     if !empty(glob(".ycm_extra_conf.py"))
         let g:ycm_global_ycm_extra_conf = ".ycm_extra_conf.py"
     endif
-    " 自动加载.ycm_extra_conf.py，不提示
+    " autoload .ycm_extra_conf.py, no need confirm
     let g:ycm_confirm_extra_conf=0
-    " 补全功能在注释中同样有效
     let g:ycm_complete_in_comments=1
-    " 开启 YCM 基于标签引擎
     let g:ycm_collect_identifiers_from_tags_files=1
-    " YCM 集成 OmniCppComplete 补全引擎，设置其快捷键
-    " inoremap <leader>; <C-x><C-o>
-    " 从第一个键入字符就开始罗列匹配项
     let g:ycm_min_num_of_chars_for_completion=1
-    " 禁止缓存匹配项，每次都重新生成匹配项
     let g:ycm_cache_omnifunc=0
-    " 语法关键字补全
+    " YCM's identifier completer will seed its identifier database with the keywords of the programming language
     let g:ycm_seed_identifiers_with_syntax=1
-    " 修改对C函数的补全快捷键，默认是CTRL + space，修改为CTRL+
-    " let g:ycm_key_invoke_completion = '<leader>l'
-    " 在字符串输入中也能补全
+    " show the completion menu even when typing inside strings
     let g:ycm_complete_in_strings = 1
-    " 在注释中也开启补全
+    " show the completion menu even when typing inside comments
     let g:ycm_complete_in_comments = 1
-    " 禁用eclim诊断，避免冲突
+    " eclim file type validate conflict with YouCompleteMe
     let g:EclimFileTypeValidate = 0
-    " 总是打开错误提示窗口
+    " YCM will populate the location list automatically every time it gets new diagnostic data
     let g:ycm_always_populate_location_list = 1
-    " 跳到定义
     nmap <C-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
-    " 跳到下一个错误
+    " goto next location list
     autocmd FileType c,cpp,java nmap [l :lnext<CR>
+    " goto previous location list
     autocmd FileType c,cpp,java nmap ]l :lprevious<CR>
     " make YCM compatible with UltiSnips (using supertab)
     let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -930,53 +909,49 @@ if exists("s:enable_ycm")  && s:enable_ycm == 1
 endif  "s:enable_ycm
 
 " gutentags_plus
-" 禁用默认快捷键
+" disable default keymap
 let g:gutentags_plus_nomap = 1
-" 自动切换到quickfix窗口
+" auto switch to quickfix window
 let g:gutentags_plus_switch = 1
-" 查找符号
+" find this symbol
 noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
-" 查找定义
+" find this definition
 noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
-" 查找调用者
+" find functions calling this function
 noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
-" 查找字符串
+" find this text string
 noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
-" 按照egrep查找
+" find this egrep pattern
 noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
-" 查找文件
+" find this file
 noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
-" 查看include当前文件的文件
+" find files #including this file
 noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
-" 查找当前函数调用的函数
+" find functions called by this function
 noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
-" 查找当前符号赋值位置
+" find places where this symbol is assigned a value
 noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
-" 设定项目目录额外标志：除了 .git/.svn 外，还有 .root 文件
+" project root dir flag contant .root and .git
 let g:gutentags_project_root = ['.root']
-" 默认生成的数据文件集中到 ~/.cache/tags 避免污染项目目录，好清理
+" Specifies a directory in which to create all the tags files, instead of writing them at the root of each project
 let g:gutentags_cache_dir = expand('~/.cache/tags')
-" 追踪链接
 let g:gutentags_resolve_symlinks = 1
-" 默认禁用自动生成
 let g:gutentags_modules = []
-" 如果有 gtags 可执行就允许动态生成 gtags 数据库
 if executable('gtags') && executable('gtags-cscope')
+    " gtags first
     let g:gutentags_modules += ['gtags_cscope']
 elseif executable('ctags')
-    " 如果有 ctags 可执行就允许动态生成 ctags 文件
+    " then ctags
     let g:gutentags_modules += ['ctags']
 endif
-" 设置 ctags 的参数
 let g:gutentags_ctags_tagfile = '.tags'
 let g:gutentags_ctags_extra_args = []
-let g:gutentags_ctags_extra_args = ['--fields=+niaztKS', '--extra=+qf']
+let g:gutentags_ctags_extra_args += ['--fields=+niaztKS', '--extra=+qf']
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
-" 禁用 gutentags 自动加载 gtags 数据库的行为
-" 避免多个项目数据库相互干扰,使用plus插件解决问
+" disable gutentags auto load, gutentags_plus plugin handles switching databases automatically before performing a query
 let g:gutentags_auto_add_gtags_cscope = 0
-" 手动更新tag
+" force update tags file
 let g:gutentags_define_advanced_commands = 1
 nmap <leader>u :GutentagsUpdate! <CR><CR>
 
@@ -1005,7 +980,6 @@ function! Multiple_cursors_after()
     set foldmethod=indent
 endfunction
 
-" 自动添加和更新headline
 function! AddTitle()
     call append(0, "\/*")
     call append(1, " * Copyright (c) 2019 Meituan Inc. All rights reserved.")
@@ -1045,10 +1019,11 @@ endfunction
 if !exists(":UpdateTitle")
     command -nargs=0 UpdateTitle :call UpdateTitle()
 endif
+" auto update title
 autocmd BufWritePre,FileWritePre * call UpdateTitle()
 
-" F2 行号开关，用于鼠标复制代码用
-" 为方便复制，用<F2>开启/关闭行号显示:
+" F2 toggle line number
+" for mouse select and copy from terminal
 let s:rnu = &relativenumber
 let s:nu = &number
 function! ToggleNumber()
@@ -1069,21 +1044,22 @@ function! ToggleNumber()
 endfunc
 nnoremap <F2> :call ToggleNumber()<CR>
 
-" F3 显示可打印字符开关
+" F3 toggle printable char visibility
 nnoremap <F3> :set list! list?<CR>
 
-" 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
+" goto last edit position when open file
 if has("autocmd")
     au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
-" 命令行模式增强，ctrl-a到行首，-e到行尾
+" in command line mode,ctrl-a goto line head，ctrl-e goto line tail
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
 
-" 加载项目相关的设置
+" load extra vim script
 if filereadable(".vim")
     source .vim
 endif
 
+" enable termdebug
 :packadd termdebug
