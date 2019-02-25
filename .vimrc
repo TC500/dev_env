@@ -751,7 +751,7 @@ nnoremap <silent> <leader>be :ToggleBufExplorer<CR>
 let g:bufExplorerDisableDefaultKeyMapping=1
 
 " expand-region, v expand visual region, ctrl-v shrink region
-vmap v <Plug>(expand_region_expand)
+vmap vv <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
 
 " gitgutter
