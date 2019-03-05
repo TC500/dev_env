@@ -591,11 +591,11 @@ nmap p <plug>(YoinkPaste_p)
 nmap P <plug>(Yoinkpaste_P)
 
 " vim-subversive
-xmap <leader>ss <plug>(SubversiveSubstituteRange)
-xmap <leader>sS <plug>(SubversiveSubstituteRangeConfirm)
+xmap <leader>rs <plug>(SubversiveSubstituteRange)
+xmap <leader>rS <plug>(SubversiveSubstituteRangeConfirm)
 " ignore case
-xmap <leader>si <plug>(SubversiveSubvertRange)
-xmap <leader>sI <plug>(SubversiveSubvertRangeConfirm)
+xmap <leader>ri <plug>(SubversiveSubvertRange)
+xmap <leader>rI <plug>(SubversiveSubvertRangeConfirm)
 xmap p <plug>(SubversiveSubstitute)
 xmap P <plug>(SubversiveSubstitute)
 
@@ -689,7 +689,7 @@ let g:EasyMotion_smartcase = 1
 let g:EasyMotion_enter_jump_first = 1
 map <leader><leader> <Plug>(easymotion-prefix)
 map s <leader><leader>f
-map S <leader><leader>F
+map <leader>s <leader><leader>F
 
 " rainbow_parentheses
 let g:rbpt_loadcmd_toggle = 1
