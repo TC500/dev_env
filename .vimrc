@@ -470,21 +470,26 @@ endif  "s:builty_vim
 " If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
 " (see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
 let s:colors_type=""
-if (empty($TMUX))
-    " For Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-    " Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-    " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
-    if (has("termguicolors")) && stridx($TERM, '256color') > 0
-        let s:colors_type="termguicolors"
+if ($COLORTERM == 'truecolor')
+    let s:colors_type="termguicolors"
+endif
+if (empty(s:colors_type))
+    if (empty($TMUX))
+        " For Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+        " Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+        " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+        if (has("termguicolors")) && stridx($TERM, '256color') > 0
+            let s:colors_type="termguicolors"
+        else
+            let s:colors_type="256"
+        endif
     else
-        let s:colors_type="256"
-    endif
-else
-    let s:tmux_version=system('tmux -V|sed "s/tmux 2.//"|sed "s/tmux 1.//"|tr -d "\n"')
-    if s:tmux_version > 1 && stridx($TERM, '256color') > 0 && has("termguicolors")
-        let s:colors_type="termguicolors"
-    else
-        let s:colors_type="256"
+        let s:tmux_version=system('tmux -V|sed "s/tmux 2.//"|sed "s/tmux 1.//"|tr -d "\n"')
+        if s:tmux_version > 1 && stridx($TERM, '256color') > 0 && has("termguicolors")
+            let s:colors_type="termguicolors"
+        else
+            let s:colors_type="256"
+        endif
     endif
 endif
 if s:colors_type == "termguicolors"
