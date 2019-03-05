@@ -470,7 +470,7 @@ endif  "s:builty_vim
 " If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
 " (see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
 let s:colors_type=""
-if ($COLORTERM == 'truecolor')
+if (stridx($COLORTERM, 'truecolor') > 0 || stridx($COLORTERM, '24bit') > 0)
     let s:colors_type="termguicolors"
 endif
 if (empty(s:colors_type))
