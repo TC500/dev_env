@@ -596,11 +596,11 @@ nmap p <plug>(YoinkPaste_p)
 nmap P <plug>(Yoinkpaste_P)
 
 " vim-subversive
-xmap <leader>rs <plug>(SubversiveSubstituteRange)
-xmap <leader>rS <plug>(SubversiveSubstituteRangeConfirm)
+xmap <leader>ss <plug>(SubversiveSubstituteRange)
+xmap <leader>sS <plug>(SubversiveSubstituteRangeConfirm)
 " ignore case
-xmap <leader>ri <plug>(SubversiveSubvertRange)
-xmap <leader>rI <plug>(SubversiveSubvertRangeConfirm)
+xmap <leader>si <plug>(SubversiveSubvertRange)
+xmap <leader>sI <plug>(SubversiveSubvertRangeConfirm)
 xmap p <plug>(SubversiveSubstitute)
 xmap P <plug>(SubversiveSubstitute)
 
