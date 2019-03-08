@@ -692,9 +692,9 @@ let g:EasyMotion_do_mapping = 1
 let g:EasyMotion_smartcase = 1
 " Type Enter or Space key and jump to first match
 let g:EasyMotion_enter_jump_first = 1
-map <leader><leader> <Plug>(easymotion-prefix)
-map s <leader><leader>f
-map <leader>s <leader><leader>F
+nmap s <Plug>(easymotion-overwin-f)
+xmap s <Plug>(easymotion-bd-f)
+omap s <Plug>(easymotion-bd-f)
 
 " rainbow_parentheses
 let g:rbpt_loadcmd_toggle = 1
