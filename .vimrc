@@ -910,6 +910,7 @@ if exists("s:enable_ycm")  && s:enable_ycm == 1
     " make YCM compatible with UltiSnips (using supertab)
     let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
     let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+    let g:ycm_max_diagnostics_to_display = 0
     let g:SuperTabDefaultCompletionType = '<C-n>'
 endif  "s:enable_ycm
 
