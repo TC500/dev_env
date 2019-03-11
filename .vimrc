@@ -903,6 +903,7 @@ if exists("s:enable_ycm")  && s:enable_ycm == 1
     " YCM will populate the location list automatically every time it gets new diagnostic data
     let g:ycm_always_populate_location_list = 1
     nmap <C-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
+    nmap <leader>gy :YcmCompleter FixIt<CR>
     " goto next location list
     autocmd FileType c,cpp,java nmap [l :lnext<CR>
     " goto previous location list
