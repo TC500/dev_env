@@ -607,6 +607,7 @@ xmap P <plug>(SubversiveSubstitute)
 " LeaderF
 let g:Lf_ShortcutF = '<C-p>'
 let g:Lf_ShortcutB = '<leader>lb'
+let g:Lf_ShowHidden = 1
 " let g:Lf_DefaultMode = 'FullPath'
 nmap <leader>lt :LeaderfBufTag<CR>
 nmap <leader>lf :LeaderfFunction<CR>
