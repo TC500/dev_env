@@ -790,8 +790,7 @@ let g:airline_theme='solarized'
 " for NERDTree plugin
 nmap <F4> :NERDTreeToggle<CR>
 nmap <F5> :NERDTreeFind<CR>
-let g:tagbar_map_showproto = "<leader><leader>"
-let g:tagbar_map_togglesort = "<leader>s"
+let g:NERDTreeMapOpenVSplit = '<leader>s'
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeWinSize=35
 let g:NERDTreeWinPos = "left"
