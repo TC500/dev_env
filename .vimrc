@@ -790,6 +790,8 @@ let g:airline_theme='solarized'
 " for NERDTree plugin
 nmap <F4> :NERDTreeToggle<CR>
 nmap <F5> :NERDTreeFind<CR>
+let g:tagbar_map_showproto = "<leader><leader>"
+let g:tagbar_map_togglesort = "<leader>s"
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeWinSize=35
 let g:NERDTreeWinPos = "left"
@@ -812,6 +814,8 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " for tagbar
 nmap <F8> :TagbarToggle<CR>
+let g:tagbar_map_showproto = "<leader><leader>"
+let g:tagbar_map_togglesort = "<leader>s"
 let g:tagbar_width=30
 " open tagbar if ext match
 autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx,*.py,*.java call tagbar#autoopen()
