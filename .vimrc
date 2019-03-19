@@ -18,6 +18,7 @@ let s:enable_ycm = 1
 " 6. run vim, wait for plugins auto install
 " 7. well done!
 
+let s:cpp_clang_highlight = 1
 " check is enable system clipboard
 if has('clipboard') && !empty($DISPLAY)
     let s:enable_system_clipboard = 1
@@ -226,11 +227,6 @@ if count(g:bundle_groups, 'javascript')
     Plug 'pangloss/vim-javascript'
 endif
 
-if count(g:bundle_groups, 'cpp')
-    " cpp highlight
-    Plug 'octol/vim-cpp-enhanced-highlight'
-endif
-
 if count(g:bundle_groups, 'c') || count(g:bundle_groups, 'cpp') || count(g:bundle_groups, 'java')
     " async generate and update ctags/gtags
     Plug 'ludovicchabant/vim-gutentags'
@@ -247,21 +243,34 @@ if count(g:bundle_groups, 'python')
     Plug 'python-mode/python-mode'
 endif
 
+let s:is_system_clang = 0
+if s:os == "Linux"
+    let s:is_libclang7_install=str2nr(system('ldconfig -p | grep "libclang-[789].so" | wc -l'))
+    let s:is_libclang7_install+=str2nr(system('strings `ldconfig -p | grep "libclang.so$" | awk -F" "' . " '" . '{print $NF}'. "'" . '` | grep "version [789].[0-9].[0-9]" | wc -l'))
+    if s:is_libclang7_install > 0
+        let s:is_system_clang = 1
+    endif
+endif
 " powerful code-completion engine
 if exists("s:enable_ycm")  && s:enable_ycm == 1
-    let s:is_system_clang = 0
-    if s:os == "Linux"
-        let s:is_libclang7_install=str2nr(system('ldconfig -p | grep "libclang-[789].so" | wc -l'))
-        let s:is_libclang7_install+=str2nr(system('strings `ldconfig -p | grep "libclang.so$" | awk -F" "' . " '" . '{print $NF}'. "'" . '` | grep "version [789].[0-9].[0-9]" | wc -l'))
-        if s:is_libclang7_install > 0
-            let s:is_system_clang = 1
-        endif
-    endif
     Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
     if s:is_system_clang
         Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang --java-completer' }
     else
         Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --java-completer' }
+    endif
+endif
+
+if count(g:bundle_groups, 'cpp')
+    " cpp highlight
+    if exists("s:cpp_clang_highlight")  && s:cpp_clang_highlight == 1
+        if s:is_system_clang
+            Plug 'jeaye/color_coded', {'do': 'dir=`mktemp -d` && cd $dir && cmake -DDOWNLOAD_CLANG=0 ~/.vim/bundle/color_coded/ && make && make install'}
+        else
+            Plug 'jeaye/color_coded', {'do': 'dir=`mktemp -d` && cd $dir && cmake ~/.vim/bundle/color_coded/ && make && make install'}
+        endif
+    else
+        Plug 'octol/vim-cpp-enhanced-highlight'
     endif
 endif
 
