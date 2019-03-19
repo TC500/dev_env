@@ -270,7 +270,7 @@ if count(g:bundle_groups, 'cpp')
             Plug 'jeaye/color_coded', {'do': 'dir=`mktemp -d` && cd $dir && cmake ~/.vim/bundle/color_coded/ && make && make install'}
         endif
     else
-        Plug 'octol/vim-cpp-enhanced-highlight'
+        Plug 'bfrg/vim-cpp-modern'
     endif
 endif
 
@@ -574,13 +574,9 @@ augroup fswitch_cpp
     au BufEnter *.h let b:fswitchlocs = 'reg:/include/src/,reg:/include.*/src/'
 augroup END
 
-" vim-cpp-enhanced-highlight
-let g:cpp_class_scope_highlight = 1
-" let g:cpp_member_variable_highlight = 1
-let g:cpp_class_decl_highlight = 1
-let g:cpp_experimental_simple_template_highlight = 1
-" let g:cpp_experimental_template_highlight = 1
-let g:cpp_concepts_highlight = 1
+" vim-cpp-modern
+" Enable highlighting of named requirements (C++20 library concepts)
+let g:cpp_named_requirements_highlight = 1
 
 " minimap
 let g:minimap_show='<Char-172>'
