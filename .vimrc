@@ -389,7 +389,7 @@ set ignorecase
 " a comma separated list of screen columns that are highlighted
 set colorcolumn=80
 " highlight cursor line, have perfermance problem
-" set cursorline
+set cursorline
 " If this many milliseconds nothing is typed the swap file will be written to disk
 set updatetime=1000
 " screen will not be redrawn while executing macros, registers and other
