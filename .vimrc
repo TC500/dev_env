@@ -389,6 +389,12 @@ set lazyredraw
 set completeopt=longest,menu,preview
 " enable syntax hightlight
 syntax on
+" minimum number of lines that Vim goes backward to try to find the start of a
+" comment for syntax highlighting, set small can imporve highlight
+" perfermance, but may cause hightlight error
+syntax sync minlines=128
+" maximum column in which to search for syntax items
+set synmaxcol=200
 " when there is a previous search pattern, highlight all its matches
 set hlsearch
 " all directories will be searched
