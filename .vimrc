@@ -257,6 +257,7 @@ if exists("s:enable_ycm")  && s:enable_ycm == 1
             let s:is_system_clang = 1
         endif
     endif
+    Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
     if s:is_system_clang
         Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang --java-completer' }
     else
