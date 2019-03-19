@@ -18,7 +18,7 @@ let s:enable_ycm = 1
 " 6. run vim, wait for plugins auto install
 " 7. well done!
 
-let s:cpp_clang_highlight = 1
+let s:cpp_clang_highlight = 0
 " check is enable system clipboard
 if has('clipboard') && !empty($DISPLAY)
     let s:enable_system_clipboard = 1
