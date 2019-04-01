@@ -3,7 +3,7 @@
 " 2. install cmake and gcc
 " 3. custom plugin bundle groups
 "   c/cpp require install cscope and clang-format
-"   java/c/cpp require install 'gnu global'
+"   java/c/cpp/scala/python require install 'gnu global' and https://github.com/yoshizow/global-pygments-plugin
 "   java require install JDK8
 "   python require install flake8, pylintl, yapfl and autopep8(sudo -H pip install flake8 pylint yapf autopep8)
 if !exists('g:bundle_groups')
