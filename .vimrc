@@ -7,8 +7,8 @@
 "   java require install JDK8
 "   python require install flake8, pylintl, yapfl and autopep8(sudo -H pip install flake8 pylint yapf autopep8)
 if !exists('g:bundle_groups')
-    " let g:bundle_groups=['base', 'python', 'c', 'cpp', 'golang', 'html', 'javascript', 'markdown', 'java', 'json', 'shell', 'protobuf', 'thrift']
-    let g:bundle_groups=['base', 'python', 'c', 'cpp', 'markdown', 'json', 'shell', 'protobuf', 'thrift']
+    " let g:bundle_groups=['base', 'python', 'c', 'cpp', 'golang', 'html', 'javascript', 'markdown', 'java', 'json', 'shell', 'protobuf', 'thrift', 'scala']
+    let g:bundle_groups=['base', 'python', 'c', 'cpp', 'markdown', 'json', 'shell', 'protobuf', 'thrift', 'scala']
 endif
 " 4. is enable builty plugin, this require set terminal font to DroidSansMono Nerd\ Font\ 11
 " the font will auto install when vim first running
@@ -189,6 +189,11 @@ endif
 if count(g:bundle_groups, 'java')
     " insert and sort Java import statements, view JavaDoc from class name, and more
     Plug 'TC500/JavaImp.vim'
+endif
+
+if count(g:bundle_groups, 'scala')
+    " scala highlight
+    Plug 'derekwyatt/vim-scala'
 endif
 
 if count(g:bundle_groups, 'shell')
@@ -529,6 +534,9 @@ let g:JavaImpDocPaths = "/usr/lib/jvm/default-java/docs/api;" .
             \ "/project/docs/api"
 let g:JavaImpDocViewer = "google-chrome"
 let g:JavaImpSortPkgSep = 1
+
+" vim-scala
+let g:scala_scaladoc_indent = 1
 
 " vimfiler
 let g:vimfiler_as_default_explorer = 1
