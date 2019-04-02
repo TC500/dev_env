@@ -5,6 +5,7 @@
 "   c/cpp require install cscope and clang-format
 "   java/c/cpp/scala/python require install 'gnu global' and https://github.com/yoshizow/global-pygments-plugin
 "   scala require pip install websocket-client sexpdata
+"   scala require sbt
 "   java require install JDK8
 "   python require install flake8, pylintl, yapfl and autopep8(sudo -H pip install flake8 pylint yapf autopep8)
 if !exists('g:bundle_groups')
@@ -739,7 +740,7 @@ let g:user_emmet_install_global = 0
 if count(g:bundle_groups, 'html')
     augroup emmet-vim_
         autocmd!
-        autocmd BufRead,BufNewFile *html,*css EmmetInstall
+        autocmd BufRead,BufNewFile *.html,*.css EmmetInstall
     augroup END
 endif
 
