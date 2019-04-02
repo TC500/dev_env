@@ -560,6 +560,7 @@ augroup ensime-vim_
     autocmd BufRead,BufNewFile *.scala nnoremap <buffer> <C-g> :EnDeclaration<CR>
 augroup END
 " :EnDocBrowse opens documentation for the element under the cursor in your browser
+" run 'sbt ensimeConfig' in project root dir for scala
 
 " vimfiler
 let g:vimfiler_as_default_explorer = 1
