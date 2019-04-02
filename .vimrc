@@ -4,6 +4,7 @@
 " 3. custom plugin bundle groups
 "   c/cpp require install cscope and clang-format
 "   java/c/cpp/scala/python require install 'gnu global' and https://github.com/yoshizow/global-pygments-plugin
+"   scala require pip install websocket-client sexpdata
 "   java require install JDK8
 "   python require install flake8, pylintl, yapfl and autopep8(sudo -H pip install flake8 pylint yapf autopep8)
 if !exists('g:bundle_groups')
@@ -35,6 +36,15 @@ if !exists("s:os")
     endif
 endif
 
+if count(g:bundle_groups, 'scala')
+    " install sbt-ensime
+    let s:is_sbt_ensime_exsist=str2nr(system('cat ~/.sbt/1.0/plugins/plugins.sbt | grep "sbt-ensime" | wc -l'))
+    if s:is_sbt_ensime_exsist == 0
+        execute 'silent !mkdir -p ~/.sbt/1.0/plugins'
+        execute 'silent !echo "addSbtPlugin(\"org.ensime\" \% \"sbt-ensime\" \% \"2.5.1\")" >> ~/.sbt/1.0/plugins/plugins.sbt'
+    endif
+endif
+
 " install font for builty_vim
 function! InstallAirLineFont()
     let s:usr_font_path = $HOME . '/.local/share/fonts/custom/Droid Sans Mono for Powerline Nerd Font Complete.otf'
@@ -61,7 +71,10 @@ endif
 if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
                 \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    augroup vim-plug_
+        autocmd!
+        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    augroup END
     call InstallAirLineFont()
 endif
 
@@ -194,6 +207,7 @@ endif
 if count(g:bundle_groups, 'scala')
     " scala highlight
     Plug 'derekwyatt/vim-scala'
+    Plug 'ensime/ensime-vim'
 endif
 
 if count(g:bundle_groups, 'shell')
@@ -538,6 +552,15 @@ let g:JavaImpSortPkgSep = 1
 " vim-scala
 let g:scala_scaladoc_indent = 1
 
+" ensime-vim
+augroup ensime-vim_
+    autocmd!
+    autocmd BufWritePost *.scala silent :EnTypeCheck
+    autocmd BufRead,BufNewFile *.scala nnoremap <buffer> <leader>t :EnType<CR>
+    autocmd BufRead,BufNewFile *.scala nnoremap <buffer> <C-g> :EnDeclaration<CR>
+augroup END
+" :EnDocBrowse opens documentation for the element under the cursor in your browser
+
 " vimfiler
 let g:vimfiler_as_default_explorer = 1
 
@@ -551,11 +574,17 @@ let ale_blacklist = []
 if exists("s:enable_ycm")  && s:enable_ycm == 1
     " disable ale if YouCompleteMe is better
     let g:ale_linters = {'c': [], 'cpp': [], 'java': []}
-    autocmd FileType c,cpp,java  setl fdm=syntax | setl fen
+    augroup ale_0_
+        autocmd!
+        autocmd FileType c,cpp,java setlocal fdm=syntax | setlocal fen
+    augroup END
     let ale_blacklist = ['c', 'cpp', 'java']
 endif
-autocmd FileType * if index(ale_blacklist, &ft) < 0 | nmap <silent> [l <Plug>(ale_previous_wrap)
-autocmd FileType * if index(ale_blacklist, &ft) < 0 | nmap <silent> ]l <Plug>(ale_next_wrap)
+augroup ale_1_
+    autocmd!
+    autocmd BufRead,BufNewFile * if count(ale_blacklist, &ft) | nmap <buffer> [l <Plug>(ale_previous_wrap) |
+                \ nmap <buffer> ]l <Plug>(ale_next_wrap) | endif
+augroup END
 
 " vim-header
 let g:header_field_author = 'Ma Xiaowei'
@@ -564,7 +593,7 @@ let g:header_auto_add_header = 0
 let g:header_auto_update_header = 1
 let g:header_field_filename = 0
 let g:header_field_timestamp_format = '%Y-%m-%d %H:%M:%S'
-let g:header_field_copyright = 'Copyright (c) %Y Meituan Inc. All rights reserved.'
+let g:header_field_copyright = 'Copyright (c) 2019 Meituan Inc. All rights reserved.'
 let g:header_alignment = 1
 let g:header_max_size = 20
 
@@ -575,11 +604,11 @@ let g:header_max_size = 20
 nmap <silent> <Leader>a :FSHere<cr>
 augroup fswitch_cpp
     " support *.cc
-    au!
-    au BufEnter *.cc let b:fswitchdst  = 'h'
-    au BufEnter *.cc let b:fswitchlocs = 'reg:/src/include/,reg:|src|include/**|,../include'
-    au BufEnter *.h let b:fswitchdst  = 'cpp,cc,C'
-    au BufEnter *.h let b:fswitchlocs = 'reg:/include/src/,reg:/include.*/src/'
+    autocmd!
+    autocmd BufEnter *.cc let b:fswitchdst  = 'h'
+    autocmd BufEnter *.cc let b:fswitchlocs = 'reg:/src/include/,reg:|src|include/**|,../include'
+    autocmd BufEnter *.h let b:fswitchdst  = 'cpp,cc,C'
+    autocmd BufEnter *.h let b:fswitchlocs = 'reg:/include/src/,reg:/include.*/src/'
 augroup END
 
 " vim-cpp-modern
@@ -628,6 +657,7 @@ xmap P <plug>(SubversiveSubstitute)
 let g:Lf_ShortcutF = '<C-p>'
 let g:Lf_ShortcutB = '<leader>lb'
 let g:Lf_ShowHidden = 1
+let g:Lf_CursorBlink = 0
 " let g:Lf_DefaultMode = 'FullPath'
 nmap <leader>lt :LeaderfBufTag<CR>
 nmap <leader>lf :LeaderfFunction<CR>
@@ -683,8 +713,10 @@ endif
 let g:indentLine_enabled = 1
 let g:vim_json_syntax_conceal = 0
 let g:indentLine_fileTypeExclude = ['json', 'markdown']
-autocmd BufEnter *.md setlocal conceallevel=0
-autocmd BufEnter *.markdown setlocal conceallevel=0
+augroup indentline_
+    autocmd!
+    autocmd BufRead,BufNewFile * if count(['markdown'], &ft) | setlocal conceallevel=0 | endif
+augroup END
 
 " incsearch
 map /  <Plug>(incsearch-forward)
@@ -704,7 +736,10 @@ let g:user_emmet_mode='nv' "enable key map only normal and visual mode
 let g:user_emmet_install_global = 0
 " let g:user_emmet_leader_key='<C-Y>'
 if count(g:bundle_groups, 'html')
-    autocmd FileType html,css EmmetInstall
+    augroup emmet-vim_
+        autocmd!
+        autocmd BufRead,BufNewFile *html,*css EmmetInstall
+    augroup END
 endif
 
 " easymotion/vim-easymotion
@@ -736,11 +771,14 @@ let g:rbpt_colorpairs = [
             \ ['red',         'firebrick3'],
             \ ]
 let g:rbpt_max = 15
-au VimEnter * RainbowParenthesesToggle " Toggle it on/off
-au Syntax * RainbowParenthesesLoadRound " ()
-au Syntax * RainbowParenthesesLoadSquare " []
-au Syntax * RainbowParenthesesLoadBraces "{}
-" au Syntax * RainbowParenthesesLoadChevrons " <>
+augroup rainbow_parentheses_
+    autocmd!
+    autocmd VimEnter * RainbowParenthesesToggle " Toggle it on/off
+    autocmd Syntax * RainbowParenthesesLoadRound " ()
+    autocmd Syntax * RainbowParenthesesLoadSquare " []
+    autocmd Syntax * RainbowParenthesesLoadBraces "{}
+    " autocmd Syntax * RainbowParenthesesLoadChevrons " <>
+augroup END
 
 " pymode
 let g:pymode_folding = 0
@@ -822,14 +860,17 @@ let g:NERDTreePatternMatchHighlightFullName = 1
 let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
 let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
 let g:NERDTreeHighlightCursorline = 0
-" autocmd vimenter * NERDTree
-autocmd StdinReadPre * let s:std_in=1
-" open a NERDTree automatically when vim starts up if no files were specified
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") && winnr('$') < 2 | NERDTree | endif
-" open NERDTree automatically when vim starts up on opening a directory
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-" close vim if the only window left open is a NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup nerdtree_
+    autocmd!
+    " autocmd vimenter * NERDTree
+    "autocmd StdinReadPre * let s:std_in=1
+    " open a NERDTree automatically when vim starts up if no files were specified
+    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") && winnr('$') < 2 | NERDTree | endif
+    " open NERDTree automatically when vim starts up on opening a directory
+    autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+    " close vim if the only window left open is a NERDTree
+    autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup END
 
 " for tagbar
 nmap <F8> :TagbarToggle<CR>
@@ -837,7 +878,10 @@ let g:tagbar_map_showproto = "<leader><leader>"
 let g:tagbar_map_togglesort = "<leader>s"
 let g:tagbar_width=30
 " open tagbar if ext match
-autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx,*.py,*.java call tagbar#autoopen()
+augroup tagbar_
+    autocmd!
+    autocmd BufReadPost * if count(['c','cpp','python','java','scala','go'], &ft) | call tagbar#autoopen() | endif
+augroup END
 
 " autoformat
 nmap <leader>i :Autoformat<CR>
@@ -926,12 +970,17 @@ if exists("s:enable_ycm")  && s:enable_ycm == 1
     let g:EclimFileTypeValidate = 0
     " YCM will populate the location list automatically every time it gets new diagnostic data
     let g:ycm_always_populate_location_list = 1
-    nmap <C-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
-    nmap <leader>gy :YcmCompleter FixIt<CR>
-    " goto next location list
-    autocmd FileType c,cpp,java nmap [l :lnext<CR>
-    " goto previous location list
-    autocmd FileType c,cpp,java nmap ]l :lprevious<CR>
+
+    augroup ycm_
+        autocmd!
+        " goto next location list
+        " goto previous location list
+        autocmd BufRead,BufNewFile * if count(['cpp','c','python','java','go'], &ft) | nmap <buffer> <C-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR> |
+                    \ nmap <buffer> <leader>gy :YcmCompleter FixIt<CR> |
+                    \ nnoremap <buffer> <leader>t :YcmCompleter GetType<CR> |
+                    \ nmap <buffer> [l :lnext<CR> |
+                    \ nmap <buffer> ]l :lprevious<CR> | endif
+    augroup END
     " make YCM compatible with UltiSnips (using supertab)
     let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
     let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
@@ -1060,7 +1109,10 @@ if !exists(":UpdateTitle")
     command -nargs=0 UpdateTitle :call UpdateTitle()
 endif
 " auto update title
-autocmd BufWritePre,FileWritePre * call UpdateTitle()
+augroup update_title_
+    autocmd!
+    autocmd BufWritePre,FileWritePre * call UpdateTitle()
+augroup END
 
 " F2 toggle line number
 " for mouse select and copy from terminal
@@ -1088,9 +1140,10 @@ nnoremap <F2> :call ToggleNumber()<CR>
 nnoremap <F3> :set list! list?<CR>
 
 " goto last edit position when open file
-if has("autocmd")
-    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-endif
+augroup goto_edit_position_
+    autocmd!
+    autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+augroup END
 
 " in command line mode,ctrl-a goto line head，ctrl-e goto line tail
 cnoremap <C-a> <Home>
