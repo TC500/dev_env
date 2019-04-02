@@ -864,7 +864,7 @@ let g:NERDTreeHighlightCursorline = 0
 augroup nerdtree_
     autocmd!
     " autocmd vimenter * NERDTree
-    "autocmd StdinReadPre * let s:std_in=1
+    autocmd StdinReadPre * let s:std_in=1
     " open a NERDTree automatically when vim starts up if no files were specified
     autocmd VimEnter * if argc() == 0 && !exists("s:std_in") && winnr('$') < 2 | NERDTree | endif
     " open NERDTree automatically when vim starts up on opening a directory
