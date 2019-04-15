@@ -250,7 +250,8 @@ endif
 if count(g:bundle_groups, 'c') || count(g:bundle_groups, 'cpp') || count(g:bundle_groups, 'java')
     " async generate and update ctags/gtags
     Plug 'ludovicchabant/vim-gutentags'
-    Plug 'skywind3000/gutentags_plus'
+    Plug 'TC500/gutentags_plus'
+    " Plug 'skywind3000/gutentags_plus'
 endif
 
 if count(g:bundle_groups, 'c') || count(g:bundle_groups, 'cpp')
@@ -995,6 +996,8 @@ endif  "s:enable_ycm
 let g:gutentags_plus_nomap = 1
 " auto switch to quickfix window
 let g:gutentags_plus_switch = 1
+" auto close quickfix if press <CR>
+let g:gutentags_plus_auto_close_list = 1
 " find this symbol
 noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
 " find this definition
