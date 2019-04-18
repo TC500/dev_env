@@ -230,7 +230,7 @@ if count(g:bundle_groups, 'golang')
     " go development plugin
     Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
     " an autocompletion daemon for the Go programming language
-    Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+    " Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 endif
 
 if count(g:bundle_groups, 'html')
@@ -276,9 +276,9 @@ endif
 if exists("s:enable_ycm")  && s:enable_ycm == 1
     Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
     if s:is_system_clang
-        Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang --java-completer' }
+        Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang --java-completer --go-completer' }
     else
-        Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --java-completer' }
+        Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --java-completer --go-completer' }
     endif
 endif
 
@@ -733,7 +733,51 @@ map zg/ <Plug>(incsearch-fuzzy-stay)
 " map z/ <Plug>(incsearch-fuzzyspell-/)
 " map z? <Plug>(incsearch-fuzzyspell-?)
 " map zg/ <Plug>(incsearch-fuzzyspell-stay)
-
+" vim-go                                                                                                                                                                                                   
+  let g:go_fmt_command = "goimports"
+  let g:go_highlight_types = 1
+  let g:go_highlight_fields = 1
+  let g:go_highlight_functions = 1
+  let g:go_highlight_function_calls = 1
+  let g:go_highlight_extra_types = 1
+  let g:go_highlight_generate_tags = 1
+  " let g:go_list_type = "quickfix"                                                                                                                                                                          
+  augroup go                                                                                                                                                                                                 
+      autocmd!                                                                                                                                                                                               
+      " :GoBuild and :GoTestCompile                                                                                                                                                                          
+      autocmd FileType go nmap <buffer> <leader>ob :<C-u>call <SID>build_go_files()<CR>                                                                                                                      
+      " :GoTest                                                                                                                                                                                              
+      autocmd FileType go nmap <buffer> <leader>ot  <Plug>(go-test)                                                                                                                                          
+      " :GoRun                                                                                                                                                                                               
+      autocmd FileType go nmap <buffer> <leader>or  <Plug>(go-run)                                                                                                                                           
+      " :GoDoc                                                                                                                                                                                               
+      autocmd FileType go nmap <buffer> <Leader>od <Plug>(go-doc)                                                                                                                                            
+      " :GoCoverageToggle                                                                                                                                                                                    
+      autocmd FileType go nmap <buffer> <Leader>oc <Plug>(go-coverage-toggle)                                                                                                                                
+      " :GoInfo                                                                                                                                                                                              
+      autocmd FileType go nmap <buffer> <Leader>oi <Plug>(go-info)                                                                                                                                           
+      " :GoMetaLinter                                                                                                                                                                                        
+      autocmd FileType go nmap <buffer> <Leader>ol <Plug>(go-metalinter)                                                                                                                                     
+      " :GoDef but opens in a vertical split                                                                                                                                                                 
+      autocmd FileType go nmap <buffer> <Leader>ov <Plug>(go-def-vertical)                                                                                                                                   
+      " :GoDef but opens in a horizontal split                                                                                                                                                               
+      autocmd FileType go nmap <buffer> <Leader>os <Plug>(go-def-split)                                                                                                                                      
+      " :GoAlternate  commands :A, :AV, :AS and :AT                                                                                                                                                          
+      autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')                                                                                                                         
+      autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')                                                                                                                      
+      autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')                                                                                                                       
+      autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')                                                                                                                        
+  augroup END
+  " build_go_files is a custom function that builds or compiles the test file.                                                                                                                               
+  " It calls :GoBuild if its a Go file, or :GoTestCompile if it's a test file                                                                                                                                
+  function! s:build_go_files()                                                                                                                                                                               
+      let l:file = expand('%')                                                                                                                                                                               
+      if l:file =~# '^\f\+_test\.go$'                                                                                                                                                                        
+          call go#test#Test(0, 1)                                                                                                                                                                            
+      elseif l:file =~# '^\f\+\.go$'                                                                                                                                                                         
+          call go#cmd#Build(0)                                                                                                                                                                               
+      endif                                                                                                                                                                                                  
+  endfunction
 " emmet-vim
 let g:user_emmet_mode='nv' "enable key map only normal and visual mode
 let g:user_emmet_install_global = 0
@@ -890,6 +934,7 @@ augroup END
 nmap <leader>i :Autoformat<CR>
 vmap <leader>i :Autoformat<CR>
 let g:formatters_python = ["yapf","autopep8"]
+let g:formatters_golang = ["goimports","gofmt"]
 
 " vim for python
 " python-syntax
@@ -902,40 +947,6 @@ let g:DoxygenToolkit_blockHeader="----------------------------------------------
 let g:DoxygenToolkit_blockFooter="----------------------------------------------------------------------------"
 let g:DoxygenToolkit_authorName="maxiaowei_main@qq.com"
 let g:DoxygenToolkit_licenseTag="maxiaowei_main@qq.com"
-
-" vim for go
-" set rtp+=$GOROOT/misc/vim
-
-" go tagbar list function and variable in gofiles
-let g:tagbar_type_go = {
-            \ 'ctagstype' : 'go',
-            \ 'kinds'     : [
-            \ 'p:package',
-            \ 'i:imports:1',
-            \ 'c:constants',
-            \ 'v:variables',
-            \ 't:types',
-            \ 'n:interfaces',
-            \ 'w:fields',
-            \ 'e:embedded',
-            \ 'm:methods',
-            \ 'r:constructor',
-            \ 'f:functions'
-            \ ],
-            \ 'sro' : '.',
-            \ 'kind2scope' : {
-            \ 't' : 'ctype',
-            \ 'n' : 'ntype'
-            \ },
-            \ 'scope2kind' : {
-            \ 'ctype' : 't',
-            \ 'ntype' : 'n'
-            \ },
-            \ 'ctagsbin'  : 'gotags',
-            \ 'ctagsargs' : '-sort -silent'
-            \ }
-
-"let g:Powerline_symbols = 'fancy' "may be Garbled in macvim
 
 " auto-pairs
 let g:AutoPairsMultilineClose = 1
