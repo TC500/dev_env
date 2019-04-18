@@ -10,7 +10,7 @@
 "   python require install flake8, pylintl, yapfl and autopep8(sudo -H pip install flake8 pylint yapf autopep8)
 if !exists('g:bundle_groups')
     " let g:bundle_groups=['base', 'python', 'c', 'cpp', 'golang', 'html', 'javascript', 'markdown', 'java', 'json', 'shell', 'protobuf', 'thrift', 'scala']
-    let g:bundle_groups=['base', 'python', 'c', 'cpp', 'markdown', 'json', 'shell', 'protobuf', 'thrift', 'scala']
+    let g:bundle_groups=['base', 'python', 'c', 'cpp', 'markdown', 'json', 'shell', 'protobuf', 'thrift', 'scala', 'golang']
 endif
 " 4. is enable builty plugin, this require set terminal font to DroidSansMono Nerd\ Font\ 11
 " the font will auto install when vim first running
@@ -228,9 +228,9 @@ endif
 
 if count(g:bundle_groups, 'golang')
     " go development plugin
-    Plug 'fatih/vim-go'
+    Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
     " an autocompletion daemon for the Go programming language
-    Plug 'mdempsky/gocode'
+    Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 endif
 
 if count(g:bundle_groups, 'html')
