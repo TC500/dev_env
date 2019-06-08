@@ -320,12 +320,6 @@ endif  "s:builty_vim
 
 call plug#end()
 
-" vim color scheme, available: darkblue,codedark,space-vim-dark,elflord,evening,koehler,slate,desert,solarized8,monokai
-"   solarized8 require terminal color scheme solarized
-colorscheme solarized8
-" available: dark/white
-set background=dark
-
 " no swp file
 set nobackup
 " enable indent plugin by filetype
@@ -537,6 +531,12 @@ elseif s:colors_type == "256"
 endif
 " disable vim refresh terminal backgroud color
 set t_ut=
+
+" available: dark/white
+set background=dark
+" vim color scheme, available: darkblue,codedark,space-vim-dark,elflord,evening,koehler,slate,desert,solarized8,monokai
+"   solarized8 require terminal color scheme solarized
+colorscheme solarized8
 
 " set leader key
 let mapleader = "\<Space>"
