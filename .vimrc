@@ -198,6 +198,8 @@ if count(g:bundle_groups, 'base')
     Plug 'honza/vim-snippets'
     " View and grep man pages
     Plug 'vim-utils/vim-man'
+    " Automatic resizing of Vim windows to the golden ratio
+    Plug 'roman/golden-ratio'
 endif
 
 if count(g:bundle_groups, 'java')
@@ -1056,6 +1058,13 @@ set cmdheight=2
 " set noshowmode
 let g:echodoc#enable_at_startup = 1
 let g:echodoc#enable_force_overwrite = 1
+
+" golden-ratio
+" let g:loaded_golden_ratio = 1
+" let g:golden_ratio_autocommand = 1
+" let g:golden_ratio_wrap_ignored = 0
+" This is useful if you keep things like buffer explorer or tag list
+" let g:golden_ratio_exclude_nonmodifiable = 0
 
 " vim-paste-easy
 let g:paste_easy_message = 0
