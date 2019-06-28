@@ -1141,6 +1141,9 @@ augroup update_title_
     autocmd BufWritePre,FileWritePre * call UpdateTitle()
 augroup END
 
+" auto close preview when complete done
+autocmd CompleteDone * pclose
+
 " F2 toggle line number
 " for mouse select and copy from terminal
 let s:rnu = &relativenumber
