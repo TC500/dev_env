@@ -5,7 +5,6 @@ zplug "rupa/z", use:z.sh
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-completions"
 zplug "zdharma/fast-syntax-highlighting"
-bindkey '^ ' autosuggest-accept
 (( ${+aliases[z]} )) && unalias z
 z() {
   if [[ -z "$*" ]]; then
@@ -28,3 +27,4 @@ if ! zplug check --verbose; then
     fi
 fi
 zplug load --verbose
+bindkey '^ ' autosuggest-accept
