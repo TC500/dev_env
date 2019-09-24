@@ -1,7 +1,7 @@
 source ~/.zplug/init.zsh
 zplug "plugins/git",   from:oh-my-zsh
 zplug "plugins/vi-mode",   from:oh-my-zsh
-zplug "rupa/z"
+zplug "rupa/z", use:z.sh
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-completions"
 zplug "zdharma/fast-syntax-highlighting"
