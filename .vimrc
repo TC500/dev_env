@@ -278,9 +278,9 @@ endif
 if exists("s:enable_ycm")  && s:enable_ycm == 1
     Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
     if s:is_system_clang
-        Plug 'Valloric/YouCompleteMe', { 'do': 'GO111MODULE=off && ./install.py --clang-completer --system-libclang --java-completer --go-completer' }
+        Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clangd-completer --clang-completer --system-libclang --java-completer --go-completer' }
     else
-        Plug 'Valloric/YouCompleteMe', { 'do': 'GO111MODULE=off && ./install.py --clang-completer --java-completer --go-completer' }
+        Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clangd-completer --clang-completer --java-completer --go-completer' }
     endif
 endif
 
@@ -988,6 +988,8 @@ if exists("s:enable_ycm")  && s:enable_ycm == 1
     let g:EclimFileTypeValidate = 0
     " YCM will populate the location list automatically every time it gets new diagnostic data
     let g:ycm_always_populate_location_list = 1
+    " Let clangd fully control code completion
+    let g:ycm_clangd_uses_ycmd_caching = 0
 
     augroup ycm_
         autocmd!
