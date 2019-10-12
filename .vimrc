@@ -1,4 +1,4 @@
-" Readme. see https://tc500.github.io/ for more details
+" Readme. see https://tc500.github.io/%E5%B7%A5%E5%85%B7%E9%93%BE/2019/02/08/%E9%AB%98%E6%95%88%E7%9A%84vim/# for more details
 " 1. put this file in location ~/.vimrc
 " 2. install cmake and gcc
 " 3. custom plugin bundle groups
@@ -77,6 +77,12 @@ if empty(glob('~/.vim/autoload/plug.vim'))
         autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
     augroup END
     call InstallAirLineFont()
+endif
+
+let s:is_exuberant_ctags=str2nr(system('ctags --version | head -n1 | grep ^Exuberant | wc -l'))
+let s:is_universal_ctags=str2nr(system('ctags --version | head -n1 | grep ^Universal | wc -l'))
+if s:is_universal_ctags > 1
+    let s:is_exuberant_ctags = 0
 endif
 
 call plug#begin('~/.vim/bundle')
@@ -190,6 +196,8 @@ if count(g:bundle_groups, 'base')
     Plug 'vim-airline/vim-airline-themes'
     " displays tags in a window, ordered by scope
     Plug 'majutsushi/tagbar'
+    "  Viewer & Finder for LSP symbols and tags, replace tagbar
+    Plug 'liuchengxu/vista.vim'
     " displays function signatures from completions in the command line
     Plug 'Shougo/echodoc.vim'
     " snippets
@@ -232,7 +240,7 @@ if count(g:bundle_groups, 'golang')
     " go development plugin
     Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
     " an autocompletion daemon for the Go programming language
-    " Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+    " Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/bundle/gocode/vim/symlink.sh' }
 endif
 
 if count(g:bundle_groups, 'html')
@@ -600,7 +608,7 @@ let g:header_field_filename = 0
 let g:header_field_timestamp_format = '%Y-%m-%d %H:%M:%S'
 let g:header_field_modified_timestamp = 0
 let g:header_field_modified_by = 0
-let g:header_field_copyright = 'Copyright (c) 2019 Meituan Inc. All rights reserved.'
+let g:header_field_copyright = 'Copyright (c) 2019 Inc. All rights reserved.'
 let g:header_alignment = 1
 let g:header_max_size = 20
 
@@ -666,6 +674,7 @@ let g:Lf_ShortcutB = '<leader>lb'
 let g:Lf_ShowHidden = 1
 let g:Lf_CursorBlink = 0
 " let g:Lf_DefaultMode = 'FullPath'
+" nmap <leader>lb :LeaderfBuffer<CR>
 nmap <leader>lt :LeaderfBufTag<CR>
 nmap <leader>lf :LeaderfFunction<CR>
 nmap <leader>ll :LeaderfLine<CR>
@@ -737,51 +746,56 @@ map zg/ <Plug>(incsearch-fuzzy-stay)
 " map z/ <Plug>(incsearch-fuzzyspell-/)
 " map z? <Plug>(incsearch-fuzzyspell-?)
 " map zg/ <Plug>(incsearch-fuzzyspell-stay)
-" vim-go                                                                                                                                                                                                   
-  let g:go_fmt_command = "goimports"
-  let g:go_highlight_types = 1
-  let g:go_highlight_fields = 1
-  let g:go_highlight_functions = 1
-  let g:go_highlight_function_calls = 1
-  let g:go_highlight_extra_types = 1
-  let g:go_highlight_generate_tags = 1
-  " let g:go_list_type = "quickfix"                                                                                                                                                                          
-  augroup go                                                                                                                                                                                                 
-      autocmd!                                                                                                                                                                                               
-      " :GoBuild and :GoTestCompile                                                                                                                                                                          
-      autocmd FileType go nmap <buffer> <leader>ob :<C-u>call <SID>build_go_files()<CR>                                                                                                                      
-      " :GoTest                                                                                                                                                                                              
-      autocmd FileType go nmap <buffer> <leader>ot  <Plug>(go-test)                                                                                                                                          
-      " :GoRun                                                                                                                                                                                               
-      autocmd FileType go nmap <buffer> <leader>or  <Plug>(go-run)                                                                                                                                           
-      " :GoDoc                                                                                                                                                                                               
-      autocmd FileType go nmap <buffer> <Leader>od <Plug>(go-doc)                                                                                                                                            
-      " :GoCoverageToggle                                                                                                                                                                                    
-      autocmd FileType go nmap <buffer> <Leader>oc <Plug>(go-coverage-toggle)                                                                                                                                
-      " :GoInfo                                                                                                                                                                                              
-      autocmd FileType go nmap <buffer> <Leader>oi <Plug>(go-info)                                                                                                                                           
-      " :GoMetaLinter                                                                                                                                                                                        
-      autocmd FileType go nmap <buffer> <Leader>ol <Plug>(go-metalinter)                                                                                                                                     
-      " :GoDef but opens in a vertical split                                                                                                                                                                 
-      autocmd FileType go nmap <buffer> <Leader>ov <Plug>(go-def-vertical)                                                                                                                                   
-      " :GoDef but opens in a horizontal split                                                                                                                                                               
-      autocmd FileType go nmap <buffer> <Leader>os <Plug>(go-def-split)                                                                                                                                      
-      " :GoAlternate  commands :A, :AV, :AS and :AT                                                                                                                                                          
-      autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')                                                                                                                         
-      autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')                                                                                                                      
-      autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')                                                                                                                       
-      autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')                                                                                                                        
-  augroup END
-  " build_go_files is a custom function that builds or compiles the test file.                                                                                                                               
-  " It calls :GoBuild if its a Go file, or :GoTestCompile if it's a test file                                                                                                                                
-  function! s:build_go_files()                                                                                                                                                                               
-      let l:file = expand('%')                                                                                                                                                                               
-      if l:file =~# '^\f\+_test\.go$'                                                                                                                                                                        
-          call go#test#Test(0, 1)                                                                                                                                                                            
-      elseif l:file =~# '^\f\+\.go$'                                                                                                                                                                         
-          call go#cmd#Build(0)                                                                                                                                                                               
-      endif                                                                                                                                                                                                  
-  endfunction
+
+" vim-go
+let g:go_fmt_command = "goimports"
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_generate_tags = 1
+" let g:go_list_type = "quickfix"
+augroup go
+    autocmd!
+    " :GoBuild and :GoTestCompile
+    autocmd FileType go nmap <buffer> <leader>ob :<C-u>call <SID>build_go_files()<CR>
+    " :GoTest
+    autocmd FileType go nmap <buffer> <leader>ot  <Plug>(go-test)
+    " :GoRun
+    autocmd FileType go nmap <buffer> <leader>or  <Plug>(go-run)
+    " :GoDoc
+    autocmd FileType go nmap <buffer> <Leader>od <Plug>(go-doc)
+    " :GoCoverageToggle
+    autocmd FileType go nmap <buffer> <Leader>oc <Plug>(go-coverage-toggle)
+    " :GoInfo
+    autocmd FileType go nmap <buffer> <Leader>oi <Plug>(go-info)
+    " :GoMetaLinter
+    autocmd FileType go nmap <buffer> <Leader>ol <Plug>(go-metalinter)
+    " :GoDef
+    " autocmd Filetype go nmap <buffer> <C-g> <Plug>(go-def)
+    " :GoDef but opens in a vertical split
+    autocmd FileType go nmap <buffer> <Leader>ov <Plug>(go-def-vertical)
+    " :GoDef but opens in a horizontal split
+    autocmd FileType go nmap <buffer> <Leader>os <Plug>(go-def-split)
+    " :GoAlternate  commands :A, :AV, :AS and :AT
+    autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+    autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+    autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+    autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+augroup END
+" build_go_files is a custom function that builds or compiles the test file.
+" It calls :GoBuild if its a Go file, or :GoTestCompile if it's a test file
+function! s:build_go_files()
+    let l:file = expand('%')
+    if l:file =~# '^\f\+_test\.go$'
+        call go#test#Test(0, 1)
+    elseif l:file =~# '^\f\+\.go$'
+        call go#cmd#Build(0)
+    endif
+endfunction
+
+
 " emmet-vim
 let g:user_emmet_mode='nv' "enable key map only normal and visual mode
 let g:user_emmet_install_global = 0
@@ -924,15 +938,33 @@ augroup nerdtree_
 augroup END
 
 " for tagbar
-nmap <F8> :TagbarToggle<CR>
-let g:tagbar_map_showproto = "<leader><leader>"
-let g:tagbar_map_togglesort = "<leader>s"
-let g:tagbar_width=30
-" open tagbar if ext match
-augroup tagbar_
-    autocmd!
-    autocmd BufReadPost * if count(['c','cpp','python','java','scala','go'], &ft) | call tagbar#autoopen() | endif
-augroup END
+if s:is_exuberant_ctags > 0
+    nmap <F8> :TagbarToggle<CR>
+    let g:tagbar_map_showproto = "<leader><leader>"
+    let g:tagbar_map_togglesort = "<leader>s"
+    let g:tagbar_width = 30
+    let g:tagbar_autofocus = 0
+    let g:tagbar_autoshowtag = 1
+    " open tagbar if ext match
+    augroup tagbar_
+        autocmd!
+        autocmd BufEnter * if count(['c','cpp','python','java','scala','go'], &ft) | call tagbar#autoopen() | endif
+    augroup END
+endif
+
+" for vista
+if s:is_universal_ctags > 0
+    nmap <F8> :Vista!!<CR>
+    let g:vista_default_executive = 'ctags'
+    let g:vista_sidebar_width = 30
+    " not move to the vista window when it is opened
+    let g:vista_stay_on_open = 0
+    let vista_update_on_text_changed = 1
+    augroup vista_
+        autocmd!
+        autocmd BufEnter * if count(['c','cpp','python','java','scala','go'], &ft) | Vista | endif
+    augroup END
+endif
 
 " autoformat
 nmap <leader>i :Autoformat<CR>
@@ -947,8 +979,8 @@ let python_highlight_all = 1
 " let g:DoxygenToolkit_briefTag_pre="@Synopsis  "
 " let g:DoxygenToolkit_paramTag_pre="@Param "
 " let g:DoxygenToolkit_returnTag="@Returns   "
-let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------------------"
-let g:DoxygenToolkit_blockFooter="----------------------------------------------------------------------------"
+" let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------------------"
+" let g:DoxygenToolkit_blockFooter="----------------------------------------------------------------------------"
 let g:DoxygenToolkit_authorName="maxiaowei_main@qq.com"
 let g:DoxygenToolkit_licenseTag="maxiaowei_main@qq.com"
 
@@ -995,7 +1027,8 @@ if exists("s:enable_ycm")  && s:enable_ycm == 1
         autocmd!
         " goto next location list
         " goto previous location list
-        autocmd BufRead,BufNewFile * if count(['cpp','c','python','java','go'], &ft) | nmap <buffer> <C-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR> |
+        autocmd BufRead,BufNewFile * if count(['cpp','c','python','java','go'], &ft) |
+                    \ nmap <buffer> <C-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR> |
                     \ nmap <buffer> <leader>gy :YcmCompleter FixIt<CR> |
                     \ nnoremap <buffer> <leader>t :YcmCompleter GetType<CR> |
                     \ nmap <buffer> [l :lnext<CR> |
@@ -1014,7 +1047,7 @@ let g:gutentags_plus_nomap = 1
 " auto switch to quickfix window
 let g:gutentags_plus_switch = 1
 " auto close quickfix if press <CR>
-let g:gutentags_plus_auto_close_list = 1
+let g:gutentags_plus_auto_close_list = 0
 " find this symbol
 noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
 " find this definition
@@ -1065,10 +1098,11 @@ let g:echodoc#enable_force_overwrite = 1
 
 " golden-ratio
 " let g:loaded_golden_ratio = 1
-" let g:golden_ratio_autocommand = 1
+let g:golden_ratio_autocommand = 0
 " let g:golden_ratio_wrap_ignored = 0
 " This is useful if you keep things like buffer explorer or tag list
-" let g:golden_ratio_exclude_nonmodifiable = 0
+" let g:golden_ratio_exclude_nonmodifiable = 1
+nmap <F7> :GoldenRatioResize<CR>
 
 " vim-paste-easy
 let g:paste_easy_message = 0
@@ -1100,7 +1134,7 @@ endfunction
 
 function! AddTitle()
     call append(0, "\/*")
-    call append(1, " * Copyright (c) 2019 Meituan Inc. All rights reserved.")
+    call append(1, " * Copyright (c) 2019 Inc. All rights reserved.")
     call append(2, " * @Author: maxiaowei_main@qq.com")
     call append(3, " * @Date: ".strftime("%Y-%m-%d %H:%M:%S".""))
     call append(4, " * @Last Modified by: maxiaowei_main@qq.com")
