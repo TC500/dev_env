@@ -946,10 +946,12 @@ if s:is_exuberant_ctags > 0
     let g:tagbar_autofocus = 0
     let g:tagbar_autoshowtag = 1
     " open tagbar if ext match
-    augroup tagbar_
-        autocmd!
-        autocmd BufEnter * if count(['c','cpp','python','java','scala','go'], &ft) | call tagbar#autoopen() | endif
-    augroup END
+    if !&diff
+        augroup tagbar_
+            autocmd!
+            autocmd BufEnter * if count(['c','cpp','python','java','scala','go'], &ft) | call tagbar#autoopen() | endif
+        augroup END
+    endif
 endif
 
 " for vista
