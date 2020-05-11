@@ -118,7 +118,7 @@ if count(g:bundle_groups, 'base')
     " enhanced replace and paste in visual mode
     Plug 'svermeulen/vim-subversive'
     " asynchronous lint engine
-    Plug 'w0rp/ale'
+    Plug 'dense-analysis/ale'
     " undo tree
     Plug 'mbbill/undotree'
     " enhanced replace
