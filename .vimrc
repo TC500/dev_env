@@ -286,9 +286,9 @@ endif
 if exists("s:enable_ycm")  && s:enable_ycm == 1
     Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
     if s:is_system_clang
-        Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clangd-completer --clang-completer --system-libclang --java-completer --go-completer' }
+        Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clangd-completer --clang-completer --system-libclang --java-completer --go-completer' }
     else
-        Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clangd-completer --clang-completer --java-completer --go-completer' }
+        Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clangd-completer --clang-completer --java-completer --go-completer' }
     endif
 endif
 
