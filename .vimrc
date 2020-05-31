@@ -1,24 +1,31 @@
-" Readme. see https://tc500.github.io/%E5%B7%A5%E5%85%B7%E9%93%BE/2019/02/08/%E9%AB%98%E6%95%88%E7%9A%84vim/# for more details
+" Readme. see https://tc500.github.io/ for more details
 " 1. put this file in location ~/.vimrc
 " 2. install cmake and gcc
 " 3. custom plugin bundle groups
-"   c/cpp require install cscope and clang-format
-"   java/c/cpp/scala/python require install 'gnu global' and https://github.com/yoshizow/global-pygments-plugin
+"   c/cpp require install cscope clang-format GNU-global
+"   java/c/cpp/scala/python require install GNU-global and https://github.com/yoshizow/global-pygments-plugin
 "   scala require pip install websocket-client sexpdata
 "   scala require sbt
-"   java require install JDK8
-"   python require install flake8, pylintl, yapfl and autopep8(sudo -H pip install flake8 pylint yapf autopep8)
+"   java require install JDK8 or JDK11
+"   python require install flake8, pylintl, yapf and autopep8(sudo -H pip install flake8 pylint yapf autopep8)
 if !exists('g:bundle_groups')
     " let g:bundle_groups=['base', 'python', 'c', 'cpp', 'golang', 'html', 'javascript', 'markdown', 'java', 'json', 'shell', 'protobuf', 'thrift', 'scala']
-    let g:bundle_groups=['base', 'python', 'c', 'cpp', 'markdown', 'json', 'shell', 'protobuf', 'thrift', 'scala', 'golang']
+    let g:bundle_groups=['base', 'python', 'c', 'cpp', 'markdown', 'json', 'shell', 'protobuf', 'thrift', 'scala', 'golang', 'java']
 endif
 " 4. is enable builty plugin, this require set terminal font to DroidSansMono Nerd\ Font\ 11
 " the font will auto install when vim first running
 let s:builty_vim = 1
-" 5. is enable YouCompleteMe, this need libclang7 above or GLIBC_2.17 above
-let s:enable_ycm = 1
-" 6. run vim, wait for plugins auto install
-" 7. well done!
+" 5. is enable YouCompleteMe, this need libclang10 above or GLIBC_2.17 above
+let s:enable_ycm = 0
+" 6. is enable coc.nvim, a LSP intellisense engine, better than ycm
+" this need cland10 above or GLIBC_2.18 above for c++
+let s:enable_coc = 1
+" 7. run vim, wait for plugins auto install
+" 8. well done!
+
+if s:enable_coc == 1
+    let s:enable_ycm = 0
+endif
 
 let s:cpp_clang_highlight = 0
 " check is enable system clipboard
@@ -90,9 +97,9 @@ if count(g:bundle_groups, 'base')
     " registe self, for cmd :help vim-plug
     Plug 'junegunn/vim-plug'
     " vimfiler require this
-    Plug 'Shougo/unite.vim'
+    " Plug 'Shougo/unite.vim'
     " file explore, run by :Ex cmd
-    Plug 'Shougo/vimfiler.vim'
+    " Plug 'Shougo/vimfiler.vim'
     " edit content directly in quicklist
     Plug 'thinca/vim-qfreplace'
     " file header, like author license etc.
@@ -100,7 +107,7 @@ if count(g:bundle_groups, 'base')
     " sudo permission
     Plug 'vim-scripts/SudoEdit.vim'
     " minimap
-    Plug 'severin-lemaignan/vim-minimap'
+    " Plug 'severin-lemaignan/vim-minimap'
     " auto disable format when paste
     Plug 'roxma/vim-paste-easy'
     " smart diff algorithm
@@ -117,8 +124,6 @@ if count(g:bundle_groups, 'base')
     Plug 'svermeulen/vim-yoink'
     " enhanced replace and paste in visual mode
     Plug 'svermeulen/vim-subversive'
-    " asynchronous lint engine
-    Plug 'dense-analysis/ale'
     " undo tree
     Plug 'mbbill/undotree'
     " enhanced replace
@@ -148,8 +153,6 @@ if count(g:bundle_groups, 'base')
     Plug 'Yggdroot/LeaderF-marks'
     " highlight current pairs, have perfermance problem
     " Plug 'Yggdroot/hiPairs'
-    " show a git diff in the gutter (sign column) and stages/undoes hunks
-    Plug 'airblade/vim-gitgutter'
     " git cmd wrapper
     Plug 'tpope/vim-fugitive'
     " gitk in vim
@@ -179,7 +182,7 @@ if count(g:bundle_groups, 'base')
     " replace vimgrep，:Ag
     Plug 'rking/ag.vim'
     " buffer explore
-    Plug 'jlanzarotta/bufexplorer'
+    " Plug 'jlanzarotta/bufexplorer'
     " insert or delete brackets, parens, quotes in pair
     Plug 'jiangmiao/auto-pairs'
     " multiple selection
@@ -208,6 +211,14 @@ if count(g:bundle_groups, 'base')
     Plug 'vim-utils/vim-man'
     " Automatic resizing of Vim windows to the golden ratio
     Plug 'roman/golden-ratio'
+    if exists("s:enable_coc")  && s:enable_coc == 1
+    else
+        " show a git diff in the gutter (sign column) and stages/undoes hunks
+        " can be replace by coc-git
+        Plug 'airblade/vim-gitgutter'
+        " asynchronous lint engine
+        Plug 'dense-analysis/ale'
+    endif
 endif
 
 if count(g:bundle_groups, 'java')
@@ -276,9 +287,9 @@ endif
 
 let s:is_system_clang = 0
 if s:os == "Linux"
-    let s:is_libclang7_install=str2nr(system('ldconfig -p | grep "libclang-[789].so" | wc -l'))
-    let s:is_libclang7_install+=str2nr(system('strings `ldconfig -p | grep "libclang.so$" | awk -F" "' . " '" . '{print $NF}'. "'" . '` | grep "version [789].[0-9].[0-9]" | wc -l'))
-    if s:is_libclang7_install > 0
+    let s:is_libclang1x_install=str2nr(system('ldconfig -p | egrep "libclang-1[0-9].so" | wc -l'))
+    let s:is_libclang1x_install+=str2nr(system('strings `ldconfig -p | grep "libclang.so$" | awk -F" "' . " '" . '{print $NF}'. "'" . '` | egrep "version 1[0-9].[0-9].[0-9]" | wc -l'))
+    if s:is_libclang1x_install > 0
         let s:is_system_clang = 1
     endif
 endif
@@ -292,9 +303,19 @@ if exists("s:enable_ycm")  && s:enable_ycm == 1
     endif
 endif
 
+if exists("s:enable_coc")  && s:enable_coc == 1
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+endif
+
 if count(g:bundle_groups, 'cpp')
     " cpp highlight
-    if exists("s:cpp_clang_highlight")  && s:cpp_clang_highlight == 1
+    if exists("s:enable_coc")  && s:enable_coc == 1
+        Plug 'jackguo380/vim-lsp-cxx-highlight'
+        " highlight LspCxxHlSymClassProperty ctermfg=DarkGray guifg=DarkGray
+        " highlight LspCxxHlSymStructProperty ctermfg=DarkGray guifg=DarkGray
+        " highlight LspCxxHlSymClassProperty ctermfg=DarkGray guifg=DarkGray
+        " highlight LspCxxHlSymStructProperty ctermfg=DarkGray guifg=DarkGray
+    elseif exists("s:cpp_clang_highlight")  && s:cpp_clang_highlight == 1
         if s:is_system_clang
             Plug 'jeaye/color_coded', {'do': 'dir=`mktemp -d` && cd $dir && cmake -DDOWNLOAD_CLANG=0 ~/.vim/bundle/color_coded/ && make && make install'}
         else
@@ -303,6 +324,7 @@ if count(g:bundle_groups, 'cpp')
     else
         Plug 'bfrg/vim-cpp-modern'
     endif
+    Plug 'bfrg/vim-cpp-modern'
 endif
 
 if count(g:bundle_groups, 'markdown')
@@ -332,6 +354,11 @@ call plug#end()
 
 " no swp file
 set nobackup
+set nowritebackup
+" Give more space for displaying messages
+set cmdheight=2
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
 " enable indent plugin by filetype
 filetype plugin indent on
 " save session without curdir, when reload session.vim, curdir will set to the dir where session.vim in
@@ -416,7 +443,7 @@ set colorcolumn=80
 " highlight cursor line, have perfermance problem
 " set cursorline
 " If this many milliseconds nothing is typed the swap file will be written to disk
-set updatetime=1000
+set updatetime=300
 " screen will not be redrawn while executing macros, registers and other
 " commands that have not been typed
 set lazyredraw
@@ -434,6 +461,8 @@ set synmaxcol=200
 set hlsearch
 " all directories will be searched
 set path+=**
+" TextEdit might fail if hidden is not set.
+set hidden
 
 " gvim line hight
 set linespace=-2
@@ -569,7 +598,7 @@ augroup ensime-vim_
     autocmd!
     autocmd BufWritePost *.scala silent :EnTypeCheck
     autocmd BufRead,BufNewFile *.scala nnoremap <buffer> <leader>t :EnType<CR>
-    autocmd BufRead,BufNewFile *.scala nnoremap <buffer> <C-g> :EnDeclaration<CR>
+    " autocmd BufRead,BufNewFile *.scala nnoremap <buffer> <C-g> :EnDeclaration<CR>
 augroup END
 " :EnDocBrowse opens documentation for the element under the cursor in your browser
 " run 'sbt ensimeConfig' in project root dir for scala
@@ -608,7 +637,7 @@ let g:header_field_filename = 0
 let g:header_field_timestamp_format = '%Y-%m-%d %H:%M:%S'
 let g:header_field_modified_timestamp = 0
 let g:header_field_modified_by = 0
-let g:header_field_copyright = 'Copyright (c) 2019 Inc. All rights reserved.'
+let g:header_field_copyright = 'Copyright (c) 2019 Meituan Inc. All rights reserved.'
 let g:header_alignment = 1
 let g:header_max_size = 20
 
@@ -616,15 +645,25 @@ let g:header_max_size = 20
 " let g:hiPairs_enable_matchParen = 0
 
 " vim-fswitch
-nmap <silent> <Leader>a :FSHere<cr>
-augroup fswitch_cpp
-    " support *.cc
-    autocmd!
-    autocmd BufEnter *.cc let b:fswitchdst  = 'h'
-    autocmd BufEnter *.cc let b:fswitchlocs = 'reg:/src/include/,reg:|src|include/**|,../include'
-    autocmd BufEnter *.h let b:fswitchdst  = 'cpp,cc,C'
-    autocmd BufEnter *.h let b:fswitchlocs = 'reg:/include/src/,reg:/include.*/src/'
-augroup END
+if exists("s:enable_coc")  && s:enable_coc == 1
+    nmap <silent> <Leader>a :CocCommand clangd.switchSourceHeader<cr>
+else
+    nmap <silent> <Leader>a :FSHere<cr>
+    augroup fswitch_cpp
+        " support *.cc
+        autocmd!
+        autocmd BufEnter *.cc let b:fswitchdst  = 'h'
+        autocmd BufEnter *.cc let b:fswitchlocs = 'reg:/src/include/,reg:|src|include/**|,../include'
+        autocmd BufEnter *.h let b:fswitchdst  = 'cpp,cc,C'
+        autocmd BufEnter *.h let b:fswitchlocs = 'reg:/include/src/,reg:/include.*/src/'
+    augroup END
+end
+
+" NERDCommenter
+let NERDCreateDefaultMappings = 0
+nmap <Leader>c<space> <plug>NERDCommenterToggle
+vmap <Leader>c<space> <plug>NERDCommenterToggle
+
 
 " vim-cpp-modern
 " Enable highlighting of named requirements (C++20 library concepts)
@@ -639,7 +678,6 @@ let g:minimap_toggle='<F12>'
 " gitv
 " let g:Gitv_DoNotMapCtrlKey = 1
 map <leader>gv :Gitv<CR><CR>
-nmap <leader>gr :Git<Space>
 let g:Gitv_WrapLines = 1
 let g:Gitv_TruncateCommitSubjects = 1
 let g:Gitv_OpenPreviewOnLaunch = 1
@@ -1025,13 +1063,16 @@ if exists("s:enable_ycm")  && s:enable_ycm == 1
     let g:ycm_always_populate_location_list = 1
     " Let clangd fully control code completion
     let g:ycm_clangd_uses_ycmd_caching = 0
+    " clangd poor perfermance
+    let g:ycm_use_clangd = 0
 
     augroup ycm_
         autocmd!
         " goto next location list
         " goto previous location list
         autocmd BufRead,BufNewFile * if count(['cpp','c','python','java','go'], &ft) |
-                    \ nmap <buffer> <C-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR> |
+                    \ nmap <buffer> <C-g> :YcmCompleter GoToImprecise <C-R>=expand("<cword>")<CR><CR> |
+                    \ nmap <buffer> <leader>go :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR> |
                     \ nmap <buffer> <leader>gy :YcmCompleter FixIt<CR> |
                     \ nnoremap <buffer> <leader>t :YcmCompleter GetType<CR> |
                     \ nmap <buffer> [l :lnext<CR> |
@@ -1044,31 +1085,107 @@ if exists("s:enable_ycm")  && s:enable_ycm == 1
     let g:SuperTabDefaultCompletionType = '<C-n>'
 endif  "s:enable_ycm
 
+" coc.nvim
+if exists("s:enable_coc")  && s:enable_coc == 1
+    " Use <c-space> to trigger completion.
+    inoremap <silent><expr> <c-space> coc#refresh()
+    " Use `[g` and `]g` to navigate diagnostics
+    nmap <silent> [g <Plug>(coc-diagnostic-prev)
+    nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+    " GoTo code navigation.
+    nmap <silent> <C-g> <Plug>(coc-definition)
+    nmap <silent> <leader>gd <Plug>(coc-definition)
+    nmap <silent> <leader>gt <Plug>(coc-type-definition)
+    nmap <silent> <leader>gi <Plug>(coc-implementation)
+    nmap <silent> <leader>gr <Plug>(coc-references)
+
+    " Apply AutoFix to problem on the current line.
+    nmap <leader>gy <Plug>(coc-fix-current)
+
+    " Use K to show documentation in preview window.
+    nnoremap <silent> <leader>gh :call <SID>show_documentation()<CR>
+    function! s:show_documentation()
+        if (index(['vim','help'], &filetype) >= 0)
+            execute 'h '.expand('<cword>')
+        else
+            call CocActionAsync('doHover')
+        endif
+    endfunction
+    augroup coc_
+        autocmd!
+        " Highlight the symbol and its references when holding the cursor.
+        autocmd CursorHold * silent call CocActionAsync('highlight')
+        " autocmd CursorHold * silent call CocActionAsync('doHover')
+    augroup END
+    " Show all diagnostics.
+    nnoremap <silent> <leader>ga  :<C-u>CocList diagnostics<cr>
+    " rename the current word in the cursor
+    nmap <leader>gn <Plug>(coc-rename)
+
+    " let g:node_client_debug = 1
+    let g:coc_global_extensions = []
+    let g:coc_global_extensions += ['coc-ultisnips']
+    let g:coc_global_extensions += ['coc-yaml']
+    let g:coc_global_extensions += ['coc-highlight']
+    let g:coc_global_extensions += ['coc-git']
+    let g:coc_global_extensions += ['coc-vimlsp']
+    let g:coc_global_extensions += ['coc-tsserver']
+    if count(g:bundle_groups, 'json')
+        let g:coc_global_extensions += ['coc-json']
+    endif
+    if count(g:bundle_groups, 'java')
+        let g:coc_global_extensions += ['coc-java']
+    endif
+    if count(g:bundle_groups, 'scala')
+        let g:coc_global_extensions += ['coc-metals']
+    endif
+    if count(g:bundle_groups, 'markdown')
+        let g:coc_global_extensions += ['coc-markdownlint']
+    endif
+    if count(g:bundle_groups, 'python')
+        let g:coc_global_extensions += ['coc-jedi']
+    endif
+    if count(g:bundle_groups, 'golang')
+        let g:coc_global_extensions += ['coc-go']
+    endif
+    if count(g:bundle_groups, 'c') || count(g:bundle_groups, 'cpp')
+        let g:coc_global_extensions += ['coc-clangd']
+        call coc#config('clangd.semanticHighlighting', 1)
+        " call coc#config('coc.preferences', {
+        " \ 'timeout': 1000,
+        " \})
+
+        highlight LspCxxHlGroupMemberVariable ctermfg=LightGray  guifg=LightGray
+    endif
+endif
+
 " gutentags_plus
-" disable default keymap
+"" disable default keymap
 let g:gutentags_plus_nomap = 1
 " auto switch to quickfix window
 let g:gutentags_plus_switch = 1
 " auto close quickfix if press <CR>
 let g:gutentags_plus_auto_close_list = 0
 " find this symbol
-noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
+noremap <silent> <leader>ggs :GscopeFind s <C-R><C-W><cr>
 " find this definition
-noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
+noremap <silent> <leader>ggg :GscopeFind g <C-R><C-W><cr>
 " find functions calling this function
-noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
+noremap <silent> <leader>ggc :GscopeFind c <C-R><C-W><cr>
 " find this text string
-noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
+" noremap <silent> <leader>ggt :GscopeFind t <C-R><C-W><cr>
 " find this egrep pattern
-noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
+" noremap <silent> <leader>gge :GscopeFind e <C-R><C-W><cr>
 " find this file
-noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
+" noremap <silent> <leader>ggf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
 " find files #including this file
-noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
+" noremap <silent> <leader>ggi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
 " find functions called by this function
-noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
+" noremap <silent> <leader>ggd :GscopeFind d <C-R><C-W><cr>
 " find places where this symbol is assigned a value
-noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
+" noremap <silent> <leader>gga :GscopeFind a <C-R><C-W><cr>
+
 " project root dir flag contant .root and .git
 let g:gutentags_project_root = ['.root']
 " Specifies a directory in which to create all the tags files, instead of writing them at the root of each project
@@ -1094,7 +1211,6 @@ let g:gutentags_define_advanced_commands = 1
 nmap <leader>u :GutentagsUpdate! <CR><CR>
 
 " echodoc.vim
-set cmdheight=2
 " set noshowmode
 let g:echodoc#enable_at_startup = 1
 let g:echodoc#enable_force_overwrite = 1
@@ -1137,7 +1253,7 @@ endfunction
 
 function! AddTitle()
     call append(0, "\/*")
-    call append(1, " * Copyright (c) 2019 Inc. All rights reserved.")
+    call append(1, " * Copyright (c) 2019 Meituan Inc. All rights reserved.")
     call append(2, " * @Author: maxiaowei_main@qq.com")
     call append(3, " * @Date: ".strftime("%Y-%m-%d %H:%M:%S".""))
     call append(4, " * @Last Modified by: maxiaowei_main@qq.com")
