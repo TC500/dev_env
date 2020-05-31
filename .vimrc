@@ -1158,6 +1158,7 @@ if exists("s:enable_coc")  && s:enable_coc == 1
 
         highlight LspCxxHlGroupMemberVariable ctermfg=LightGray  guifg=LightGray
     endif
+    let g:SuperTabDefaultCompletionType = '<C-n>'
 endif
 
 " gutentags_plus
