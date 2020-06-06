@@ -707,6 +707,8 @@ xmap p <plug>(SubversiveSubstitute)
 xmap P <plug>(SubversiveSubstitute)
 
 " LeaderF
+let g:Lf_PreviewInPopup = 1
+let g:Lf_WindowPosition = 'popup'
 let g:Lf_ShortcutF = '<C-p>'
 let g:Lf_ShortcutB = '<leader>lb'
 let g:Lf_ShowHidden = 1
