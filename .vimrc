@@ -725,6 +725,8 @@ nmap <leader>ls :LeaderfHistorySearch<CR>
 
 " undotree
 if has("persistent_undo")
+    " Create dirs
+    call system('mkdir -p ' . "$HOME/.vim/undo")
     " directory where the undo files will be stored
     set undodir=$HOME/.vim/undo
     " turn on the feature
