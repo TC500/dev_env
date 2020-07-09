@@ -1148,7 +1148,7 @@ if exists("s:enable_coc")  && s:enable_coc == 1
         let g:coc_global_extensions += ['coc-markdownlint']
     endif
     if count(g:bundle_groups, 'python')
-        let g:coc_global_extensions += ['coc-jedi']
+        let g:coc_global_extensions += ['coc-python']
     endif
     if count(g:bundle_groups, 'golang')
         let g:coc_global_extensions += ['coc-go']
