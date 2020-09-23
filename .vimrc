@@ -554,8 +554,15 @@ if (empty(s:colors_type))
             let s:colors_type="256"
         endif
     else
-        let s:tmux_version=system('tmux -V|sed "s/tmux 2.//"|sed "s/tmux 1.//"|tr -d "\n"')
-        if s:tmux_version > 1 && stridx($TERM, '256color') > 0 && has("termguicolors")
+        let s:truecolor_tmux=0
+        let s:tmux_sub_version=system('tmux -V|sed "s/tmux [1-3].//"|sed "s/[a-z]$//"|tr -d "\n"')
+        let s:tmux_main_version=system('tmux -V|sed "s/tmux //"|sed "s/\..*$//"|tr -d "\n"')
+        if s:tmux_main_version > 2
+            let s:truecolor_tmux=1
+        elseif s:tmux_main_version==2 && s:tmux_sub_version > 1
+            let s:truecolor_tmux=1
+        endif
+        if s:truecolor_tmux > 0 && stridx($TERM, '256color') > 0 && has("termguicolors")
             let s:colors_type="termguicolors"
         else
             let s:colors_type="256"
