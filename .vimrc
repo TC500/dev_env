@@ -1022,6 +1022,8 @@ nmap <leader>i :Autoformat<CR>
 vmap <leader>i :Autoformat<CR>
 let g:formatters_python = ["yapf","autopep8"]
 let g:formatters_golang = ["goimports","gofmt"]
+let g:formatdef_google_java_style = "'/usr/lib/jvm/java-11-openjdk-11.0.8.10-0.el7_8.x86_64/bin/java -jar ~/software/google-java-format-1.9-all-deps.jar - --aosp --lines '.a:firstline.':'.a:lastline"
+let g:formatters_java = ["google_java_style"]
 
 " vim for python
 " python-syntax
