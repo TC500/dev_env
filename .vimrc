@@ -1141,6 +1141,7 @@ if exists("s:enable_coc")  && s:enable_coc == 1
     let g:coc_global_extensions += ['coc-git']
     let g:coc_global_extensions += ['coc-vimlsp']
     let g:coc_global_extensions += ['coc-tsserver']
+    let g:coc_global_extensions += ['coc-sh']
     if count(g:bundle_groups, 'json')
         let g:coc_global_extensions += ['coc-json']
     endif
