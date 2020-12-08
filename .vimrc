@@ -1157,7 +1157,8 @@ if exists("s:enable_coc")  && s:enable_coc == 1
         let g:coc_global_extensions += ['coc-markdownlint']
     endif
     if count(g:bundle_groups, 'python')
-        let g:coc_global_extensions += ['coc-python']
+        let g:coc_global_extensions += ['coc-pyright']
+        call coc#config('python.pythonPath', '/usr/bin/python3')
     endif
     if count(g:bundle_groups, 'golang')
         let g:coc_global_extensions += ['coc-go']
