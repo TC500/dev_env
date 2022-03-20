@@ -230,6 +230,7 @@ if count(g:bundle_groups, 'scala')
     " scala highlight
     Plug 'derekwyatt/vim-scala'
     Plug 'ensime/ensime-vim'
+    " Plug 'megaannum/vimside'  ensime-vim不维护了，后面有时间替换成这个
 endif
 
 if count(g:bundle_groups, 'shell')
@@ -643,10 +644,10 @@ let g:header_field_filename = 0
 let g:header_field_timestamp_format = '%Y-%m-%d %H:%M:%S'
 let g:header_field_modified_timestamp = 0
 let g:header_field_modified_by = 0
-let g:header_field_copyright = 'Copyright (c) 2019 Meituan Inc. All rights reserved.'
+let g:header_field_copyright = 'Copyright (c) 2022 Meituan Inc. All rights reserved.'
 let g:header_alignment = 1
 let g:header_max_size = 20
-
+ 
 " hiPairs
 " let g:hiPairs_enable_matchParen = 0
 
@@ -974,6 +975,8 @@ let g:NERDTreePatternMatchHighlightFullName = 1
 let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
 let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
 let g:NERDTreeHighlightCursorline = 0
+let g:NERDTreeUpdateOnCursorHold = 0
+let g:NERDTreeGitStatusUpdateOnCursorHold = 0
 augroup nerdtree_
     autocmd!
     " autocmd vimenter * NERDTree
@@ -1166,6 +1169,8 @@ if exists("s:enable_coc")  && s:enable_coc == 1
     if count(g:bundle_groups, 'c') || count(g:bundle_groups, 'cpp')
         let g:coc_global_extensions += ['coc-clangd']
         call coc#config('clangd.semanticHighlighting', 1)
+        " call coc#config('clangd.path', '/usr/bin/clangd')
+        " call coc#config('clangd.arguments', ["--background-index","-j=4","--index","-suggest-missing-includes=false"])
         " call coc#config('coc.preferences', {
         " \ 'timeout': 1000,
         " \})
@@ -1267,7 +1272,7 @@ endfunction
 
 function! AddTitle()
     call append(0, "\/*")
-    call append(1, " * Copyright (c) 2019 Meituan Inc. All rights reserved.")
+    call append(1, " * Copyright (c) 2022 Meituan Inc. All rights reserved.")
     call append(2, " * @Author: maxiaowei_main@qq.com")
     call append(3, " * @Date: ".strftime("%Y-%m-%d %H:%M:%S".""))
     call append(4, " * @Last Modified by: maxiaowei_main@qq.com")
