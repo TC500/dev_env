@@ -16,16 +16,11 @@ endif
 " the font will auto install when vim first running
 let s:builty_vim = 1
 " 5. is enable YouCompleteMe, this need libclang10 above or GLIBC_2.17 above
-let s:enable_ycm = 0
-" 6. is enable coc.nvim, a LSP intellisense engine, better than ycm
+" 6. is enable .nvim, a LSP intellisense engine, better than ycm
 " this need cland10 above or GLIBC_2.18 above for c++
 let s:enable_coc = 1
 " 7. run vim, wait for plugins auto install
 " 8. well done!
-
-if s:enable_coc == 1
-    let s:enable_ycm = 0
-endif
 
 let s:cpp_clang_highlight = 0
 " check is enable system clipboard
@@ -204,9 +199,9 @@ if count(g:bundle_groups, 'base')
     " displays function signatures from completions in the command line
     Plug 'Shougo/echodoc.vim'
     " snippets
-    Plug 'ervandew/supertab'
-    Plug 'SirVer/ultisnips'
-    Plug 'honza/vim-snippets'
+    " Plug 'ervandew/supertab'
+    " Plug 'SirVer/ultisnips'
+    " Plug 'honza/vim-snippets'
     " View and grep man pages
     Plug 'vim-utils/vim-man'
     " Automatic resizing of Vim windows to the golden ratio
@@ -291,15 +286,6 @@ if s:os == "Linux"
     let s:is_libclang1x_install+=str2nr(system('strings `ldconfig -p | grep "libclang.so$" | awk -F" "' . " '" . '{print $NF}'. "'" . '` | egrep "version 1[0-9].[0-9].[0-9]" | wc -l'))
     if s:is_libclang1x_install > 0
         let s:is_system_clang = 1
-    endif
-endif
-" powerful code-completion engine
-if exists("s:enable_ycm")  && s:enable_ycm == 1
-    Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
-    if s:is_system_clang
-        Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clangd-completer --clang-completer --system-libclang --java-completer --go-completer' }
-    else
-        Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clangd-completer --clang-completer --java-completer --go-completer' }
     endif
 endif
 
@@ -620,15 +606,6 @@ let NERDSpaceDelims=1
 let g:airline#extensions#ale#enabled = 1
 let g:ale_open_list = 1
 let ale_blacklist = []
-if exists("s:enable_ycm")  && s:enable_ycm == 1
-    " disable ale if YouCompleteMe is better
-    let g:ale_linters = {'c': [], 'cpp': [], 'java': []}
-    augroup ale_0_
-        autocmd!
-        autocmd FileType c,cpp,java setlocal fdm=syntax | setlocal fen
-    augroup END
-    let ale_blacklist = ['c', 'cpp', 'java']
-endif
 augroup ale_1_
     autocmd!
     autocmd BufRead,BufNewFile * if count(ale_blacklist, &ft) | nmap <buffer> [l <Plug>(ale_previous_wrap) |
@@ -1043,63 +1020,6 @@ let g:DoxygenToolkit_licenseTag="maxiaowei_main@qq.com"
 " auto-pairs
 let g:AutoPairsMultilineClose = 1
 
-" YouCompleteMe
-if exists("s:enable_ycm")  && s:enable_ycm == 1
-    if !empty(glob("~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py"))
-        let g:ycm_global_ycm_extra_conf = "~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py"
-    endif
-    if !empty(glob("~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"))
-        let g:ycm_global_ycm_extra_conf = "~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
-    endif
-    if !empty(glob("~/.vim/bundle/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py"))
-        let g:ycm_global_ycm_extra_conf = "~/.vim/bundle/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py"
-    endif
-    if !empty(glob("~/.vim/.ycm_extra_conf.py"))
-        let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
-    endif
-    if !empty(glob(".ycm_extra_conf.py"))
-        let g:ycm_global_ycm_extra_conf = ".ycm_extra_conf.py"
-    endif
-    " autoload .ycm_extra_conf.py, no need confirm
-    let g:ycm_confirm_extra_conf=0
-    let g:ycm_complete_in_comments=1
-    let g:ycm_collect_identifiers_from_tags_files=1
-    let g:ycm_min_num_of_chars_for_completion=1
-    let g:ycm_cache_omnifunc=0
-    " YCM's identifier completer will seed its identifier database with the keywords of the programming language
-    let g:ycm_seed_identifiers_with_syntax=1
-    " show the completion menu even when typing inside strings
-    let g:ycm_complete_in_strings = 1
-    " show the completion menu even when typing inside comments
-    let g:ycm_complete_in_comments = 1
-    " eclim file type validate conflict with YouCompleteMe
-    let g:EclimFileTypeValidate = 0
-    " YCM will populate the location list automatically every time it gets new diagnostic data
-    let g:ycm_always_populate_location_list = 1
-    " Let clangd fully control code completion
-    let g:ycm_clangd_uses_ycmd_caching = 0
-    " clangd poor perfermance
-    let g:ycm_use_clangd = 0
-
-    augroup ycm_
-        autocmd!
-        " goto next location list
-        " goto previous location list
-        autocmd BufRead,BufNewFile * if count(['cpp','c','python','java','go'], &ft) |
-                    \ nmap <buffer> <C-g> :YcmCompleter GoToImprecise <C-R>=expand("<cword>")<CR><CR> |
-                    \ nmap <buffer> <leader>go :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR> |
-                    \ nmap <buffer> <leader>gy :YcmCompleter FixIt<CR> |
-                    \ nnoremap <buffer> <leader>t :YcmCompleter GetType<CR> |
-                    \ nmap <buffer> [l :lnext<CR> |
-                    \ nmap <buffer> ]l :lprevious<CR> | endif
-    augroup END
-    " make YCM compatible with UltiSnips (using supertab)
-    let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-    let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-    let g:ycm_max_diagnostics_to_display = 0
-    let g:SuperTabDefaultCompletionType = '<C-n>'
-endif  "s:enable_ycm
-
 " coc.nvim
 if exists("s:enable_coc")  && s:enable_coc == 1
     " Use <c-space> to trigger completion.
@@ -1139,6 +1059,7 @@ if exists("s:enable_coc")  && s:enable_coc == 1
     nmap <leader>gn <Plug>(coc-rename)
 
     " let g:node_client_debug = 1
+    call coc#config('suggest.noselect', 'true')
     let g:coc_global_extensions = []
     let g:coc_global_extensions += ['coc-ultisnips']
     let g:coc_global_extensions += ['coc-yaml']
@@ -1260,15 +1181,6 @@ let g:multi_cursor_next_key            = '<C-n>'
 let g:multi_cursor_prev_key            = '<C-p>'
 let g:multi_cursor_skip_key            = '<C-x>'
 let g:multi_cursor_quit_key            = '<Esc>'
-function! Multiple_cursors_before()
-    let s:old_ycm_whitelist = g:ycm_filetype_whitelist
-    let g:ycm_filetype_whitelist = {}
-    set foldmethod=manual
-endfunction
-function! Multiple_cursors_after()
-    let g:ycm_filetype_whitelist = s:old_ycm_whitelist
-    set foldmethod=indent
-endfunction
 
 function! AddTitle()
     call append(0, "\/*")
