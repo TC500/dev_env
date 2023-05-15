@@ -1073,9 +1073,17 @@ if exists("s:enable_coc")  && s:enable_coc == 1
     endif
     if count(g:bundle_groups, 'java')
         let g:coc_global_extensions += ['coc-java']
+        let g:coc_global_extensions += ['coc-lombok']
+        " call coc#config('java.format.enabled', 'true')
+        " call coc#config('java.completion.overwrite', 'true')
+        " call coc#config('java.format.comments.enabled', 'true')
+        " call coc#config('java.format.settings.url', 'https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml')
+        " call coc#config('java.format.settings.url', 'http://localhost/eclipse-java-google-style.xml')
     endif
     if count(g:bundle_groups, 'scala')
         let g:coc_global_extensions += ['coc-metals']
+        let g:coc_global_extensions += ['coc-lombok']
+        call coc#config('metals.serverProperties', 1)
     endif
     if count(g:bundle_groups, 'markdown')
         let g:coc_global_extensions += ['coc-markdownlint']
